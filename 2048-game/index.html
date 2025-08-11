@@ -1,50 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<link href="https://fonts.googleapis.com/css?family=Nunito:200,400,800" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>2048</title>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="app.js"></script>
 </head>
-
 <body>
-  <div class="game">
-    <div class="head">
-      <div class="a">2048 <button class="info" onClick='info()'>i</button> <button id="repeat" class="info repeat" onClick='reset()'>↻</button></div>
-      <div class="score">Score<br/><span id="value"></span></div>
+
+<div class="container">
+    <div class="info">
+        <h1>2048</h1>
+        <div class="score-container">
+            <p class="score-title">score</p>
+            <h2 id="score">0</h2>
+        </div>
     </div>
-    <div class="description" id="description">
-    How to play:<br/><br/>
-    Use your arrow-keys to slide the tiles. <br/>
-    Two tiles with the same value in line can be merged. The goal is to merge the tiles and get the 2048 tile.<br/><br/>
-    The score is a sum of the merged tiles.<br><br/>
-    <span>_______________________________</span><br/><br/>
-    Made by Fabian Richter 01/2017
-  </div>
-    <div class="field">
-      
-      <div class="row">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-      </div>
-      <div class="row">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-      </div>
-      <div class="row">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-      </div>
-      <div class="row">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-      </div>
-    </div>
-    
-  </div>
-  <div class='' id='status'>
-  </div>
+    <p id="result">Join the numbers and get to the <b>2048</b> tile!</p>
+    <div class="grid"></div>
+</div>
+
 </body>
+</html>
