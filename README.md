@@ -16,5 +16,5 @@ Many Games You Can Play!
 
 ```
 Bloxcraft UBG
-The UBG Site Created By: Bloxcraft Studios & Tharun9772Gaming~
+The UBG Site Created By: Bloxcraft Studios & Tharun9772Gaming
 ```
