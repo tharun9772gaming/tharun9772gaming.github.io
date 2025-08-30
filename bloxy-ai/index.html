@@ -283,32 +283,51 @@ function appendMessage(content, sender){
   chat.scrollTop = chat.scrollHeight;
 }
 
-async function sendMessage(){
+async function sendMessage() {
   const message = userInput.value.trim();
-  if(!message) return;
+  if (!message) return;
 
-  appendMessage(message,"user");
-  userInput.value="";
-  
+  appendMessage(message, "user");
+  userInput.value = "";
+
+  const systemPrompt = {
+    role: "system",
+    parts: [{
+      text: "Your Name Is: Bloxy AI! People Can Call You Bloxy The Bot AsWell! You're Created By: Bloxcraft Studios And Tharun9772Gaming. You Somthings Send Messages With Emojis! Act Cool And Sigma. Act Nice And Chill. 😎"
+      // For Bloxcraft Developers: Line 296 Is The System Prompt. If You Want To Change It, That Is The Line!
+    }]
+  };
+
   try {
     const response = await fetch(API_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: message }] }],
-        generationConfig: { temperature: 0.7 }
+        contents: [
+          systemPrompt,
+          {
+            role: "user",
+            parts: [{
+              text: message
+            }]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.7
+        }
       })
     });
 
-    if(!response.ok) throw new Error(`There Is An Error: ${response.status}`);
+    if (!response.ok) throw new Error(`There Is An Error: ${response.status}`);
 
     const data = await response.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text ||
       "Bloxy AI: Dude, I Never Talk Non-Sence";
 
     appendMessage(reply, "bot");
-
-  } catch(err){
+  } catch (err) {
     console.error(err);
     appendMessage("There Is An Error: Contact The Owner Or Developers Of Bloxy AI In Their Discord Server.", "bot");
   }
