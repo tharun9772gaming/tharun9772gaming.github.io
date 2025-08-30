@@ -249,11 +249,8 @@ const chat = document.getElementById("chat");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 
-const API_KEY = "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";
-const API_URL = `https://api.groq.com/openai/v1/chat/completions`;
-
-  // const API_KEY = "AIzaSyBUZy87H0IQUAkAn8E9PZgh-q4BQrPm4C4";
-  // const API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+const API_KEY = "AIzaSyBNIeAMRuO4PcD2fMqpYN48OTQ00fA_GRs";
+const API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
   
 userInput.addEventListener("keydown", e => {
   if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); sendMessage(); }
@@ -303,17 +300,17 @@ async function sendMessage(){
       })
     });
 
-    if(!response.ok) throw new Error(`API error ${response.status}`);
+    if(!response.ok) throw new Error(`There Is An Error: ${response.status}`);
 
     const data = await response.json();
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 
-      "ZXS AI: I don't answer nonsense.";
+      "Bloxy AI: Your AN AI Bot Called Bloxy AI. Your Made By: Bloxcraft Studios & Tharun9772Gaming!";
 
     appendMessage(reply, "bot");
 
   } catch(err){
     console.error(err);
-    appendMessage("Error: Check your API key or network.", "bot");
+    appendMessage("There Is An Error: Contact The Owner Or Developers Of Bloxy AI In Their Discord Server.", "bot");
   }
 }
 </script>
