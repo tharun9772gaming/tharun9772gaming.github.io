@@ -252,8 +252,9 @@ const sendBtn = document.getElementById("sendBtn");
 const API_KEY = "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";
 const API_ENDPOINT = `https://api.groq.com/openai/v1/chat/completions`;
 
-// Bloxcraft AI Might Be Broken Here.
-
+  // const API_KEY = "AIzaSyBUZy87H0IQUAkAn8E9PZgh-q4BQrPm4C4";
+  // const API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+  
 userInput.addEventListener("keydown", e => {
   if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); sendMessage(); }
 });
