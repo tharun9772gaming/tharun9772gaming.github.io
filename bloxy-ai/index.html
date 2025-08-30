@@ -216,6 +216,15 @@
             border-color: #00008B;
             color: #fff;
         }
+
+        .app-footer {
+            background: #00008B;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #fff;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
     <style>
         body {
@@ -233,92 +242,107 @@
             <textarea id="userInput" placeholder="Ask Bloxy Ai Somthing..." rows="1" spellcheck="false" autocomplete="off"></textarea>
             <button id="sendBtn">Ask</button>
         </div>
+        <div class="app-footer">
+            Copyright 2025 Bloxcraft Studios
+        </div>
     </div>
+<script>
+    const chat = document.getElementById("chat");
+    const userInput = document.getElementById("userInput");
+    const sendBtn = document.getElementById("sendBtn");
 
-    <script>
-        const chat = document.getElementById("chat");
-        const userInput = document.getElementById("userInput");
-        const sendBtn = document.getElementById("sendBtn");
+    const chatHistory = [{
+        role: "user",
+        parts: [{
+            text: "Your Name Is: Bloxy AI! People Can Call You Bloxy The Bot AsWell! You're Created By: Bloxcraft Studios And Tharun9772Gaming. You Somthings Send Messages With Emojis! Act Cool And Sigma. Act Nice And Chill. 😎"
+        }]
+    }];
 
-        const API_KEY = "AIzaSyBNIeAMRuO4PcD2fMqpYN48OTQ00fA_GRs";
-        const API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+    const API_KEY = "AIzaSyBNIeAMRuO4PcD2fMqpYN48OTQ00fA_GRs";
+    const API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
-        userInput.addEventListener("keydown", e => {
-            if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
+    userInput.addEventListener("keydown", e => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+    sendBtn.addEventListener("click", sendMessage);
+
+    function appendMessage(content, sender) {
+        const msg = document.createElement("div");
+        msg.classList.add("message", sender);
+
+        if (sender === "bot") {
+            msg.innerHTML = marked.parse(content);
+            msg.querySelectorAll("pre").forEach(pre => {
+                const btn = document.createElement("button");
+                btn.textContent = "Copy";
+                btn.className = "copy-btn";
+                btn.onclick = () => {
+                    navigator.clipboard.writeText(pre.innerText);
+                    btn.textContent = "Copied!";
+                    setTimeout(() => btn.textContent = "Copy", 1500);
+                };
+                pre.appendChild(btn);
+            });
+        } else {
+            msg.textContent = content;
+        }
+
+        chat.appendChild(msg);
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        appendMessage(message, "user");
+        userInput.value = "";
+
+        chatHistory.push({
+            role: "user",
+            parts: [{
+                text: message
+            }]
         });
-        sendBtn.addEventListener("click", sendMessage);
 
-        function appendMessage(content, sender) {
-            const msg = document.createElement("div");
-            msg.classList.add("message", sender);
+        try {
+            const response = await fetch(API_ENDPOINT, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    contents: chatHistory,
+                    generationConfig: {
+                        temperature: 0.7
+                    }
+                })
+            });
 
-            if (sender === "bot") {
-                msg.innerHTML = marked.parse(content);
-
-                msg.querySelectorAll("pre").forEach(pre => {
-                    const btn = document.createElement("button");
-                    btn.textContent = "Copy";
-                    btn.className = "copy-btn";
-                    btn.onclick = () => {
-                        navigator.clipboard.writeText(pre.innerText);
-                        btn.textContent = "Copied!";
-                        setTimeout(() => btn.textContent = "Copy", 1500);
-                    };
-                    pre.appendChild(btn);
-                });
-            } else {
-                msg.textContent = content;
+            if (!response.ok) {
+                throw new Error(`There Is An Error: ${response.status}`);
             }
 
-            chat.appendChild(msg);
-            chat.scrollTop = chat.scrollHeight;
+            const data = await response.json();
+            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text ||
+                "Bloxy AI: Dude, I Never Talk Non-Sence";
+
+            chatHistory.push({
+                role: "model",
+                parts: [{
+                    text: reply
+                }]
+            });
+
+            appendMessage(reply, "bot");
+        } catch (err) {
+            console.error(err);
+            appendMessage("There Is An Error: Contact The Owner Or Developers Of Bloxy AI In Their Discord Server.", "bot");
         }
-
-        async function sendMessage() {
-            const message = userInput.value.trim();
-            if (!message) return;
-
-            appendMessage(message, "user");
-            userInput.value = "";
-
-            const fullMessage = "Your Name Is: Bloxy AI! People Can Call You Bloxy The Bot AsWell! You're Created By: Bloxcraft Studios And Tharun9772Gaming. You Somthings Send Messages With Emojis! Act Cool And Sigma. Act Nice And Chill. 😎" + "\n\n" + message;
-
-            try {
-                const response = await fetch(API_ENDPOINT, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        contents: [{
-                            role: "user",
-                            parts: [{
-                                text: fullMessage
-                            }]
-                        }],
-                        generationConfig: {
-                            temperature: 0.7
-                        }
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`There Is An Error: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text ||
-                    "Bloxy AI: Dude, I Never Talk Non-Sence";
-
-                appendMessage(reply, "bot");
-            } catch (err) {
-                console.error(err);
-                appendMessage("There Is An Error: Contact The Owner Or Developers Of Bloxy AI In Their Discord Server.", "bot");
-            }
-        }
-    </script>
+    }
+</script>
 </body>
 </html>
