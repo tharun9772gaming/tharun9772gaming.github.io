@@ -27,6 +27,74 @@ limitations under the License.
 <meta name="theme-color" content="#5555FF"> 
 <meta property="og:description" content="The Unblocked Games Site You Can Play Everyday! It Also has Some Custom Games.">
   <link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
+        <style>
+        .iframe-button {
+            background-color: white; 
+            border: 2px solid black; 
+            color: black; 
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 0; /* Keeps the corners pointy */
+            transition: background-color 0.3s ease, color 0.3s ease; /* Adds the animation back */
+        }
+
+        .iframe-button:hover {
+            background-color: black; 
+            color: white; 
+        }
+    </style>
+<style>
+
+  .iframe-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .iframe-wrapper {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    border: 2px solid white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .iframe-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .close-button {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: red;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  }
+</style>
   <style>
 .orange-black-button {
 background: linear-gradient(90deg, #FF6600 0%, #000000 100%);
@@ -117,6 +185,7 @@ body {
 <h1>Click A Game To Play!</h1>
 <h2>All Games: 22</h2>
    <a href="/fetured-games" class="rainbow-rectangle-button">Fetured Games</a> 
+   <button class="iframe-button" onclick="openIframe()">Open Games Tab In New Window</button>
 <p>We Do Not Own Most Of The Games.</p>
 <html lang="en">
 <head>
@@ -197,6 +266,32 @@ body {
 <img src="https://hitwebcounter.com/counter/counter.php?page=21379887&style=0010&nbdigits=9&type=page&initCount=0" title="Counter Widget" Alt="Visit counter For Websites"   border="0" /></a>
 <p>&nbsp;</p>
     <p>Copyright 2025 Bloxcraft Studios</p>
+    <div id="iframeOverlay" class="iframe-container">
+  <div class="iframe-wrapper">
+    <button class="close-button" onclick="closeIframe()">X</button>
+    <iframe id="dynamicIframe" src=""></iframe>
+  </div>
+</div>
+
+<script>
+function openIframe() {
+  var overlay = document.getElementById("iframeOverlay");
+  var iframe = document.getElementById("dynamicIframe");
+  
+  iframe.src = "PAGE-URL";
+  
+  overlay.style.display = "flex";
+}
+
+function closeIframe() {
+  var overlay = document.getElementById("iframeOverlay");
+  var iframe = document.getElementById("dynamicIframe");
+  
+  iframe.src = "";
+  
+  overlay.style.display = "none";
+}
+</script>
 </body>
 </html>
 
