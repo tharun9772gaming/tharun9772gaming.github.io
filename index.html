@@ -220,8 +220,12 @@ transform: scale(0.9);
   <button class="rainbow-rectangle-button" onclick="openIframe()">Open Chat In New Window</button>
   <a href="/support" class="blue-rectangle-button">Support</a> 
 <p>&nbsp;</p>
+    <button class="rainbow-rectangle-button" onclick="supportWindow_open()">Open Support In New Window</button>
     <a href="/developers-servers" class="blue-rectangle-button">Developer's Discord Servers</a>
     <a href="https://github.com/tharun9772/tharun9772.github.io" class="blue-rectangle-button">Source Code</a>
+    <p>&nbsp;</p>
+    <h2>If You Are Finding One That Opens The Game Tab In A Seperate Window, Checkout The Games Tab!</h2>
+    <h3>NOTE: We Recommend NOT Using The Seperate Window Tab For Games. This Might Not Save Your Progress On Some Games That Are Supposed To!</h3>
 <p>&nbsp;</p>
   <a href="/refined-beta/landing" class="blue-rectangle-button">Bloxcraft UBG - Refined Beta</a>
   <a href="https://youtube.com/@bloxcraftstudios" class="blue-rectangle-button">Youtube Channel</a>
@@ -253,7 +257,7 @@ function openIframe() {
   var overlay = document.getElementById("iframeOverlay");
   var iframe = document.getElementById("dynamicIframe");
   
-  iframe.src = "/iframe-sites/bloxcraft-ubg-chat";
+  iframe.src = "/iframe-sites/bloxcraft-ubg-chat"; 
   
   overlay.style.display = "flex";
 }
@@ -267,8 +271,37 @@ function closeIframe() {
   overlay.style.display = "none";
 }
 </script>
+    
+
+<div id="supportWindowOverlay" class="iframe-container">
+  <div class="iframe-wrapper">
+    <button class="close-button" onclick="supportWindow_close()">X</button>
+    <iframe id="supportWindowFrame" src=""></iframe>
+  </div>
+</div>
+
+<script>
+function supportWindow_open() {
+  var overlay = document.getElementById("supportWindowOverlay");
+  var iframe = document.getElementById("supportWindowFrame");
+  
+  iframe.src = "/iframe-sites/bloxcraft-ubg-support"; 
+  
+  overlay.style.display = "flex";
+}
+
+function supportWindow_close() {
+  var overlay = document.getElementById("supportWindowOverlay");
+  var iframe = document.getElementById("supportWindowFrame");
+  
+  iframe.src = "";
+  overlay.style.display = "none";
+}
+</script>
+
 </body>
 </html>
+
 
 
 
