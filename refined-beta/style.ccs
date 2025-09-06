@@ -8,11 +8,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
-  padding: 2rem;
-  box-sizing: border-box;
   text-align: center;
+  padding: 2rem;
 }
 
 @keyframes gradientAnimation {
@@ -34,25 +31,20 @@ body {
 }
 
 button {
-  padding: 12px 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: 700;
   border-radius: 12px;
+  border: none;
   cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
+  transition: transform 0.2s ease, background 0.3s ease;
+  background-color: #00008B;
+  color: white;
 }
 
 button:hover {
   transform: scale(1.05);
-}
-
-.menu-btn {
-  padding: 12px;
-  font-size: 1.5rem;
-  border-radius: 12px;
-  font-weight: bold;
-  transition: transform 0.2s, background 0.2s;
+  background-color: #111184;
 }
 
 #gameContainer {
@@ -60,18 +52,13 @@ button:hover {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  margin-top: 2rem;
 }
 
 #gameCanvas {
   background: black;
   border: 2px solid white;
   border-radius: 12px;
-}
-
-#gameUI {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .game-controls {
