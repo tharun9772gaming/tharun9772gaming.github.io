@@ -29,6 +29,83 @@ limitations under the License.
   <meta property="og:image" content="/homepage_banner.png">
   <meta property="og:description" content="The Unblocked Games Site You Can Play Everyday! It Also has Some Custom Games.">
   <meta property="og:url" content="/">
+    <style>
+        body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #00008B, #5555FF, #008B8B);
+  background-size: 400% 400%;
+  animation: gradientAnimation 25s ease infinite;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.menu-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.game-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+button {
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+  background-color: #00008B;
+  color: white;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background-color: #111184;
+}
+
+#gameContainer {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2rem;
+}
+
+#gameCanvas {
+  background: black;
+  border: 2px solid white;
+  border-radius: 12px;
+}
+
+.game-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+    </style>
 </head>
 <body>
   <div id="menu" class="menu-grid">
