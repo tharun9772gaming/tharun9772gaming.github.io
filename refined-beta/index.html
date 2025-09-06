@@ -16,114 +16,211 @@ limitations under the License.
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bloxcraft UBG Arcade</title>
-<link rel="stylesheet" href="style.css">
-<link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
-    <style>
-        body {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 20px;
-  background: linear-gradient(135deg, #5555FF, #00008B);
-  color: white;
-  text-align: center;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bloxcraft UBG</title>
+    <meta name="description" content="The Unblocked Games Site For You To Play! This Page Is The Fetured Games.">
+<meta property="og:title" content="Bloxcraft UBG - Fetured Games">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Bloxcraft UBG - Fetured Games">
+<meta name="theme-color" content="#5555FF"> 
+<meta property="og:image" content="/homepage_banner.png" />
+<meta property="og:description" content="The Unblocked Games Site You Can Play Everyday! This Is The Fetured Games Tab!">
+<meta property="og:url" content="/">
+  	<link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap');
 
-.menu-grid {
-  display: grid;
-  gap: 15px;
-  justify-items: center;
-}
+    :root {
+      --accent: #4f8cff;
+      --glass-bg: rgba(255, 255, 255, 0.15);
+      --glass-border: rgba(255, 255, 255, 0.3);
+      --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      --radius: 1.5rem;
+    }
 
-.game-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  max-width: 800px;
-  margin: 0 auto;
-}
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', Arial, sans-serif;
+      background: linear-gradient(120deg, #5eead4 0%, #4f8cff 100%);
+      min-height: 100vh;
+    }
 
-.game-buttons button {
-  padding: 12px 24px;
-  font-size: 18px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--glass-bg);
+      border-bottom: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 0 1rem 0;
+      margin-bottom: 2rem;
+    }
 
-.game-buttons button:hover {
-  transform: scale(1.05);
-}
+    header h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.5rem;
+      color: #fff;
+      margin: 0 0 0.5rem 0;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 20px #0009;
+    }
 
-#gameContainer {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
+    header nav {
+      display: flex;
+      gap: 2rem;
+    }
 
-#gameCanvas {
-  border: 2px solid white;
-  background-color: black;
-}
+    header nav a {
+      color: #e0e7ef;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+    header nav a:hover {
+      color: var(--accent);
+    }
 
-.game-ui {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 10px;
-}
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem 1rem;
+    }
 
-.game-controls {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
+    main h2 {
+      color: #fff;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
 
-footer {
-  margin-top: 20px;
-  font-size: 14px;
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .game-card {
+      background: var(--glass-bg);
+      border: 2px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(6px);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .game-card:hover {
+      transform: translateY(-8px) scale(1.04);
+      box-shadow: 0 12px 32px 0 rgba(31, 38, 135, 0.28);
+      border-color: var(--accent);
+    }
+
+    .game-card img {
+      width: 72px;
+      height: 72px;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 2px 8px #0006);
+    }
+
+    .game-card h3 {
+      color: #fff;
+      margin: 0 0 1rem 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+    }
+
+    .game-card button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 0.65rem 1.8rem;
+      font-size: 1.1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 3px 12px 0 #4f8cff55;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .game-card button:hover {
+      background: #2563eb;
+      transform: scale(1.07);
+    }
+
+    footer {
+      text-align: center;
+      color: #e0e7ef;
+      font-size: 1rem;
+      padding: 1.5rem 0 0.5rem 0;
+      background: var(--glass-bg);
+      border-top: 1px solid var(--glass-border);
+      backdrop-filter: blur(8px);
+      margin-top: 2rem;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+  </style>
+<style>
+.play-btn {
+  background: #4f8cff;
   color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.65rem 1.8rem;
+  font-size: 1.1rem;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 12px 0 #4f8cff55;
+  transition: background 0.2s, transform 0.15s;
 }
-
-    </style>
+.play-btn:hover {
+  background: #2563eb;
+  transform: scale(1.07);
+}
+</style>
 </head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0KXN0103E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-W0KXN0103E');
+</script>
 <body>
-<div id="menu" class="menu-grid">
-  <h1>Bloxcraft Arcade</h1>
-  <p>Select a Game:</p>
-  <div class="game-buttons">
-    <button onclick="startGame('clicker')">🍏 Better Clicker</button>
-    <button onclick="startGame('maze')">🌀 Maze Runner</button>
-    <button onclick="startGame('tictactoe')">❌⭕ Tic Tac Toe</button>
-    <button onclick="startGame('snake')">🐍 Snake</button>
-    <button onclick="startGame('pong')">🏓 Paddle Duel</button>
-    <button onclick="startGame('brick')">🧱 Brick Breaker</button>
-    <button onclick="startGame('alien')">👽 Alien Shooter</button>
-    <button onclick="startGame('memory')">🧩 Memory Match</button>
-    <button onclick="startGame('coin')">🪙 Coin Flip</button>
-    <button onclick="startGame('runner')">⚡ Sky Runner</button>
-    <button onclick="startGame('roller')">🎲 Random Roller</button>
-  </div>
-</div>
-
-<div id="gameContainer">
-  <canvas id="gameCanvas" width="600" height="400"></canvas>
-  <div id="gameUI" class="game-ui"></div>
-  <div class="game-controls">
-    <button onclick="restartGame()">Restart</button>
-    <button onclick="backToMenu()">Back to Menu</button>
-  </div>
-</div>
-
-<footer>Copyright 2025 Bloxcraft Studios</footer>
-
-<script src="games.js"></script>
+  <header>
+    <h1>Bloxcraft UBG - Refined Beta</h1>
+    <h2>- Games</h2>
+    <p>NOTE: This Probbaly Will Not Be Updated Much. There Might Be A Lot Of Bugs!</p>
+    <nav>
+      <a href="/">Home</a>
+      <a href="https://discord.gg/a65hcbpfct">Discord Server</a>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms">Terms Of Service (TOS)</a>
+    </nav>
+  </header>
+  <main>
+    <h2>Games</h2>
+    <div class="game-grid">
+      <div class="game-card">
+        <img src="/chocolate_emoji.png" alt="Game 1">
+        <h3>Chocolate Clicker</h3>
+        <a class="play-btn" href="/refined-beta/chocolate-clicker">Play</a>
+      </div>
+      </div>
+  </main>
+  <footer>
+    <p>Copyright 2025 Bloxcraft Studios</p>
+  </footer>
 </body>
 </html>
-
