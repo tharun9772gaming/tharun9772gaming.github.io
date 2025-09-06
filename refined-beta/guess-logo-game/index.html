@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Guess The Logo - Ultimate Edition</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    }
+    #logo-container {
+      width: 220px;
+      height: 220px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    #logo-container img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 20px auto;
+      width: 320px;
+    }
+    .options button {
+      padding: 12px;
+      font-size: 1em;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: #00c6ff;
+      color: #fff;
+      transition: 0.3s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .options button:hover {
+      background: #0072ff;
+    }
+    #feedback {
+      margin-top: 15px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    #score {
+      margin-top: 10px;
+      font-size: 1.1em;
+    }
+    #restart {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: #ff9800;
+      color: #fff;
+      transition: 0.3s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    #restart:hover {
+      background: #e68900;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Guess The Logo</h1>
+  <div id="logo-container">
+    <img id="logo" src="" alt="Logo">
+  </div>
+  <div class="options" id="options"></div>
+  <div id="feedback"></div>
+  <div id="score"></div>
+  <button id="restart" onclick="restartGame()">Restart</button>
+
+  <script>
+    const logos = [
+      { src: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg", answer: "Apple" },
+      { src: "https://upload.wikimedia.org/wikipedia/en/9/98/Discord_logo.svg", answer: "Discord" },
+      { src: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", answer: "ChatGPT" },
+      { src: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", answer: "Google" },
+      { src: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg", answer: "YouTube" },
+      { src: "https://upload.wikimedia.org/wikipedia/en/b/b6/Minecraft_2024_cover_art.png", answer: "Minecraft" },
+      { src: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Roblox_Logo_2022.svg", answer: "Roblox" },
+      { src: "https://upload.wikimedia.org/wikipedia/commons/0/0e/FortniteLogo.svg", answer: "Fortnite" },
+      { src: "/bloxcraft.png", answer: "Bloxcraft Studios" }
+    ];
+
+    let currentLogo = 0;
+    let score = 0;
+
+    function loadLogo() {
+      const logoImg = document.getElementById("logo");
+      logoImg.src = logos[currentLogo].src;
+
+      // generate multiple choice
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+
+      let choices = [logos[currentLogo].answer];
+      while (choices.length < 4) {
+        let rand = logos[Math.floor(Math.random() * logos.length)].answer;
+        if (!choices.includes(rand)) choices.push(rand);
+      }
+
+      // shuffle
+      choices = choices.sort(() => Math.random() - 0.5);
+
+      choices.forEach(choice => {
+        const btn = document.createElement("button");
+        btn.textContent = choice;
+        btn.onclick = () => checkGuess(choice);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById("feedback").innerText = "";
+      document.getElementById("score").innerText = `Score: ${score} / ${logos.length}`;
+    }
+
+    function checkGuess(choice) {
+      if (choice.toLowerCase() === logos[currentLogo].answer.toLowerCase()) {
+        score++;
+        document.getElementById("feedback").innerText = "✅ Correct!";
+      } else {
+        document.getElementById("feedback").innerText = `❌ Wrong! It was ${logos[currentLogo].answer}`;
+      }
+
+      currentLogo++;
+      if (currentLogo < logos.length) {
+        setTimeout(loadLogo, 1500);
+      } else {
+        setTimeout(() => {
+          document.getElementById("feedback").innerText += " 🎉 Game Over!";
+          document.getElementById("score").innerText = `Final Score: ${score} / ${logos.length}`;
+        }, 1500);
+      }
+    }
+
+    function restartGame() {
+      currentLogo = 0;
+      score = 0;
+      loadLogo();
+    }
+
+    loadLogo();
+  </script>
+</body>
+</html>
