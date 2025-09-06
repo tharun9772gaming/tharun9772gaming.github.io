@@ -16,67 +16,47 @@ limitations under the License.
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bloxcraft UBG - Refined Beta</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
-  <meta name="description" content="The Unblocked Games Site For You To Play!">
-  <meta property="og:title" content="Bloxcraft UBG">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Bloxcraft UBG">
-  <meta name="theme-color" content="#5555FF">
-  <meta property="og:image" content="/homepage_banner.png">
-  <meta property="og:description" content="The Unblocked Games Site You Can Play Everyday! It Also has Some Custom Games.">
-  <meta property="og:url" content="/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloxcraft UBG Arcade</title>
+<link rel="stylesheet" href="style.css">
+<link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
     <style>
         body {
+  font-family: 'Arial', sans-serif;
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #00008B, #5555FF, #008B8B);
-  background-size: 400% 400%;
-  animation: gradientAnimation 25s ease infinite;
+  padding: 20px;
+  background: linear-gradient(135deg, #5555FF, #00008B);
   color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
-  padding: 2rem;
-}
-
-@keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 .menu-grid {
   display: grid;
-  gap: 1rem;
+  gap: 15px;
+  justify-items: center;
 }
 
 .game-buttons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
-  margin-top: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-button {
-  padding: 14px 28px;
+.game-buttons button {
+  padding: 12px 24px;
   font-size: 18px;
-  font-weight: 700;
-  border-radius: 12px;
   border: none;
+  border-radius: 6px;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.3s ease;
-  background-color: #00008B;
-  color: white;
+  transition: transform 0.2s;
 }
 
-button:hover {
+.game-buttons button:hover {
   transform: scale(1.05);
-  background-color: #111184;
 }
 
 #gameContainer {
@@ -84,13 +64,19 @@ button:hover {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin-top: 2rem;
 }
 
 #gameCanvas {
-  background: black;
   border: 2px solid white;
-  border-radius: 12px;
+  background-color: black;
+}
+
+.game-ui {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
 }
 
 .game-controls {
@@ -100,51 +86,44 @@ button:hover {
 }
 
 footer {
-  margin-top: auto;
-  padding-top: 1rem;
-  font-size: 0.9rem;
-  opacity: 0.8;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #fff;
 }
+
     </style>
 </head>
 <body>
-  <div id="menu" class="menu-grid">
-    <h1>Bloxcraft UBG</h1>
-    <p>NOTE: This May Have Bugs Cause It Is Refined Beta!</p>
-    <h2>Select a Game:</h2>
-    <div class="game-buttons">
-      <button onclick="startGame('clicker')">🍏 Better Clicker</button>
-      <button onclick="startGame('maze')">🌀 Maze Runner</button>
-      <button onclick="startGame('tictactoe')">❌⭕ Tic Tac Toe</button>
-      <button onclick="startGame('snake')">🐍 Snake</button>
-      <button onclick="startGame('pong')">🏓 Paddle Duel</button>
-      <button onclick="startGame('brick')">🧱 Brick Breaker</button>
-      <button onclick="startGame('alien')">👽 Alien Shooter</button>
-      <button onclick="startGame('memory')">🧩 Memory Match</button>
-      <button onclick="startGame('coin')">🪙 Coin Flip</button>
-      <button onclick="startGame('runner')">⚡ Sky Runner</button>
-      <button onclick="startGame('roller')">🎲 Random Roller</button>
-    </div>
+<div id="menu" class="menu-grid">
+  <h1>Bloxcraft Arcade</h1>
+  <p>Select a Game:</p>
+  <div class="game-buttons">
+    <button onclick="startGame('clicker')">🍏 Better Clicker</button>
+    <button onclick="startGame('maze')">🌀 Maze Runner</button>
+    <button onclick="startGame('tictactoe')">❌⭕ Tic Tac Toe</button>
+    <button onclick="startGame('snake')">🐍 Snake</button>
+    <button onclick="startGame('pong')">🏓 Paddle Duel</button>
+    <button onclick="startGame('brick')">🧱 Brick Breaker</button>
+    <button onclick="startGame('alien')">👽 Alien Shooter</button>
+    <button onclick="startGame('memory')">🧩 Memory Match</button>
+    <button onclick="startGame('coin')">🪙 Coin Flip</button>
+    <button onclick="startGame('runner')">⚡ Sky Runner</button>
+    <button onclick="startGame('roller')">🎲 Random Roller</button>
   </div>
+</div>
 
-  <div id="gameContainer">
-    <canvas id="gameCanvas" width="600" height="400"></canvas>
-    <div id="gameUI"></div>
-    <div class="game-controls">
-      <button onclick="restartGame()">Restart</button>
-      <button onclick="backToMenu()">Back to Menu</button>
-    </div>
+<div id="gameContainer">
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
+  <div id="gameUI" class="game-ui"></div>
+  <div class="game-controls">
+    <button onclick="restartGame()">Restart</button>
+    <button onclick="backToMenu()">Back to Menu</button>
   </div>
+</div>
 
-  <footer>Copyright 2025 Bloxcraft Studios</footer>
+<footer>Copyright 2025 Bloxcraft Studios</footer>
 
-  <script src="games.js"></script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0KXN0103E"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-W0KXN0103E');
-  </script>
+<script src="games.js"></script>
 </body>
 </html>
+
