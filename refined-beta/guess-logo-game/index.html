@@ -1,8 +1,42 @@
+<!--
+Copyright 2025 Bloxcraft Studios
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Guess The Logo - Ultimate Edition</title>
+  
+  <meta name="description" content="The Unblocked Games Site For You To Play!">
+  <meta property="og:title" content="Bloxcraft UBG">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Bloxcraft UBG">
+  <meta name="theme-color" content="#5555FF"> 
+  <meta property="og:image" content="/homepage_banner.png" />
+  <meta property="og:description" content="The Unblocked Games Site You Can Play Everyday! It Also has Some Custom Games.">
+  <meta property="og:url" content="/">
+  <link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0KXN0103E"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W0KXN0103E');
+  </script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -19,8 +53,24 @@
     }
     h1 {
       font-size: 2.5em;
-      margin-bottom: 20px;
+      margin: 20px 0 10px 0;
       text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    }
+    #progress-container {
+      width: 80%;
+      max-width: 400px;
+      height: 20px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    #progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #00ff9f;
+      transition: width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     }
     #logo-container {
       width: 220px;
@@ -88,6 +138,9 @@
 </head>
 <body>
   <h1>🎯 Guess The Logo</h1>
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+  </div>
   <div id="logo-container">
     <img id="logo" src="" alt="Logo">
   </div>
@@ -106,28 +159,41 @@
       { src: "https://upload.wikimedia.org/wikipedia/en/b/b6/Minecraft_2024_cover_art.png", answer: "Minecraft" },
       { src: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Roblox_Logo_2022.svg", answer: "Roblox" },
       { src: "https://upload.wikimedia.org/wikipedia/commons/0/0e/FortniteLogo.svg", answer: "Fortnite" },
-      { src: "/bloxcraft.png", answer: "Bloxcraft Studios" }
+      { src: "/bloxcraft.png", answer: "Bloxcraft Studios" },
+      { src: "https://upload.wikimedia.org/wikipedia/commons/3/36/McDonald%27s_Golden_Arches.svg", answer: "McDonald's" },
+      { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/800px-GitHub_Invertocat_Logo.svg.png", answer: "GitHub" },
+      { src: "https://upload.wikimedia.org/wikipedia/commons/c/c8/GitLab_logo_%282%29.svg", answer: "GitLab" }
     ];
 
     let currentLogo = 0;
     let score = 0;
+    let shuffledLogos = [];
+
+    function shuffleArray(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function updateProgress(correct) {
+      const progressPercent = ((currentLogo + 1) / shuffledLogos.length) * 100;
+      const bar = document.getElementById("progress-bar");
+      bar.style.width = progressPercent + "%";
+      bar.style.background = correct ? "#00ff9f" : "#ff4d4d";
+      bar.style.boxShadow = correct ? "0 0 15px #00ff9f" : "0 0 15px #ff4d4d";
+    }
 
     function loadLogo() {
       const logoImg = document.getElementById("logo");
-      logoImg.src = logos[currentLogo].src;
+      logoImg.src = shuffledLogos[currentLogo].src;
 
-      // generate multiple choice
       const optionsDiv = document.getElementById("options");
       optionsDiv.innerHTML = "";
 
-      let choices = [logos[currentLogo].answer];
-      while (choices.length < 4) {
-        let rand = logos[Math.floor(Math.random() * logos.length)].answer;
-        if (!choices.includes(rand)) choices.push(rand);
-      }
+      let choices = [shuffledLogos[currentLogo].answer];
+      let wrongOptions = shuffleArray([...logos.filter(l => l.answer !== shuffledLogos[currentLogo].answer)])
+        .slice(0, 3)
+        .map(l => l.answer);
 
-      // shuffle
-      choices = choices.sort(() => Math.random() - 0.5);
+      choices = shuffleArray([...choices, ...wrongOptions]);
 
       choices.forEach(choice => {
         const btn = document.createElement("button");
@@ -137,24 +203,31 @@
       });
 
       document.getElementById("feedback").innerText = "";
-      document.getElementById("score").innerText = `Score: ${score} / ${logos.length}`;
+      document.getElementById("score").innerText = `Score: ${score} / ${shuffledLogos.length}`;
+      updateProgress(true);
     }
 
     function checkGuess(choice) {
-      if (choice.toLowerCase() === logos[currentLogo].answer.toLowerCase()) {
+      const correct = choice.toLowerCase() === shuffledLogos[currentLogo].answer.toLowerCase();
+
+      if (correct) {
         score++;
         document.getElementById("feedback").innerText = "✅ Correct!";
       } else {
-        document.getElementById("feedback").innerText = `❌ Wrong! It was ${logos[currentLogo].answer}`;
+        document.getElementById("feedback").innerText = `❌ Wrong! It was ${shuffledLogos[currentLogo].answer}`;
       }
 
+      updateProgress(correct);
+
       currentLogo++;
-      if (currentLogo < logos.length) {
+      if (currentLogo < shuffledLogos.length) {
         setTimeout(loadLogo, 1500);
       } else {
         setTimeout(() => {
           document.getElementById("feedback").innerText += " 🎉 Game Over!";
-          document.getElementById("score").innerText = `Final Score: ${score} / ${logos.length}`;
+          document.getElementById("score").innerText = `Final Score: ${score} / ${shuffledLogos.length}`;
+          document.getElementById("progress-bar").style.width = "100%";
+          document.getElementById("progress-bar").style.background = "#00ff9f";
         }, 1500);
       }
     }
@@ -162,9 +235,14 @@
     function restartGame() {
       currentLogo = 0;
       score = 0;
+      shuffledLogos = shuffleArray([...logos]);
+      const bar = document.getElementById("progress-bar");
+      bar.style.width = "0%";
+      bar.style.background = "#00ff9f";
       loadLogo();
     }
 
+    shuffledLogos = shuffleArray([...logos]);
     loadLogo();
   </script>
 </body>
