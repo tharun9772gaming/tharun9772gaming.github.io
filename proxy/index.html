@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Bloxcraft UBG - Proxy</title>
+<title>Bloxcraft UBG - Proxy Browser</title>
 <meta name="description" content="The Unblocked Games Site For You To Play!">
 <meta property="og:title" content="Bloxcraft UBG">
 <meta property="og:type" content="article">
@@ -14,10 +14,11 @@
 <meta property="og:description" content="The Unblocked Games Site You Can Play Everyday! It Also has Some Custom Games.">
 <meta property="og:url" content="/">
 <link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
+
 <style>
 body {
   font-family: system-ui,Segoe UI,Arial;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 32px auto;
   padding: 0 16px;
   background-image: url('/homepage_background.png');
@@ -62,12 +63,12 @@ footer {
 </style>
 </head>
 <body>
-<h1>Bloxcraft UBG - Proxy</h1>
+<h1>Bloxcraft UBG - Proxy Browser</h1>
 <p>Enter a URL and click "Visit" to browse the site:</p>
 <input id="url" placeholder="https://example.com" />
 <button id="go" class="cool-blue-button">Visit</button>
 
-<iframe id="viewer" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
+<iframe id="viewer"></iframe>
 
 <script>
 const WORKER_URL = 'https://school-static.sweet-dawn-d933.workers.dev/';
@@ -85,4 +86,3 @@ document.getElementById('go').addEventListener('click', () => {
 </footer>
 </body>
 </html>
-
