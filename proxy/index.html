@@ -139,7 +139,7 @@ async function loadUrl(url, pushHistory = true) {
   if (!url) return;
   const worker = await tryWorkers(url);
   if (!worker) {
-    alert('All proxy workers are blocked or unavailable.');
+    alert('ERROR: All proxy stations are blocked by your blocker, page does not exist, or somthing else. Report these bugs to the Discord Server, so we can fix it!');
     return;
   }
   iframe.src = `${worker}?url=${encodeURIComponent(url)}`;
