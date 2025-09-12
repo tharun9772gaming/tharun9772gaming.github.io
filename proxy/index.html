@@ -5,16 +5,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Bloxcraft UBG - Proxy Browser</title>
-<meta name="description" content="The Unblocked Games Site For You To Play!">
-<meta property="og:title" content="Bloxcraft UBG">
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="Bloxcraft UBG">
-<meta name="theme-color" content="#5555FF"> 
-<meta property="og:image" content="/homepage_banner.png" />
-<meta property="og:description" content="The Unblocked Games Site You Can Play Everyday! It Also has Some Custom Games.">
-<meta property="og:url" content="/">
 <link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
-
 <style>
 body {
   font-family: system-ui,Segoe UI,Arial;
@@ -28,7 +19,7 @@ body {
   background-attachment: fixed;
 }
 input#url {
-  width: calc(70% - 8px);
+  width: calc(60% - 8px);
   padding: 12px 20px;
   font-size: 16px;
   color: #333;
@@ -36,7 +27,8 @@ input#url {
   border-radius: 8px;
   margin-right: 8px;
 }
-.cool-blue-button {
+
+#go {
   padding: 12px 20px;
   font-size: 16px;
   color: #fff;
@@ -44,10 +36,54 @@ input#url {
   border-radius: 5px;
   cursor: pointer;
   background: linear-gradient(to bottom,#0077c2,#005f9c);
+  margin-right: 5px;
 }
-.cool-blue-button:hover {
+#go:hover {
   background: linear-gradient(to bottom,#0088e0,#006eb5);
 }
+
+  
+#back {
+  padding: 12px 20px;
+  font-size: 16px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: linear-gradient(to bottom,#5555ff,#3333cc);
+  margin-right: 5px;
+}
+#back:hover {
+  background: linear-gradient(to bottom,#6666ff,#4444cc);
+}
+
+#forward {
+  padding: 12px 20px;
+  font-size: 16px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: linear-gradient(to bottom,#00cc66,#009944);
+  margin-right: 5px;
+}
+#forward:hover {
+  background: linear-gradient(to bottom,#33dd77,#00aa55);
+}
+
+#refresh {
+  padding: 12px 20px;
+  font-size: 16px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: linear-gradient(to bottom,#ff9933,#cc6600);
+}
+#refresh:hover {
+  background: linear-gradient(to bottom,#ffaa55,#dd7700);
+}
+
 iframe#viewer {
   width: 100%;
   height: 80vh;
@@ -64,20 +100,79 @@ footer {
 </head>
 <body>
 <h1>Bloxcraft UBG - Proxy Browser</h1>
-<p>Enter a URL and click "Visit" to browse the site:</p>
+<h2>Enter a URL and click "Visit" to browse the site:</h2>
+<p>Bugs? Report Them To The Discord Server! </p>
+
 <input id="url" placeholder="https://example.com" />
-<button id="go" class="cool-blue-button">Visit</button>
+<button id="go">Visit</button>
+<button id="back">Back</button>
+<button id="forward">Forward</button>
+<button id="refresh">Refresh</button>
 
 <iframe id="viewer"></iframe>
 
 <script>
-const WORKER_URL = 'https://school-static.sweet-dawn-d933.workers.dev/';
-const iframe = document.getElementById('viewer');
+const WORKER_URLS = [
+  'https://school-static.sweet-dawn-d933.workers.dev/',
+  'https://school-static.sweet-dawn-d933.workers.dev/',
+  'https://school-static.sweet-dawn-d933.workers.dev/'
+];
 
-document.getElementById('go').addEventListener('click', () => {
+const iframe = document.getElementById('viewer');
+const historyStack = [];
+const forwardStack = [];
+
+async function tryWorkers(url) {
+  for (const worker of WORKER_URLS) {
+    try {
+      const test = await fetch(`${worker}?url=${encodeURIComponent(url)}`, { method: 'HEAD' });
+      if (test.ok) return worker;
+    } catch(e) {
+      console.log(`Worker failed: ${worker}`, e);
+    }
+  }
+  return null;
+}
+
+async function loadUrl(url, pushHistory = true) {
+  if (!url) return;
+  const worker = await tryWorkers(url);
+  if (!worker) {
+    alert('All proxy workers are blocked or unavailable.');
+    return;
+  }
+  iframe.src = `${worker}?url=${encodeURIComponent(url)}`;
+  if (pushHistory) {
+    historyStack.push({ url, worker });
+    forwardStack.length = 0;
+  }
+}
+
+document.getElementById('go').addEventListener('click', async () => {
   const target = document.getElementById('url').value.trim();
   if (!target) { alert('Enter a URL'); return; }
-  iframe.src = `${WORKER_URL}?url=${encodeURIComponent(target)}`;
+  await loadUrl(target);
+});
+
+document.getElementById('back').addEventListener('click', () => {
+  if (historyStack.length <= 1) return;
+  const current = historyStack.pop();
+  forwardStack.push(current);
+  const previous = historyStack[historyStack.length - 1];
+  iframe.src = `${previous.worker}?url=${encodeURIComponent(previous.url)}`;
+});
+
+document.getElementById('forward').addEventListener('click', () => {
+  if (!forwardStack.length) return;
+  const next = forwardStack.pop();
+  iframe.src = `${next.worker}?url=${encodeURIComponent(next.url)}`;
+  historyStack.push(next);
+});
+
+document.getElementById('refresh').addEventListener('click', () => {
+  if (!historyStack.length) return;
+  const current = historyStack[historyStack.length - 1];
+  iframe.src = `${current.worker}?url=${encodeURIComponent(current.url)}`;
 });
 </script>
 
@@ -86,3 +181,4 @@ document.getElementById('go').addEventListener('click', () => {
 </footer>
 </body>
 </html>
+
