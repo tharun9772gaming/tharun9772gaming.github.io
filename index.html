@@ -231,6 +231,9 @@ transform: scale(0.9);
   <span style="font-weight: 700; margin-left: 4px;">Vote on UBGHub</span>
 </a>
      <a href="/updates" class="blue-rectangle-button">Featured Games</a>
+  <a href="/proxy" class="blue-rectangle-button">Proxy</a>
+   <p>&nbsp;</p>
+  <button class="rainbow-rectangle-button" onclick="openProxyIframe()">Open Proxy In A Window</button>
     
       <p>&nbsp;</p>
     <button class="orange-black-button">FoxProxy</button>
@@ -296,8 +299,34 @@ function supportWindow_close() {
 }
 </script>
 
+<div id="proxyOverlay" class="iframe-container">
+  <div class="iframe-wrapper">
+    <button class="close-button" onclick="closeProxyIframe()">X</button>
+    <iframe id="proxyIframe" src=""></iframe>
+  </div>
+</div>
+
+<script>
+  function openProxyIframe() {
+    var overlay = document.getElementById("proxyOverlay");
+    var iframe = document.getElementById("proxyIframe");
+    
+    iframe.src = "/proxy-with-no-nav-bar"; 
+    overlay.style.display = "flex";
+  }
+
+  function closeProxyIframe() {
+    var overlay = document.getElementById("proxyOverlay");
+    var iframe = document.getElementById("proxyIframe");
+    
+    iframe.src = "";
+    overlay.style.display = "none";
+  }
+</script>
+
 </body>
 </html>
+
 
 
 
