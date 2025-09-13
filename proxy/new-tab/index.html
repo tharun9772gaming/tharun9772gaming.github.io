@@ -84,7 +84,7 @@ async function tryWorkers(url) {
 
 async function openApp(url) {
   const worker = await tryWorkers(url);
-  if(!worker) { alert('ERROR: All proxy stations are blocked.'); return; }
+  if(!worker) { alert('ERROR: All proxy stations are blocked ot there is an error. Check the URL or ask the Bloxcraft UBG Developers for help.'); return; }
   window.location.href = `${worker}?url=${encodeURIComponent(url)}`;
 }
 
