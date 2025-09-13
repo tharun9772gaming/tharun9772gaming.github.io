@@ -12,7 +12,7 @@ Many Games You Can Play!
 **If You Want More Links, Checkout This Google Doc! https://docs.google.com/document/d/1UC3Eo6UoPCVlq1SiOFEj0HahQGPqqbadXSho5NKHbQU/edit?tab=t.c1jhsom4wbqs **
 **The Default Background Colour For Bloxcraft UBG Is `#5555FF` **
 
-`Copyright 2025 Bloxcraft Studios`
+`Copyright (c) 2025 Bloxcraft Studios`
 
 ```
 Bloxcraft UBG
