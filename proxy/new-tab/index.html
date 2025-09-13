@@ -20,7 +20,7 @@ body {
   align-items: center;
   padding-top: 50px;
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
 }
 h1 { font-size: 48px; margin-bottom: 40px; }
 .app-row {
@@ -49,6 +49,22 @@ h1 { font-size: 48px; margin-bottom: 40px; }
 <div class="app-row" id="appRow"></div>
 
 <script>
+const WORKER_URLS = [
+  'https://school-static.sweet-dawn-d933.workers.dev/',
+  'https://school-static.bs-bloxcraft.workers.dev/',
+  'https://school-static.bs-minecraft-pe.workers.dev/'
+];
+
+async function getWorker(url) {
+  for (const worker of WORKER_URLS) {
+    try {
+      const res = await fetch(`${worker}?url=${encodeURIComponent(url)}`, { method: 'HEAD' });
+      if (res.ok) return worker;
+    } catch {}
+  }
+  return null;
+}
+
 const apps = [
   { name: 'YouTube', url: 'https://www.youtube.com' },
   { name: 'Google', url: 'https://www.google.com' },
@@ -61,12 +77,12 @@ apps.forEach(app => {
   const btn = document.createElement('div');
   btn.className = 'app-btn';
   btn.textContent = app.name;
-  btn.addEventListener('click', () => {
-    if(window.opener && window.opener.loadUrl) {
-      window.opener.loadUrl(app.url);
+  btn.addEventListener('click', async () => {
+    const worker = await getWorker(app.url);
+    if(worker) {
+      window.location.href = `${worker}?url=${encodeURIComponent(app.url)}`;
     } else {
-      const worker = 'https://school-static.sweet-dawn-d933.workers.dev/';
-      window.open(`${worker}?url=${encodeURIComponent(app.url)}`, '_blank');
+      alert('All proxy stations are blocked!');
     }
   });
   appRow.appendChild(btn);
@@ -74,3 +90,4 @@ apps.forEach(app => {
 </script>
 </body>
 </html>
+
