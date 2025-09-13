@@ -59,14 +59,14 @@ const WORKER_URLS = [
 ];
 
 const apps = [
-  { name: 'YouTube', url: 'https://www.youtube.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg' },
+  { name: 'YouTube', url: 'https://www.youtube.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg' },
   { name: 'Google', url: 'https://www.google.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
-  { name: 'Discord', url: 'https://discord.com', icon: 'https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/67d00cf7266d2c75571aebde_Example.svg' }
+  { name: 'Discord', url: 'https://discord.com', icon: 'https://upload.wikimedia.org/wikipedia/fr/4/4f/Discord_Logo_sans_texte.svg' }
 ];
 
 const appRow = document.getElementById('appRow');
 
-// Try workers and return a working one
+  
 async function tryWorkers(url) {
   for(const worker of WORKER_URLS) {
     try {
@@ -77,14 +77,12 @@ async function tryWorkers(url) {
   return null;
 }
 
-// Open app inside this New Tab via proxy
 async function openApp(url) {
   const worker = await tryWorkers(url);
   if(!worker) { alert('ERROR: All proxy stations are blocked.'); return; }
   window.location.href = `${worker}?url=${encodeURIComponent(url)}`;
 }
 
-// Generate app buttons
 apps.forEach(app => {
   const btn = document.createElement('div');
   btn.className = 'app-btn';
