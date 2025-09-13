@@ -69,13 +69,19 @@ h1 { font-size: 48px; margin-bottom: 40px; }
 <h1>Bloxcraft UBG New Tab</h1>
 
 <div id="search-bar">
-  <input id="search" placeholder="Type a URL here..." />
+  <input id="search" placeholder="Type a URL or search term..." />
   <button id="search-btn">Go ➤</button>
 </div>
 
 <div class="app-row" id="appRow"></div>
 
 <script>
+const WORKER_URLS = [
+  'https://school-static.sweet-dawn-d933.workers.dev/',
+  'https://school-static.bs-bloxcraft.workers.dev/',
+  'https://school-static.bs-minecraft-pe.workers.dev/'
+];
+
 const apps = [
   { name: 'YouTube', url: 'https://www.youtube.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg' },
   { name: 'Google', url: 'https://www.google.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
@@ -83,37 +89,55 @@ const apps = [
 ];
 
 const appRow = document.getElementById('appRow');
-
 apps.forEach(app => {
   const btn = document.createElement('div');
   btn.className = 'app-btn';
   btn.innerHTML = `<img src="${app.icon}" alt="${app.name}"><span>${app.name}</span>`;
   btn.addEventListener('click', () => {
-    if(window.opener && window.opener.loadUrl) {
-      window.opener.loadUrl(app.url);
-    } else {
-      window.open(app.url, '_blank');
-    }
+    openInProxy(app.url);
   });
   appRow.appendChild(btn);
 });
 
-const searchInput = document.getElementById('search');
-const searchBtn = document.getElementById('search-btn');
+// Format input: URL or Google search
+function formatUrl(input) {
+  if(!input) return '';
+  input = input.trim();
+  if(input.startsWith('bloxcraft://newtab')) return 'https://bloxcraft-ubg.pages.dev/proxy/new-tab/';
+  if(input.startsWith('http://') || input.startsWith('https://')) return input;
+  return 'https://www.google.com/search?q=' + encodeURIComponent(input);
+}
 
-function doSearch() {
-  const val = searchInput.value.trim();
-  if(val) {
-    if(window.opener && window.opener.loadUrl) {
-      window.opener.loadUrl(val);
-    } else {
-      window.open(val, '_blank');
-    }
+// Try workers
+async function tryWorkers(url) {
+  for(const worker of WORKER_URLS) {
+    try {
+      const test = await fetch(`${worker}?url=${encodeURIComponent(url)}`, { method:'HEAD' });
+      if(test.ok) return worker;
+    } catch(e) { console.log(`Worker failed: ${worker}`, e); }
+  }
+  return null;
+}
+
+// Open link in parent proxy iframe
+async function openInProxy(input) {
+  const url = formatUrl(input);
+  const worker = await tryWorkers(url);
+  if(!worker) { alert('ERROR: All proxy stations are blocked.'); return; }
+  if(window.opener && window.opener.iframe) {
+    window.opener.iframe.src = `${worker}?url=${encodeURIComponent(url)}`;
+  } else {
+    // fallback if page not opened from main proxy
+    window.open(`${worker}?url=${encodeURIComponent(url)}`, '_blank');
   }
 }
 
-searchBtn.addEventListener('click', doSearch);
-searchInput.addEventListener('keydown', e => { if(e.key==='Enter') doSearch(); });
+// Search bar
+const searchInput = document.getElementById('search');
+const searchBtn = document.getElementById('search-btn');
+searchBtn.addEventListener('click', () => openInProxy(searchInput.value));
+searchInput.addEventListener('keydown', e => { if(e.key==='Enter') openInProxy(searchInput.value); });
+
 </script>
 </body>
 </html>
