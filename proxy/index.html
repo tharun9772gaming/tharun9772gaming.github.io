@@ -23,9 +23,6 @@ body {
   background-size: cover;
   background-attachment: fixed;
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
-  color: #fff;
 }
 input#url {
   width: calc(60% - 8px);
@@ -41,7 +38,7 @@ button {
   font-size: 16px;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
   margin-right: 5px;
 }
@@ -57,7 +54,9 @@ button {
 #refresh { background: linear-gradient(to bottom,#ff9933,#cc6600); }
 #refresh:hover { background: linear-gradient(to bottom,#ffaa55,#dd7700); }
 
-#home { background: linear-gradient(to bottom,#5555ff,#3333cc); }
+#home { 
+  background: linear-gradient(to bottom,#5555ff,#3333cc);
+}
 #home:hover { background: linear-gradient(to bottom,#6666ff,#4444cc); }
 
 iframe#viewer {
@@ -71,6 +70,12 @@ footer {
   margin-top: 12px;
   font-size: 14px;
   color: #fff;
+}
+</style>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
 .navbar {
   background-color: #000;
@@ -99,7 +104,7 @@ footer {
   <a href="https://discord.gg/a65hcbpfct">Discord Server</a>
   <a href="https://docs.google.com/document/d/1UC3Eo6UoPCVlq1SiOFEj0HahQGPqqbadXSho5NKHbQU/edit?tab=t.0">Bloxcraft Unblocked Games List</a>
 </div>
-
+  
 <button id="home">⌂</button>
 <button id="back">⬅</button>
 <button id="forward">➡</button>
@@ -135,13 +140,13 @@ async function loadUrl(url, pushHistory = true) {
 
   let displayUrl = url; 
   if (!url.startsWith('http')) {
-    if (url.startsWith('bloxcraft://')) {
-      if (url === 'bloxcraft://newtab') {
+    if(url.startsWith('bloxcraft://')) {
+      if(url === 'bloxcraft://newtab') {
         url = 'https://bloxcraft-ubg.pages.dev/proxy/new-tab/';
         displayUrl = 'bloxcraft://newtab';
       }
     } else {
-      url = `https://www.bing.com/search?q=${encodeURIComponent(url)}`;
+      url = `https://duckduckgo.com/?q=${encodeURIComponent(url)}`;
       displayUrl = url;
     }
   }
@@ -150,22 +155,15 @@ async function loadUrl(url, pushHistory = true) {
   if (!worker) { alert('ERROR: All proxy stations are blocked or page does not exist.'); return; }
 
   iframe.src = `${worker}?url=${encodeURIComponent(url)}`;
-  if (pushHistory) {
-    historyStack.push({ url, worker, displayUrl });
-    forwardStack.length = 0;
-  }
+  if (pushHistory) { historyStack.push({ url, worker, displayUrl }); forwardStack.length = 0; }
   document.getElementById('url').value = displayUrl;
 }
 
-document.getElementById('go').addEventListener('click', async () => {
-  const value = document.getElementById('url').value.trim();
-  if (value) loadUrl(value);
-});
+document.getElementById('go').addEventListener('click', async () => loadUrl(document.getElementById('url').value.trim()));
 
 document.getElementById('back').addEventListener('click', () => {
   if (historyStack.length <= 1) return;
-  const current = historyStack.pop();
-  forwardStack.push(current);
+  const current = historyStack.pop(); forwardStack.push(current);
   const previous = historyStack[historyStack.length - 1];
   iframe.src = `${previous.worker}?url=${encodeURIComponent(previous.url)}`;
   document.getElementById('url').value = previous.displayUrl;
@@ -185,11 +183,9 @@ document.getElementById('refresh').addEventListener('click', () => {
   iframe.src = `${current.worker}?url=${encodeURIComponent(current.url)}`;
 });
 
-document.getElementById('home').addEventListener('click', () => {
-  loadUrl('bloxcraft://newtab');
-});
+document.getElementById('home').addEventListener('click', () => loadUrl('bloxcraft://newtab'));
 
-window.addEventListener('load', () => loadUrl('bloxcraft://newtab', true));
+window.addEventListener('load', () => loadUrl('bloxcraft://newtab', false));
 </script>
 
 <footer>
