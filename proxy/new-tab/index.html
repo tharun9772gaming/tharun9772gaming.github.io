@@ -42,7 +42,13 @@ h1 { font-size: 48px; margin-bottom: 40px; text-align: center; }
   transition: transform 0.2s, background 0.2s;
 }
 .app-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
-.app-btn img { width: 60px; height: 60px; margin-bottom: 10px; }
+.app-btn img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 10px;
+  object-fit: contain;
+  background: transparent;
+}
 .app-btn span { font-size: 14px; text-align: center; }
 </style>
 </head>
@@ -66,7 +72,6 @@ const apps = [
 
 const appRow = document.getElementById('appRow');
 
-  
 async function tryWorkers(url) {
   for(const worker of WORKER_URLS) {
     try {
@@ -93,3 +98,4 @@ apps.forEach(app => {
 </script>
 </body>
 </html>
+
