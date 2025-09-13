@@ -1,0 +1,119 @@
+<!-- Copyright (c) Bloxcraft Studios 2025 -->
+<!-- NEW TAB ONLY WORKS ON PROXY -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloxcraft UBG - Proxy - New Tab</title>
+<link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
+<style>
+body {
+  color: white;
+  background: linear-gradient(to bottom right,#1a1a1a,#3333cc);
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+  margin: 0;
+  height: 100vh;
+}
+h1 { font-size: 48px; margin-bottom: 40px; }
+#search-bar { display: flex; margin-bottom: 40px; }
+#search-bar input {
+  width: 400px;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px 0 0 8px;
+  border: none;
+  outline: none;
+}
+#search-bar button {
+  padding: 12px 20px;
+  font-size: 16px;
+  background: linear-gradient(to bottom,#0077c2,#005f9c);
+  border: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  color: white;
+}
+#search-bar button:hover { background: linear-gradient(to bottom,#0088e0,#006eb5); }
+.app-row {
+  display: flex;
+  gap: 25px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 10px;
+  max-width: 90%;
+}
+.app-row::-webkit-scrollbar { display: none; }
+.app-btn {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 15px;
+  width: 100px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+.app-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
+.app-btn img { width: 60px; height: 60px; margin-bottom: 10px; }
+.app-btn span { font-size: 14px; text-align: center; }
+</style>
+</head>
+<body>
+<h1>Bloxcraft UBG New Tab</h1>
+
+<div id="search-bar">
+  <input id="search" placeholder="Type a URL here..." />
+  <button id="search-btn">Go ➤</button>
+</div>
+
+<div class="app-row" id="appRow"></div>
+
+<script>
+const apps = [
+  { name: 'YouTube', url: 'https://www.youtube.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg' },
+  { name: 'Google', url: 'https://www.google.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
+  { name: 'Discord', url: 'https://discord.com', icon: 'https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/67d00cf7266d2c75571aebde_Example.svg' }
+];
+
+const appRow = document.getElementById('appRow');
+
+apps.forEach(app => {
+  const btn = document.createElement('div');
+  btn.className = 'app-btn';
+  btn.innerHTML = `<img src="${app.icon}" alt="${app.name}"><span>${app.name}</span>`;
+  btn.addEventListener('click', () => {
+    if(window.opener && window.opener.loadUrl) {
+      window.opener.loadUrl(app.url);
+    } else {
+      window.open(app.url, '_blank');
+    }
+  });
+  appRow.appendChild(btn);
+});
+
+const searchInput = document.getElementById('search');
+const searchBtn = document.getElementById('search-btn');
+
+function doSearch() {
+  const val = searchInput.value.trim();
+  if(val) {
+    if(window.opener && window.opener.loadUrl) {
+      window.opener.loadUrl(val);
+    } else {
+      window.open(val, '_blank');
+    }
+  }
+}
+
+searchBtn.addEventListener('click', doSearch);
+searchInput.addEventListener('keydown', e => { if(e.key==='Enter') doSearch(); });
+</script>
+</body>
+</html>
