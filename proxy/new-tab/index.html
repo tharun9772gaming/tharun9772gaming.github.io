@@ -15,12 +15,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 50px;
+  padding-top: 30px;
   margin: 0;
   height: 100vh;
 }
-h1 { font-size: 48px; margin-bottom: 40px; }
-#search-bar { display: flex; margin-bottom: 40px; }
+h1 { font-size: 48px; margin-bottom: 20px; text-align: center; }
+#search-bar { display: flex; margin-bottom: 20px; }
 #search-bar input {
   width: 400px;
   padding: 12px 20px;
@@ -39,10 +39,38 @@ h1 { font-size: 48px; margin-bottom: 40px; }
   color: white;
 }
 #search-bar button:hover { background: linear-gradient(to bottom,#0088e0,#006eb5); }
+
+.nav-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.nav-bar button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+}
+#home { background: linear-gradient(to bottom,#aa33ff,#8800cc); }
+#home:hover { background: linear-gradient(to bottom,#bb55ff,#9933dd); }
+#back { background: linear-gradient(to bottom,#5555ff,#3333cc); }
+#back:hover { background: linear-gradient(to bottom,#6666ff,#4444cc); }
+#forward { background: linear-gradient(to bottom,#00cc66,#009944); }
+#forward:hover { background: linear-gradient(to bottom,#33dd77,#00aa55); }
+#refresh { background: linear-gradient(to bottom,#ff9933,#cc6600); }
+#refresh:hover { background: linear-gradient(to bottom,#ffaa55,#dd7700); }
+
+iframe#viewer {
+  width: 90%;
+  height: 60vh;
+  border: 1px solid #ccc;
+  margin-top: 12px;
+}
 .app-row {
   display: flex;
-  gap: 25px;
-  flex-wrap: nowrap;
+  gap: 20px;
   overflow-x: auto;
   padding: 10px;
   max-width: 90%;
@@ -73,7 +101,15 @@ h1 { font-size: 48px; margin-bottom: 40px; }
   <button id="search-btn">Go ➤</button>
 </div>
 
+<div class="nav-bar">
+  <button id="home">⌂</button>
+  <button id="back">⬅</button>
+  <button id="forward">➡</button>
+  <button id="refresh">⟳</button>
+</div>
+
 <div class="app-row" id="appRow"></div>
+<iframe id="viewer"></iframe>
 
 <script>
 const WORKER_URLS = [
@@ -89,17 +125,21 @@ const apps = [
 ];
 
 const appRow = document.getElementById('appRow');
+const iframe = document.getElementById('viewer');
+const searchInput = document.getElementById('search');
+const historyStack = [];
+const forwardStack = [];
+
+// Add app buttons
 apps.forEach(app => {
   const btn = document.createElement('div');
   btn.className = 'app-btn';
   btn.innerHTML = `<img src="${app.icon}" alt="${app.name}"><span>${app.name}</span>`;
-  btn.addEventListener('click', () => {
-    openInProxy(app.url);
-  });
+  btn.addEventListener('click', () => openInProxy(app.url));
   appRow.appendChild(btn);
 });
 
-// Format input: URL or Google search
+// Format input into URL or Google search
 function formatUrl(input) {
   if(!input) return '';
   input = input.trim();
@@ -108,7 +148,7 @@ function formatUrl(input) {
   return 'https://www.google.com/search?q=' + encodeURIComponent(input);
 }
 
-// Try workers
+// Find a working worker
 async function tryWorkers(url) {
   for(const worker of WORKER_URLS) {
     try {
@@ -119,24 +159,42 @@ async function tryWorkers(url) {
   return null;
 }
 
-// Open link in parent proxy iframe
-async function openInProxy(input) {
+// Load in proxy iframe
+async function openInProxy(input, pushHistory=true) {
   const url = formatUrl(input);
   const worker = await tryWorkers(url);
   if(!worker) { alert('ERROR: All proxy stations are blocked.'); return; }
-  if(window.opener && window.opener.iframe) {
-    window.opener.iframe.src = `${worker}?url=${encodeURIComponent(url)}`;
-  } else {
-    // fallback if page not opened from main proxy
-    window.open(`${worker}?url=${encodeURIComponent(url)}`, '_blank');
-  }
+  iframe.src = `${worker}?url=${encodeURIComponent(url)}`;
+  if(pushHistory) { historyStack.push({url, worker}); forwardStack.length = 0; }
 }
 
-// Search bar
-const searchInput = document.getElementById('search');
-const searchBtn = document.getElementById('search-btn');
-searchBtn.addEventListener('click', () => openInProxy(searchInput.value));
+// Search bar events
+document.getElementById('search-btn').addEventListener('click', () => openInProxy(searchInput.value));
 searchInput.addEventListener('keydown', e => { if(e.key==='Enter') openInProxy(searchInput.value); });
+
+// Navigation buttons
+document.getElementById('home').addEventListener('click', () => openInProxy('bloxcraft://newtab'));
+document.getElementById('back').addEventListener('click', () => {
+  if(historyStack.length <= 1) return;
+  const current = historyStack.pop();
+  forwardStack.push(current);
+  const previous = historyStack[historyStack.length-1];
+  iframe.src = `${previous.worker}?url=${encodeURIComponent(previous.url)}`;
+});
+document.getElementById('forward').addEventListener('click', () => {
+  if(!forwardStack.length) return;
+  const next = forwardStack.pop();
+  iframe.src = `${next.worker}?url=${encodeURIComponent(next.url)}`;
+  historyStack.push(next);
+});
+document.getElementById('refresh').addEventListener('click', () => {
+  if(!historyStack.length) return;
+  const current = historyStack[historyStack.length-1];
+  iframe.src = `${current.worker}?url=${encodeURIComponent(current.url)}`;
+});
+
+// Initial load: New Tab in proxy
+window.addEventListener('DOMContentLoaded', () => openInProxy('bloxcraft://newtab', false));
 
 </script>
 </body>
