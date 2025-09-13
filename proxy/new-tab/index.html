@@ -25,28 +25,22 @@ body {
 h1 { font-size: 48px; margin-bottom: 40px; }
 .app-row {
   display: flex;
-  gap: 25px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  padding: 10px;
-  max-width: 90%;
-}
-.app-row::-webkit-scrollbar { display: none; }
-.app-btn {
-  flex: 0 0 auto;
-  display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 20px;
+  width: 300px;
+}
+.app-btn {
+  padding: 12px 20px;
   background: rgba(255,255,255,0.1);
-  border-radius: 15px;
-  padding: 15px;
-  width: 100px;
+  border-radius: 8px;
+  text-align: center;
   cursor: pointer;
   transition: transform 0.2s, background 0.2s;
 }
-.app-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
-.app-btn img { width: 60px; height: 60px; margin-bottom: 10px; }
-.app-btn span { font-size: 14px; text-align: center; }
+.app-btn:hover {
+  background: rgba(255,255,255,0.25);
+  transform: scale(1.05);
+}
 </style>
 </head>
 <body>
@@ -56,9 +50,9 @@ h1 { font-size: 48px; margin-bottom: 40px; }
 
 <script>
 const apps = [
-  { name: 'YouTube', url: 'https://www.youtube.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/62/YouTube_social_white_square_%282024%29.svg' },
-  { name: 'Google', url: 'https://www.google.com', icon: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
-  { name: 'Discord', url: 'https://discord.com', icon: 'https://upload.wikimedia.org/wikipedia/fr/4/4f/Discord_Logo_sans_texte.svg' }
+  { name: 'YouTube', url: 'https://www.youtube.com' },
+  { name: 'Google', url: 'https://www.google.com' },
+  { name: 'Discord', url: 'https://discord.com' }
 ];
 
 const appRow = document.getElementById('appRow');
@@ -66,12 +60,12 @@ const appRow = document.getElementById('appRow');
 apps.forEach(app => {
   const btn = document.createElement('div');
   btn.className = 'app-btn';
-  btn.innerHTML = `<img src="${app.icon}" alt="${app.name}"><span>${app.name}</span>`;
+  btn.textContent = app.name;
   btn.addEventListener('click', () => {
     if(window.opener && window.opener.loadUrl) {
       window.opener.loadUrl(app.url);
     } else {
-      const worker = 'https://school-static.sweet-dawn-d933.workers.dev/'; 
+      const worker = 'https://school-static.sweet-dawn-d933.workers.dev/';
       window.open(`${worker}?url=${encodeURIComponent(app.url)}`, '_blank');
     }
   });
@@ -80,5 +74,3 @@ apps.forEach(app => {
 </script>
 </body>
 </html>
-
-
