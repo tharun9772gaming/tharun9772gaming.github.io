@@ -175,7 +175,7 @@
 </head>
 <body>
     <div class="game-card">
-        <h1 class="game-title">🧠 Memory Match</h1>
+        <h1 class="game-title">Memory Match</h1>
         
         <div class="game-stats">
             <span>Moves: <span id="moves">0</span></span>
@@ -213,9 +213,9 @@
             <p>Fewer moves and faster time = higher score</p>
         </div>
     </div>
-
+<!-- DEVELOPERS: I Am Pretty Sure TS Is Where You Can Add More Emojis!-->
     <script>
-        const CARD_EMOJIS = ['🎮', '🎯', '🎲', '🎪', '🎨', '🎭', '🎸', '🎺'];
+        const CARD_EMOJIS = ['🎮', '🎯', '🎲', '🎪', '🎨', '🎭', '🎸', '🎺', '🤖', '👾', '🤡'];
         const GRID_SIZE = 4;
         
         let cards = [];
@@ -246,7 +246,6 @@
             updateDisplay();
             renderBoard();
             
-            // Start timer
             if (gameTimer) clearInterval(gameTimer);
             gameTimer = setInterval(updateTimer, 1000);
         }
@@ -290,7 +289,6 @@
                 const [firstCard, secondCard] = flippedCards;
                 
                 if (cards[firstCard].emoji === cards[secondCard].emoji) {
-                    // Match found
                     setTimeout(() => {
                         matchedCards.push(firstCard, secondCard);
                         flippedCards = [];
@@ -299,7 +297,6 @@
                         checkWin();
                     }, 500);
                 } else {
-                    // No match
                     setTimeout(() => {
                         flippedCards = [];
                         renderBoard();
@@ -347,7 +344,6 @@
             initializeGame();
         }
 
-        // Initialize game on load
         initializeGame();
     </script>
 </body>
