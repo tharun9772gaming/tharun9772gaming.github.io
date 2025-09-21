@@ -218,6 +218,12 @@ transform: scale(0.9);
 </style>
 </head>
 <body>
+  <div class="IFRAMETEST_container" id="IFRAMETEST_container">
+  <button class="orange-black-button" id="IFRAMETEST_loadBtn">Test Iframe Modes</button>
+  <button class="IFRAMETEST_closeBtn" id="IFRAMETEST_closeBtn">X</button>
+  <iframe class="IFRAMETEST_iframe" id="IFRAMETEST_iframe" src="/iframe-sites/iframe-test-list"></iframe>
+</div>
+  <p>&nbsp;</p>
   <a href="/chat" class="blue-rectangle-button">Chat</a>
   <button class="rainbow-rectangle-button" onclick="openIframe()">Open Chat In New Window</button>
   <a href="/support" class="blue-rectangle-button">Support</a> 
@@ -363,9 +369,51 @@ function supportWindow_close() {
 
     searchBox.addEventListener('input', liveSearch);
   </script>
+  <script>
+  const IFRAMETEST_loadBtn = document.getElementById('IFRAMETEST_loadBtn');
+  const IFRAMETEST_closeBtn = document.getElementById('IFRAMETEST_closeBtn');
+  const IFRAMETEST_iframe = document.getElementById('IFRAMETEST_iframe');
+  const IFRAMETEST_container = document.getElementById('IFRAMETEST_container');
+
+  IFRAMETEST_loadBtn.addEventListener('click', () => {
+    IFRAMETEST_container.style.width = "80%";
+    IFRAMETEST_container.style.maxWidth = "800px";
+
+    IFRAMETEST_loadBtn.style.height = "0";
+    IFRAMETEST_loadBtn.style.padding = "0";
+    IFRAMETEST_loadBtn.style.opacity = "0";
+
+    setTimeout(() => {
+      IFRAMETEST_closeBtn.style.opacity = 1;
+    }, 500);
+
+    setTimeout(() => {
+      IFRAMETEST_iframe.style.height = "500px";
+      IFRAMETEST_iframe.style.opacity = 1;
+    }, 300);
+  });
+
+  IFRAMETEST_closeBtn.addEventListener('click', () => {
+    IFRAMETEST_iframe.style.height = "0";
+    IFRAMETEST_iframe.style.opacity = 0;
+
+    IFRAMETEST_closeBtn.style.opacity = 0;
+
+
+    setTimeout(() => {
+      IFRAMETEST_loadBtn.style.height = "auto";
+      IFRAMETEST_loadBtn.style.padding = "20px";
+      IFRAMETEST_loadBtn.style.opacity = "1";
+    }, 500);
+
+    IFRAMETEST_container.style.width = "300px";
+    IFRAMETEST_container.style.maxWidth = "300px";
+  });
+</script>
 
 </body>
 </html>
+
 
 
 
