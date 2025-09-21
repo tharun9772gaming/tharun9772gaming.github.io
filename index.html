@@ -151,6 +151,59 @@ transition: transform 0.15s;
 transform: scale(0.9);
 }
 </style>
+  <style>
+      .IFRAMETEST_container {
+    position: relative;
+    width: 300px; 
+    transition: all 0.5s ease;
+  }
+
+  .IFRAMETEST_loadBtn {
+    width: 100%;
+    padding: 20px;
+    font-size: 1.5em;
+    background: linear-gradient(45deg, #007BFF, #00D4FF);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: all 0.5s ease;
+    z-index: 2;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .IFRAMETEST_closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 3;
+  }
+
+  .IFRAMETEST_iframe {
+    width: 100%;
+    height: 0;
+    border: 4px solid #007BFF; 
+    border-radius: 12px;
+    opacity: 0;
+    transition: all 0.8s ease;
+    display: block;
+    box-sizing: border-box;
+  }
+    </style>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0KXN0103E"></script>
 <script>
@@ -413,6 +466,7 @@ function supportWindow_close() {
 
 </body>
 </html>
+
 
 
 
