@@ -25,6 +25,47 @@
       font-size:18px; 
     }
    </style>
+  <style>
+  #tosPopup {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 1000;
+  }
+
+  #tosPopupContent {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  }
+
+  #tosPopupContent a { color: #007BFF; text-decoration: none; }
+  #tosPopupContent a:hover { text-decoration: underline; }
+
+  #tosPopupContent button {
+    margin: 10px 5px 0 5px;
+    padding: 10px 20px;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  #agreeBtn { background-color: #007BFF; }
+  #agreeBtn:hover { background-color: #0056b3; }
+
+  #disagreeBtn { background-color: #dc3545; }
+  #disagreeBtn:hover { background-color: #a71d2a; }
+</style>
     <style>
     #searchBox {
       width: 70%;
@@ -216,13 +257,22 @@ transform: scale(0.9);
 </head>
 
 <body>
-
   <div class="navbar">
     <a href="/">Home</a>
     <a href="/games">Games</a>
     <a href="https://discord.gg/a65hcbpfct">Discord Server</a>
     <a href="https://docs.google.com/document/d/1UC3Eo6UoPCVlq1SiOFEj0HahQGPqqbadXSho5NKHbQU/edit?tab=t.0">Bloxcraft Unblocked Games List</a>
   </div>
+  <div id="tosPopup">
+  <div id="tosPopupContent">
+    <p id="tosMessage">By using this site, you agree to our 
+      <a href="/terms" target="_blank">Terms of Service</a> and 
+      <a href="/privacy-policy" target="_blank">Privacy Policy</a>. 
+      You also allow us to use cookies on our site.</p>
+    <button id="agreeBtn">I Agree</button>
+    <button id="disagreeBtn">I Disagree</button>
+  </div>
+</div>
   <p>&nbsp;</p>
   <input type="text" id="searchBox" placeholder="Search Bloxcraft UBG - Home Page">
 </body>
@@ -463,9 +513,49 @@ function supportWindow_close() {
     IFRAMETEST_container.style.maxWidth = "300px";
   });
 </script>
+  <script>
+  const POLICY_VERSION = '3.0'; // FOR DEVELOEPRS: If TOS OR PRivacy Polict Changed, Plese Update The Number
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  }
+
+  function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days*24*60*60*1000));
+    document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+  }
+
+  const agreedVersion = getCookie('tosAcceptedVersion');
+
+  if (agreedVersion !== POLICY_VERSION) {
+    document.getElementById('tosPopup').style.display = 'block';
+
+    if (agreedVersion) {
+      document.getElementById('tosMessage').innerHTML = 
+        "We've updated our Terms of Service and Privacy Policy. Please review and agree to continue using the site.<br>" +
+        '<a href="/terms" target="_blank">Terms of Service</a> and ' +
+        '<a href="/privacy-policy" target="_blank">Privacy Policy</a>. ' +
+        'You also allow us to use cookies on our site.';
+    }
+  }
+
+  document.getElementById('agreeBtn').addEventListener('click', function() {
+    setCookie('tosAcceptedVersion', POLICY_VERSION, 365);
+    document.getElementById('tosPopup').style.display = 'none';
+  });
+
+  document.getElementById('disagreeBtn').addEventListener('click', function() {
+    window.open('https://www.google.com', '_top'); 
+  });
+</script>
 
 </body>
 </html>
+
 
 
 
