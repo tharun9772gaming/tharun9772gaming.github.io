@@ -13,6 +13,46 @@
 <meta name="theme-color" content="#5555FF"> 
 <meta property="og:description" content="The Unblocked Games Site You Can Play Everyday! It Also has Some Custom Games.">
   <link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
+  <style>
+    :root {
+      --accent: #4f8cff;
+      --glass-bg: rgba(255, 255, 255, 0.15);
+      --glass-border: rgba(255, 255, 255, 0.3);
+      --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      --radius: 1.5rem;
+    }
+    
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem 1rem;
+    }
+
+    main h2 {
+      color: #fff;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    
+.play-btn {
+  background: #4f8cff;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.65rem 1.8rem;
+  font-size: 1.1rem;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 12px 0 #4f8cff55;
+  transition: background 0.2s, transform 0.15s;
+}
+.play-btn:hover {
+  background: #2563eb;
+  transform: scale(1.07);
+}
+</style>
          <style>
         .iframe-button {
             background-color: white; 
@@ -100,6 +140,67 @@ transform: scale(0.9);
 }
 </style>
   <style>
+      .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .game-card {
+      background: var(--glass-bg);
+      border: 2px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(6px);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .game-card:hover {
+      transform: translateY(-8px) scale(1.04);
+      box-shadow: 0 12px 32px 0 rgba(31, 38, 135, 0.28);
+      border-color: var(--accent);
+    }
+
+    .game-card img {
+      width: 72px;
+      height: 72px;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 2px 8px #0006);
+    }
+
+    .game-card h3 {
+      color: #fff;
+      margin: 0 0 1rem 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+    }
+
+    .game-card button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 0.65rem 1.8rem;
+      font-size: 1.1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 3px 12px 0 #4f8cff55;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .game-card button:hover {
+      background: #2563eb;
+      transform: scale(1.07);
+    }
+</style>
+  <style>
     #searchBox {
       width: 70%;
       padding: 10px;
@@ -160,43 +261,7 @@ body {
       padding: 20px;
     }
   </style>
-</head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0KXN0103E"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-W0KXN0103E');
-</script>
-<body>
-
-  <div class="navbar">
-    <a href="/">Home</a>
-    <a href="/games">Games</a>
-    <a href="https://discord.gg/a65hcbpfct">Discord Server</a>
-    <a href="https://docs.google.com/document/d/1UC3Eo6UoPCVlq1SiOFEj0HahQGPqqbadXSho5NKHbQU/edit?tab=t.0">Bloxcraft Unblocked Games List</a>
-  </div>
-  <p>&nbsp;</p>
-    <input type="text" id="searchBox" placeholder="Search All The Games In Bloxcraft UBG - Games Page">
-
-</body>
-</html>
-<h1>Click A Game To Play!</h1>
-<h2>All Games: 39</h2>
-   <a href="/featured-games" class="rainbow-rectangle-button">Featured Games</a> 
-   <button class="iframe-button" onclick="openIframe()">Open Games Tab In New Window</button>
-   <a href="/refined-beta" class="rainbow-rectangle-button">Refined Beta</a> 
-<a href="https://ubghub.org/?site=Bloxcraft%20UBG&utm_source=https%3A%2F%2Fbloxcraft-ubg.pages.dev" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; background: linear-gradient(135deg, #00ff9d 0%, #00cc7a 100%); color: #1a1a1a; border: none; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; box-shadow: 0 2px 4px rgba(0, 255, 157, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 255, 157, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 255, 157, 0.2)'">
-  <svg style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 20 20">
-    <path d="M3 10l4-4v3h4V2l4 4v14H3V10z"/>
-  </svg>
-  <span style="font-weight: 700; margin-left: 4px;">Vote on UBGHub</span>
-</a>
-<p>We Do Not Own Most Of The Games.</p>
-<html lang="en">
-<head>
-  <style>
+    <style>
     .green-rectangle-button {
       background-color: #28a745; 
       color: white;
@@ -253,75 +318,278 @@ body {
 }
 </style>
 </head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0KXN0103E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-W0KXN0103E');
+</script>
 <body>
-<p>&nbsp;</p>
-  <a href="/ultimate-clicker-game" class="green-rectangle-button">Ultimate Clicker Game</a>
-  <a href="/basic-farming-game" class="green-rectangle-button">Simple Farming Game</a>
-  <a href="/basic-zombie-game" class="green-rectangle-button">Basic Zombie Game</a>
-<p>&nbsp;</p>
-  <a href="/tic-tac-toe" class="green-rectangle-button">Tic Tac Toe</a>
-  <a href="/idle-mining-clicker" class="green-rectangle-button">Idle Mining Clicker</a>
-  <a href="/ultimate-farming-game" class="green-rectangle-button">Ultamate Farming Game</a>
-  <p>&nbsp;</p>
-  <a href="/maze" class="green-rectangle-button">Bloxy Maze</a>
-  <a href="/bloxy-cookie-clicker" class="green-rectangle-button">Bloxy Cookie Clicker</a> 
-   <a href="/square-clicker" class="green-rectangle-button">Square Clicker</a> 
-    <p>&nbsp;</p>
-  <a href="/banana-clicker" class="green-rectangle-button">Banana Clicker</a>
-  <a href="/chess-game" class="green-rectangle-button">Chess</a>
-  <a href="/zombie-waves" class="green-rectangle-button">Player V.S Zombie</a>
-      <p>&nbsp;</p>
-  <a href="/survival-zombie-game" class="green-rectangle-button">Survival Zombie Game</a>
-  <a href="/chrome-dino-game" class="green-rectangle-button">Chrome Dino Game</a>
-  <a href="/2048-game" class="green-rectangle-button">2048 (Clone)</a>
-  <p>&nbsp;</p>
-<a href="/cookie-clicker" class="green-rectangle-button">Cookie Clicker</a>
-<a href="/blocky-snakes" class="green-rectangle-button">Blocky Snakes</a>
-<a href="/bridge-race" class="green-rectangle-button">Bridge Race</a>
-  <p>&nbsp;</p>
-<a href="/snake-game" class="green-rectangle-button">Google Snake Game</a>
-<a href="/flappy-bird" class="green-rectangle-button">Flappy Bird (Clone)</a>
-<a href="/planet-clicker" class="green-rectangle-button">Planet Clicker</a>
- <p>&nbsp;</p>
-<a href="/apple-clicker" class="green-rectangle-button">Apple Clicker</a>
-<a href="/supermarket-3d" class="green-rectangle-button">Supermarket 3D Game</a>
-<a href="/sprunki" class="green-rectangle-button">Sprunki</a>
-   <p>&nbsp;</p>
-<a href="/colour-match" class="green-rectangle-button">Colour Match</a>
-<a href="/rock-paper-scissors" class="green-rectangle-button">Rock, Paper, Scissors</a>
-<a href="/guess-the-words" class="green-rectangle-button">Guess The Words</a>
-     <p>&nbsp;</p>
-<a href="/breakout-game" class="green-rectangle-button">Breakout</a>
-<a href="/connect-four" class="green-rectangle-button">Connect Four</a>
-<a href="/hangman-game" class="green-rectangle-button">Hang Man</a>
-       <p>&nbsp;</p>
-<a href="/color-memorise" class="green-rectangle-button">Colour Memorise</a>
-<a href="/word-search" class="green-rectangle-button">Word Search</a>
-<a href="/whack-a-mole" class="green-rectangle-button">Hang Man</a>
-    <p>&nbsp;</p>
-  <a href="/camouflage-and-sniper" class="green-rectangle-button">Camouflage And Sniper</a>
-  <p>&nbsp;</p>
 
+  <div class="navbar">
+    <a href="/">Home</a>
+    <a href="/games">Games</a>
+    <a href="https://discord.gg/a65hcbpfct">Discord Server</a>
+    <a href="https://docs.google.com/document/d/1UC3Eo6UoPCVlq1SiOFEj0HahQGPqqbadXSho5NKHbQU/edit?tab=t.0">Bloxcraft Unblocked Games List</a>
+  </div>
+  <p>&nbsp;</p>
+    <input type="text" id="searchBox" placeholder="Search All The Games In Bloxcraft UBG - Games Page">
 
-  <h1>Refined Beta</h1>
-    <a href="/refined-beta/chocolate-clicker" class="blue-rectangle-button">Chocolate Clicker</a>
-    <a href="/refined-beta/emoji-guess-game" class="blue-rectangle-button">Guess The Emoji</a>
-    <a href="/refined-beta/guess-logo-game" class="blue-rectangle-button">Guess The Logo</a>
-    <p>&nbsp;</p>
-    <a href="/refined-beta/dodger-game" class="blue-rectangle-button">Dodge The Purple Shapes</a>
-    <a href="/refined-beta/clicker-tester-game" class="blue-rectangle-button">Click Tester</a>
-  <p>There Might Not Be Much Games For Refined Beta!</p>
-
-
-    <h1>Vote For Bloxcraft UBG</h1>
-    <p>&nbsp;</p>
-    <a href="https://ubghub.org/?site=Bloxcraft%20UBG&utm_source=https%3A%2F%2Fbloxcraft-ubg.pages.dev" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; background: linear-gradient(135deg, #00ff9d 0%, #00cc7a 100%); color: #1a1a1a; border: none; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; box-shadow: 0 2px 4px rgba(0, 255, 157, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 255, 157, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 255, 157, 0.2)'">
+</body>
+</html>
+<h1>Click A Game To Play!</h1>
+<h2>All Games: 39</h2>
+   <a href="/featured-games" class="rainbow-rectangle-button">Featured Games</a> 
+   <button class="iframe-button" onclick="openIframe()">Open Games Tab In New Window</button>
+   <a href="/refined-beta" class="rainbow-rectangle-button">Refined Beta</a> 
+<a href="https://ubghub.org/?site=Bloxcraft%20UBG&utm_source=https%3A%2F%2Fbloxcraft-ubg.pages.dev" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; background: linear-gradient(135deg, #00ff9d 0%, #00cc7a 100%); color: #1a1a1a; border: none; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; box-shadow: 0 2px 4px rgba(0, 255, 157, 0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0, 255, 157, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0, 255, 157, 0.2)'">
   <svg style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 20 20">
     <path d="M3 10l4-4v3h4V2l4 4v14H3V10z"/>
   </svg>
   <span style="font-weight: 700; margin-left: 4px;">Vote on UBGHub</span>
 </a>
-    <p>&nbsp;</p>
+<p>We Do Not Own Most Of The Games.</p>
+<main>
+    <div class="game-grid">
+      <div class="game-card">
+        <img src="/assets_curser_gameicon.png" alt="Game 1">
+        <h3>Ultimate Clicker Game</h3>
+        <a class="play-btn" href="/ultimate-clicker-game">Play</a>
+      </div>
+            <div class="game-card">
+        <img src="/1f3ae.png" alt="Game 2">
+        <h3>Basic Farming Game</h3>
+        <a class="play-btn" href="/basic-farming-game">Play</a>
+      </div>
+                  <div class="game-card">
+        <img src="/zombie_head.png" alt="Game 3">
+        <h3>Basic Zombie Game</h3>
+        <a class="play-btn" href="/basic-zombie-game">Play</a>
+      </div>
+                        <div class="game-card">
+        <img src="/1f3ae.png" alt="Game 4">
+        <h3>Tic Tac Toe</h3>
+        <a class="play-" href="/tic-tac-toe">Play</a>
+      </div>
+                              <div class="game-card">
+        <img src="/assets_curser_gameicon.png" alt="Game 5">
+        <h3>Idle Mining Clicker</h3>
+        <a class="play-btn" href="/idle-mining-clicker">Play</a>
+      </div>
+                                    <div class="game-card">
+        <img src="/1f3ae.png" alt="Game 6">
+        <h3>Ultimate Farming Game</h3>
+        <a class="play-btn" href="/ultimate-farming-gam">Play</a>
+                  <div class="game-card">
+        <img src="/maze_game.png" alt="Game 7">
+        <h3>Bloxy Maze</h3>
+        <a class="play-btn" href="/maze">Play</a>
+      </div>
+                                      <div class="game-card">
+  <img src="/1f3ae.png" alt="Chess">
+  <h3>Chess</h3>
+  <a class="play-btn" href="/chess-game">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Player V.S Zombie">
+  <h3>Player V.S Zombie</h3>
+  <a class="play-btn" href="/zombie-waves">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Survival Zombie Game">
+  <h3>Survival Zombie Game</h3>
+  <a class="play-btn" href="/survival-zombie-game">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="2048 (Clone)">
+  <h3>2048 (Clone)</h3>
+  <a class="play-btn" href="/2048-game">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Blocky Snakes">
+  <h3>Blocky Snakes</h3>
+  <a class="play-btn" href="/blocky-snakes">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Bridge Race">
+  <h3>Bridge Race</h3>
+  <a class="play-btn" href="/bridge-race">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Google Snake Game">
+  <h3>Google Snake Game</h3>
+  <a class="play-btn" href="/snake-game">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Flappy Bird (Clone)">
+  <h3>Flappy Bird (Clone)</h3>
+  <a class="play-btn" href="/flappy-bird">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Supermarket 3D Game">
+  <h3>Supermarket 3D Game</h3>
+  <a class="play-btn" href="/supermarket-3d">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Sprunki">
+  <h3>Sprunki</h3>
+  <a class="play-btn" href="/sprunki">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Colour Match">
+  <h3>Colour Match</h3>
+  <a class="play-btn" href="/colour-match">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Rock, Paper, Scissors">
+  <h3>Rock, Paper, Scissors</h3>
+  <a class="play-btn" href="/rock-paper-scissors">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Guess The Words">
+  <h3>Guess The Words</h3>
+  <a class="play-btn" href="/guess-the-words">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Breakout">
+  <h3>Breakout</h3>
+  <a class="play-btn" href="/breakout-game">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Connect Four">
+  <h3>Connect Four</h3>
+  <a class="play-btn" href="/connect-four">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Hang Man">
+  <h3>Hang Man</h3>
+  <a class="play-btn" href="/hangman-game">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Colour Memorise">
+  <h3>Colour Memorise</h3>
+  <a class="play-btn" href="/color-memorise">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Word Search">
+  <h3>Word Search</h3>
+  <a class="play-btn" href="/word-search">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Whack A Mole">
+  <h3>Whack A Mole</h3>
+  <a class="play-btn" href="/whack-a-mole">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/1f3ae.png" alt="Camouflage And Sniper">
+  <h3>Camouflage And Sniper</h3>
+  <a class="play-btn" href="/camouflage-and-sniper">Play</a>
+</div>
+
+</div>
+<div class="game-card">
+<img src="/gamecookie_item.png" alt="Game 8">
+<h3>Bloxy Cookie Clicker</h3>
+<a class="play-btn" href="/bloxy-cookie-clicker">Play</a>
+</div>
+<div class="game-card">
+<img src="/1f3ae.png" alt="Game 9">
+<h3>Square Clicker</h3>
+<a class="play-btn" href="/spuare-clicker">Play</a>
+</div>
+<div class="game-card">
+<img src="/1f3ae.png" alt="Game 9">
+<h3>Square Clicker</h3>
+<a class="play-btn" href="/spuare-clicker">Play</a>
+</div>
+<div class="game-card">
+<img src="/gamebanana_item.png" alt="Game 10">
+<h3>Banana Clicker</h3>
+<a class="play-btn" href="/banana-clicker">Play</a>
+</div>
+<div class="game-card">
+<img src="/apple_gameclicker_bloxcraft.png" alt="Game 11">
+<h3>Apple Clicker</h3>
+<a class="play-btn" href="/apple-clicker">Play</a>
+</div>
+<div class="game-card">
+<img src="/apple_gameclicker_bloxcraft.png" alt="Game 11">
+<h3>Apple Clicker</h3>
+<a class="play-btn" href="/apple-clicker">Play</a>
+</div>
+<div class="game-card">
+<img src="/chrome-dino-game.png" alt="Game 11">
+<h3>Chrome Dino Game</h3>
+<a class="play-btn" href="/chrome-dino-game">Play</a>
+</div>
+<div class="game-card">
+<img src="/planet-clicker-image.png" alt="Game 11">
+<h3>Planet Clicker</h3>
+<a class="play-btn" href="/planet-clicker">Play</a>
+</div>
+<div class="game-card">
+<img src="/cookie-clicker-image.png" alt="Game 12">
+<h3>Cookie Clicker</h3>
+<a class="play-btn" href="/cookie-clicker">Play</a>
+</div>
+      </div>
+</main>
+  <h1>Refined Beta</h1>
+<main>
+        <div class="game-grid">
+<div class="game-card">
+  <img src="/chocolate_emoji.png" alt="Chocolate Clicker">
+  <h3>Chocolate Clicker</h3>
+  <a class="blue-rectangle-button" href="/refined-beta/chocolate-clicker">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/assets_emoji_guess.png" alt="Guess The Emoji">
+  <h3>Guess The Emoji</h3>
+  <a class="blue-rectangle-button" href="/refined-beta/emoji-guess-game">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/assets_guess_the_logo_game.png" alt="Guess The Logo">
+  <h3>Guess The Logo</h3>
+  <a class="blue-rectangle-button" href="/refined-beta/guess-logo-game">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/assets_game_refinedbeta_4.png" alt="Dodge The Purple Shapes">
+  <h3>Dodge The Purple Shapes</h3>
+  <a class="blue-rectangle-button" href="/refined-beta/dodger-game">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="/assets_curser_gameicon.png" alt="Click Tester">
+  <h3>Click Tester</h3>
+  <a class="blue-rectangle-button" href="/refined-beta/clicker-tester-game">Play</a>
+</div>
+
+  <p>There Might Not Be Much Games For Refined Beta!</p>
+          </main>
 <h1>Views:</h1>
 <a href="https://bloxcraft-ubg.pages.dev" target="_blank">
 <img src="https://hitwebcounter.com/counter/counter.php?page=21379887&style=0010&nbdigits=9&type=page&initCount=0" title="Counter Widget" Alt="Visit counter For Websites"   border="0" /></a>
