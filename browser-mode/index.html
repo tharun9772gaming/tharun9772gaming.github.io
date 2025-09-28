@@ -16,27 +16,32 @@
 <link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body { margin:0; font-family:'Orbitron',sans-serif; color:#fff; display:flex; flex-direction:column; height:100vh; background: linear-gradient(135deg,#1e3c72,#2a5298);}
-  .tabs{display:flex;background:linear-gradient(90deg,#4facfe,#00f2fe);padding:5px;overflow-x:auto;z-index:100;}
-  .tab{display:flex;align-items:center;background:rgba(255,255,255,0.2);padding:5px 10px;margin-right:5px;border-radius:5px;cursor:pointer;white-space:nowrap;}
-  .tab.active{background:rgba(255,255,255,0.5);font-weight:bold;}
-  .tab img{width:16px;height:16px;margin-right:5px;display:none;}
-  .tab-close{margin-left:8px;cursor:pointer;font-weight:bold;}
-  .add-tab{font-size:20px;padding:0 10px;cursor:pointer;}
-  .controls{display:flex;padding:10px;background:rgba(0,0,0,0.3);align-items:center;gap:10px;z-index:99;}
-  .url-bar{flex:1;background:rgba(255,255,255,0.2);border:none;color:#fff;padding:8px 12px;border-radius:5px;font-size:14px;pointer-events:none;}
-  .refresh-btn,.fullscreen-btn{padding:8px 12px;border:none;border-radius:5px;background:#4facfe;color:#fff;cursor:pointer;font-weight:bold;}
-  iframe{flex:1;border:none;width:100%;transition:all 0.3s;}
-  .iframe-fullscreen{position:fixed!important;top:0;left:0;width:100vw!important;height:100vh!important;z-index:9999;}
-  #fullscreenPopup{position:fixed;top:20px;right:20px;background:rgba(0,0,0,0.7);color:#fff;padding:10px 15px;border-radius:5px;font-weight:bold;display:none;z-index:10000;}
-  @media (max-width:768px){.tabs{flex-wrap:wrap}.controls{flex-direction:column;align-items:stretch}.refresh-btn,.fullscreen-btn{width:100%;margin-top:5px}}
+body { margin:0; font-family:'Orbitron',sans-serif; color:#fff; display:flex; flex-direction:column; height:100vh; background: linear-gradient(135deg,#1e3c72,#2a5298);}
+.tabs{display:flex;background:linear-gradient(90deg,#4facfe,#00f2fe);padding:5px;overflow-x:auto;z-index:100;}
+.tab{display:flex;align-items:center;background:rgba(255,255,255,0.2);padding:5px 10px;margin-right:5px;border-radius:5px;cursor:pointer;white-space:nowrap;transition:background 0.3s, transform 0.2s; opacity:0; animation:fadeIn 0.3s forwards;}
+.tab.active{background:rgba(255,255,255,0.5);font-weight:bold; transform:scale(1.05);}
+.tab img{width:16px;height:16px;margin-right:5px;display:none;}
+.tab-close{margin-left:8px;cursor:pointer;font-weight:bold;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border:2px solid red;border-radius:50%;transition:background 0.2s, transform 0.2s; color:red;}
+.tab-close:hover{background:red;color:white; transform:scale(1.2);}
+.add-tab{font-size:20px;padding:0 10px;cursor:pointer;transition:transform 0.2s;}
+.add-tab:hover{transform:scale(1.2);}
+.controls{display:flex;padding:10px;background:rgba(0,0,0,0.3);align-items:center;gap:10px;z-index:99;}
+.url-bar{flex:1;background:rgba(255,255,255,0.2);border:none;color:#fff;padding:8px 12px;border-radius:5px;font-size:14px;pointer-events:none; transition:background 0.3s;}
+.refresh-btn,.fullscreen-btn{padding:8px 12px;border:none;border-radius:5px;background:#4facfe;color:#fff;cursor:pointer;font-weight:bold;transition:background 0.3s, transform 0.2s;}
+.refresh-btn:hover,.fullscreen-btn:hover{background:#00f2fe; transform:scale(1.05);}
+iframe{flex:1;border:none;width:100%;transition:all 0.3s;}
+.iframe-fullscreen{position:fixed!important;top:0;left:0;width:100vw!important;height:100vh!important;z-index:9999;}
+#fullscreenPopup{position:fixed;top:20px;right:20px;background:rgba(0,0,0,0.7);color:#fff;padding:10px 15px;border-radius:5px;font-weight:bold;display:none;z-index:10000;opacity:0; transition:opacity 0.5s;}
+#fullscreenPopup.show{opacity:1;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@media (max-width:768px){.tabs{flex-wrap:wrap}.controls{flex-direction:column;align-items:stretch}.refresh-btn,.fullscreen-btn{width:100%;margin-top:5px}}
 </style>
 </head>
 <body>
 
 <div class="tabs" id="tabs"><div class="add-tab" id="addTab">+</div></div>
 <div class="controls" id="controls">
-  <input type="text" id="urlBar" class="url-bar" value="bloxcraft:/newtab" readonly>
+  <input type="text" id="urlBar" class="url-bar" value="bloxcraft://newtab" readonly>
   <button class="refresh-btn" id="refreshBtn">⟳ Refresh</button>
   <button class="fullscreen-btn" id="fullscreenBtn">⛶ Fullscreen</button>
 </div>
@@ -53,8 +58,6 @@ const fullscreenBtn=document.getElementById('fullscreenBtn');
 const controls=document.getElementById('controls');
 
 let tabs=[]; let currentTabId=0; let tabCount=0;
-
-const defaultPages={'/':'/assets/home/index.html','/games':'/assets/games/index.html','/featured-games':'/assets/featured-games/index.html','/refined-beta':'/assets/refined-beta/index.html','/assets/home/newtab/index.html':'/assets/home/newtab/index.html'};
 
 function createTab(src,label){
   const tabId=tabCount++;
@@ -88,27 +91,42 @@ function switchTab(id){
 
 function updateTabAndUrl(tab){
   try{
-    const iframeWin=browserFrame.contentWindow;
-    const iframeDoc=iframeWin.document;
-    const tabElem=document.getElementById('tab-'+tab.id);
+    const iframeWin = browserFrame.contentWindow;
+    const iframeDoc = iframeWin.document;
+    const tabElem = document.getElementById('tab-'+tab.id);
 
-    const title=iframeDoc.title||tab.label; tabElem.querySelector('span').textContent=title;
+    const title = iframeDoc.title || tab.label;
+    tabElem.querySelector('span').textContent = title;
 
-    const linkIcon=iframeDoc.querySelector("link[rel~='icon']");
-    const img=tabElem.querySelector('img');
-    if(linkIcon){ img.src=linkIcon.href; img.style.display='inline-block'; } else { img.style.display='none'; }
+    const linkIcon = iframeDoc.querySelector("link[rel~='icon']");
+    const img = tabElem.querySelector('img');
+    if(linkIcon){ img.src = linkIcon.href; img.style.display='inline-block'; } else { img.style.display='none'; }
 
-    const path=new URL(iframeWin.location.href, window.location.origin).pathname;
-    urlBar.value='bloxcraft:/' + (path==='/assets/home/newtab/index.html'?'newtab':path.replace(/^\/|\/$/g,'')||'home');
-  }catch(err){
+    const path = new URL(iframeWin.location.href, window.location.origin).pathname;
+
+    let bcUrl = 'bloxcraft://';
+    if(path === '/assets/home/newtab/index.html'){ 
+      bcUrl += 'newtab'; 
+    } else if(path === '/') {
+      bcUrl += 'home';
+    } else {
+      bcUrl += path.replace(/^\/|\/$/g,''); 
+    }
+
+    urlBar.value = bcUrl;
+  } catch(err){
     const tabElem=document.getElementById('tab-'+tab.id);
     tabElem.querySelector('img').style.display='none';
     tabElem.querySelector('span').textContent=tab.label;
-    urlBar.value=getBloxcraftURL(tab.src);
+    urlBar.value='bloxcraft://'+tab.label.toLowerCase().replace(/\s/g,'');
   }
 }
 
-function showFullscreenPopup(){ const popup=document.getElementById('fullscreenPopup'); popup.style.display='block'; setTimeout(()=>{popup.style.display='none';},2000); }
+function showFullscreenPopup(){
+  const popup=document.getElementById('fullscreenPopup');
+  popup.classList.add('show');
+  setTimeout(()=>{popup.classList.remove('show');},2000);
+}
 
 function attachIframeNavigation(){
   try{
@@ -148,8 +166,6 @@ function closeTab(id){
     if(currentTabId===id&&tabs.length>0){ switchTab(tabs[0].id); } else if(tabs.length===0){ createTab('/assets/home/newtab/index.html','New Tab'); }
   }
 }
-
-function getBloxcraftURL(src){ for(const[key,val] of Object.entries(defaultPages)){ if(val===src){ return 'bloxcraft:/' + (key==='/assets/home/newtab/index.html'?'newtab':key.replace('/','')||'home'); } } return src; }
 
 addTabBtn.addEventListener('click',()=>{ createTab('/assets/home/newtab/index.html','New Tab'); });
 refreshBtn.addEventListener('click',()=>{ const tab=tabs.find(t=>t.id===currentTabId); if(tab) browserFrame.src=tab.src; });
