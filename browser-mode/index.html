@@ -18,8 +18,8 @@
 <style>
 body { margin:0; font-family:'Orbitron',sans-serif; color:#fff; display:flex; flex-direction:column; height:100vh; background: linear-gradient(135deg,#1e3c72,#2a5298);}
 .tabs{display:flex;background:linear-gradient(90deg,#4facfe,#00f2fe);padding:5px;overflow-x:auto;z-index:100;}
-.tab{display:flex;align-items:center;background:rgba(255,255,255,0.2);padding:5px 10px;margin-right:5px;border-radius:5px;cursor:pointer;white-space:nowrap;transition:background 0.3s, transform 0.2s; opacity:0; animation:fadeIn 0.3s forwards;}
-.tab.active{background:rgba(255,255,255,0.5);font-weight:bold; transform:scale(1.05);}
+.tab{display:flex;align-items:center;background:rgba(255,255,255,0.2);padding:5px 10px;margin-right:5px;border-radius:5px;cursor:pointer;white-space:nowrap;transition:background 0.3s, transform 0.2s, margin-left 0.3s, opacity 0.3s; opacity:0; transform:translateX(50px);}
+.tab.active{background:rgba(255,255,255,0.5);font-weight:bold; transform:scale(1.05); animation:pulse 1s infinite;}
 .tab img{width:16px;height:16px;margin-right:5px;display:none;}
 .tab-close{margin-left:8px;cursor:pointer;font-weight:bold;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border:2px solid red;border-radius:50%;transition:background 0.2s, transform 0.2s; color:red;}
 .tab-close:hover{background:red;color:white; transform:scale(1.2);}
@@ -31,20 +31,12 @@ body { margin:0; font-family:'Orbitron',sans-serif; color:#fff; display:flex; fl
 .refresh-btn:hover,.fullscreen-btn:hover{background:#00f2fe; transform:scale(1.05);}
 iframe{flex:1;border:none;width:100%;transition:all 0.3s;}
 .iframe-fullscreen{position:fixed!important;top:0;left:0;width:100vw!important;height:100vh!important;z-index:9999;}
-#fullscreenPopup{position:fixed;top:20px;right:20px;background:rgba(0,0,0,0.7);color:#fff;padding:10px 15px;border-radius:5px;font-weight:bold;display:none;z-index:10000;opacity:0; transition:opacity 0.5s;}
-#fullscreenPopup.show{opacity:1;}
+#fullscreenPopup{position:fixed;top:-50px;right:20px;background:rgba(0,0,0,0.7);color:#fff;padding:10px 15px;border-radius:5px;font-weight:bold;display:block;z-index:10000;transition:top 0.5s, opacity 0.5s;opacity:0;}
+#fullscreenPopup.show{opacity:1; top:20px;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1.05)}50%{transform:scale(1.1)}}
 @media (max-width:768px){.tabs{flex-wrap:wrap}.controls{flex-direction:column;align-items:stretch}.refresh-btn,.fullscreen-btn{width:100%;margin-top:5px}}
 </style>
-  </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0KXN0103E"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-W0KXN0103E');
-</script>
 </head>
 <body>
 
@@ -55,7 +47,7 @@ iframe{flex:1;border:none;width:100%;transition:all 0.3s;}
   <button class="fullscreen-btn" id="fullscreenBtn">⛶ Fullscreen</button>
 </div>
 <iframe id="browserFrame" src="/assets/home/newtab/index.html"></iframe>
-<div id="fullscreenPopup">Exited fullscreen</div>
+<div id="fullscreenPopup">Press ESC To Exit</div>
 
 <script>
 const tabsContainer=document.getElementById('tabs');
@@ -65,8 +57,15 @@ const browserFrame=document.getElementById('browserFrame');
 const refreshBtn=document.getElementById('refreshBtn');
 const fullscreenBtn=document.getElementById('fullscreenBtn');
 const controls=document.getElementById('controls');
+const fullscreenPopup=document.getElementById('fullscreenPopup');
 
 let tabs=[]; let currentTabId=0; let tabCount=0;
+
+function showPopup(msg){
+  fullscreenPopup.textContent=msg;
+  fullscreenPopup.classList.add('show');
+  setTimeout(()=>fullscreenPopup.classList.remove('show'),2000);
+}
 
 function createTab(src,label){
   const tabId=tabCount++;
@@ -80,6 +79,9 @@ function createTab(src,label){
   const closeBtn=document.createElement('span'); closeBtn.className='tab-close'; closeBtn.textContent='×'; tabElem.appendChild(closeBtn);
 
   tabsContainer.insertBefore(tabElem, addTabBtn);
+
+
+  requestAnimationFrame(()=>{ tabElem.style.opacity='1'; tabElem.style.transform='translateX(0)'; });
 
   tabElem.addEventListener('click',e=>{
     if(e.target.classList.contains('tab-close')){ closeTab(tabId); } else { switchTab(tabId); }
@@ -131,22 +133,21 @@ function updateTabAndUrl(tab){
   }
 }
 
-function showFullscreenPopup(){
-  const popup=document.getElementById('fullscreenPopup');
-  popup.classList.add('show');
-  setTimeout(()=>{popup.classList.remove('show');},2000);
-}
-
 function attachIframeNavigation(){
   try{
     const iframeWin=browserFrame.contentWindow;
     const iframeDoc=iframeWin.document;
 
     iframeDoc.querySelectorAll('a').forEach(a=>{
-      a.addEventListener('click',e=>{
-        const href=a.getAttribute('href');
-        if(href && !href.startsWith('http')){ e.preventDefault(); iframeWin.location.href=href; }
-      });
+      const href=a.getAttribute('href');
+      if(href && (href.startsWith('http://') || href.startsWith('https://'))){
+        a.setAttribute('target','_blank');
+      } else if(href){
+        a.addEventListener('click',e=>{
+          e.preventDefault();
+          iframeWin.location.href=href;
+        });
+      }
     });
 
     const originalPush=iframeWin.history.pushState;
@@ -161,7 +162,7 @@ function attachIframeNavigation(){
           browserFrame.classList.remove('iframe-fullscreen');
           controls.style.display='flex';
           tabsContainer.style.display='flex';
-          showFullscreenPopup();
+          showPopup("Exited Fullscreen");
         }
       }
     });
@@ -171,17 +172,26 @@ function attachIframeNavigation(){
 
 function closeTab(id){
   const index=tabs.findIndex(t=>t.id===id);
-  if(index>-1){ tabs.splice(index,1); const tabElem=document.getElementById('tab-'+id); if(tabElem) tabElem.remove();
-    if(currentTabId===id&&tabs.length>0){ switchTab(tabs[0].id); } else if(tabs.length===0){ createTab('/assets/home/newtab/index.html','New Tab'); }
+  if(index>-1){ 
+    const tabElem=document.getElementById('tab-'+id);
+    if(tabElem){
+      tabElem.style.transform='translateX(50px)';
+      tabElem.style.opacity='0';
+      setTimeout(()=>tabElem.remove(),300);
+    }
+    tabs.splice(index,1);
+    if(currentTabId===id&&tabs.length>0){ switchTab(tabs[0].id); } 
+    else if(tabs.length===0){ createTab('/assets/home/newtab/index.html','New Tab'); }
   }
 }
 
 addTabBtn.addEventListener('click',()=>{ createTab('/assets/home/newtab/index.html','New Tab'); });
-refreshBtn.addEventListener('click',()=>{ const tab=tabs.find(t=>t.id===currentTabId); if(tab) browserFrame.src=tab.src; });
+refreshBtn.addEventListener('click',()=>{ browserFrame.contentWindow.location.reload(); });
 fullscreenBtn.addEventListener('click',()=>{
   browserFrame.classList.toggle('iframe-fullscreen');
   controls.style.display=browserFrame.classList.contains('iframe-fullscreen')?'none':'flex';
   tabsContainer.style.display=browserFrame.classList.contains('iframe-fullscreen')?'none':'flex';
+  if(browserFrame.classList.contains('iframe-fullscreen')) showPopup("Press ESC To Exit");
 });
 
 if(/Mobi|Android/i.test(navigator.userAgent)){ tabsContainer.style.flexWrap='wrap'; urlBar.style.fontSize='16px'; }
