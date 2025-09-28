@@ -37,6 +37,14 @@ iframe{flex:1;border:none;width:100%;transition:all 0.3s;}
 @keyframes pulse{0%,100%{transform:scale(1.05)}50%{transform:scale(1.1)}}
 @media (max-width:768px){.tabs{flex-wrap:wrap}.controls{flex-direction:column;align-items:stretch}.refresh-btn,.fullscreen-btn{width:100%;margin-top:5px}}
 </style>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0KXN0103E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-W0KXN0103E');
+</script>
 </head>
 <body>
 
@@ -46,7 +54,7 @@ iframe{flex:1;border:none;width:100%;transition:all 0.3s;}
   <button class="refresh-btn" id="refreshBtn">⟳ Refresh</button>
   <button class="fullscreen-btn" id="fullscreenBtn">⛶ Fullscreen</button>
 </div>
-<iframe id="browserFrame" src="/assets/home/newtab/index.html"></iframe>
+<iframe id="browserFrame" src="/assets/home/newtab/"></iframe>
 <div id="fullscreenPopup">Press ESC To Exit</div>
 
 <script>
@@ -79,7 +87,6 @@ function createTab(src,label){
   const closeBtn=document.createElement('span'); closeBtn.className='tab-close'; closeBtn.textContent='×'; tabElem.appendChild(closeBtn);
 
   tabsContainer.insertBefore(tabElem, addTabBtn);
-
 
   requestAnimationFrame(()=>{ tabElem.style.opacity='1'; tabElem.style.transform='translateX(0)'; });
 
@@ -116,7 +123,7 @@ function updateTabAndUrl(tab){
     const path = new URL(iframeWin.location.href, window.location.origin).pathname;
 
     let bcUrl = 'bloxcraft://';
-    if(path === '/assets/home/newtab/index.html'){ 
+    if(path === '/assets/home/newtab/' || path === '/assets/home/newtab/index.html'){ 
       bcUrl += 'newtab'; 
     } else if(path === '/') {
       bcUrl += 'home';
@@ -181,11 +188,11 @@ function closeTab(id){
     }
     tabs.splice(index,1);
     if(currentTabId===id&&tabs.length>0){ switchTab(tabs[0].id); } 
-    else if(tabs.length===0){ createTab('/assets/home/newtab/index.html','New Tab'); }
+    else if(tabs.length===0){ createTab('/assets/home/newtab/','New Tab'); }
   }
 }
 
-addTabBtn.addEventListener('click',()=>{ createTab('/assets/home/newtab/index.html','New Tab'); });
+addTabBtn.addEventListener('click',()=>{ createTab('/assets/home/newtab/','New Tab'); });
 refreshBtn.addEventListener('click',()=>{ browserFrame.contentWindow.location.reload(); });
 fullscreenBtn.addEventListener('click',()=>{
   browserFrame.classList.toggle('iframe-fullscreen');
@@ -196,7 +203,7 @@ fullscreenBtn.addEventListener('click',()=>{
 
 if(/Mobi|Android/i.test(navigator.userAgent)){ tabsContainer.style.flexWrap='wrap'; urlBar.style.fontSize='16px'; }
 
-createTab('/assets/home/newtab/index.html','New Tab');
+createTab('/assets/home/newtab/','New Tab');
 
 browserFrame.addEventListener('load',()=>{
   const tab=tabs.find(t=>t.id===currentTabId);
