@@ -1,29 +1,43 @@
+<!-- Copyright (c) 2025 Bloxcraft Studios -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bloxcraft UBG - Browse Mode</title>
+      <meta name="description" content="The Unblocked Games Site For You To Play!">
+<meta property="og:title" content="Bloxcraft UBG Games">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/">
+<meta property="og:site_name" content="Bloxcraft UBG">
+<meta property="og:image" content="/gamepage_banner.png" />
+<meta name="theme-color" content="#5555FF"> 
+<meta property="og:description" content="The Unblocked Games Site You Can Play Everyday! It Also has Some Custom Games.">
+  <link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 <style>
   body {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
     color: #fff;
-    height: 100vh;
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
   }
+
   .tabs {
     display: flex;
     background: linear-gradient(90deg, #4facfe, #00f2fe);
     padding: 5px;
     overflow-x: auto;
+    z-index: 100;
   }
   .tab {
+    display: flex;
+    align-items: center;
     background: rgba(255,255,255,0.2);
-    padding: 10px 15px;
+    padding: 5px 10px;
     margin-right: 5px;
     border-radius: 5px;
     cursor: pointer;
@@ -33,16 +47,31 @@
     background: rgba(255,255,255,0.5);
     font-weight: bold;
   }
+  .tab img {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    display: none;
+  }
   .tab-close {
     margin-left: 8px;
     cursor: pointer;
     font-weight: bold;
   }
+  .add-tab {
+    font-size: 20px;
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+
   .controls {
     display: flex;
     padding: 10px;
     background: rgba(0,0,0,0.3);
     align-items: center;
+    gap: 10px;
+    z-index: 99;
   }
   .url-bar {
     flex: 1;
@@ -52,10 +81,9 @@
     padding: 8px 12px;
     border-radius: 5px;
     font-size: 14px;
-    pointer-events: none; /* Not editable */
+    pointer-events: none;
   }
-  .refresh-btn {
-    margin-left: 10px;
+  .refresh-btn, .fullscreen-btn {
     padding: 8px 12px;
     border: none;
     border-radius: 5px;
@@ -64,29 +92,53 @@
     cursor: pointer;
     font-weight: bold;
   }
+
+
   iframe {
     flex: 1;
     border: none;
     width: 100%;
+    transition: all 0.3s;
   }
-  .add-tab {
-    font-size: 20px;
-    padding: 0 10px;
-    cursor: pointer;
+
+ 
+  .iframe-fullscreen {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 9999;
+  }
+
+
+  @media (max-width: 768px) {
+    .tabs {
+      flex-wrap: wrap;
+    }
+    .controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .refresh-btn, .fullscreen-btn {
+      width: 100%;
+      margin-top: 5px;
+    }
   }
 </style>
 </head>
 <body>
 
 <div class="tabs" id="tabs">
-  <!-- Tabs will be dynamically added -->
   <div class="add-tab" id="addTab">+</div>
 </div>
 
-<div class="controls">
+<div class="controls" id="controls">
   <input type="text" id="urlBar" class="url-bar" value="bloxcraft://newtab" readonly>
-  <button class="refresh-btn" id="refreshBtn">⟳</button>
+  <button class="refresh-btn" id="refreshBtn">⟳ Refresh</button>
+  <button class="fullscreen-btn" id="fullscreenBtn">⛶ Fullscreen</button>
 </div>
+  <p>Copyright (c) 2025 Bloxcraft Studios</p>
 
 <iframe id="browserFrame" src="/assets/home/newtab/index.html"></iframe>
 
@@ -96,6 +148,8 @@
   const urlBar = document.getElementById('urlBar');
   const browserFrame = document.getElementById('browserFrame');
   const refreshBtn = document.getElementById('refreshBtn');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const controls = document.getElementById('controls');
 
   let tabs = [];
   let currentTabId = 0;
@@ -105,6 +159,7 @@
     '/': '/assets/home/index.html',
     '/games': '/assets/games/index.html',
     '/featured-games': '/assets/featured-games/index.html',
+    '/refined-beta': '/assets/refined-beta/index.html',
     '/assets/home/newtab/index.html': '/assets/home/newtab/index.html'
   };
 
@@ -116,7 +171,20 @@
     const tabElem = document.createElement('div');
     tabElem.className = 'tab';
     tabElem.id = 'tab-' + tabId;
-    tabElem.innerHTML = `${tab.label}<span class="tab-close">×</span>`;
+
+    const favicon = document.createElement('img');
+    favicon.alt = '';
+    tabElem.appendChild(favicon);
+
+    const spanLabel = document.createElement('span');
+    spanLabel.textContent = tab.label;
+    tabElem.appendChild(spanLabel);
+
+    const closeBtn = document.createElement('span');
+    closeBtn.className = 'tab-close';
+    closeBtn.textContent = '×';
+    tabElem.appendChild(closeBtn);
+
     tabsContainer.insertBefore(tabElem, addTabBtn);
 
     tabElem.addEventListener('click', (e) => {
@@ -134,10 +202,42 @@
     currentTabId = id;
     const tab = tabs.find(t => t.id === id);
     browserFrame.src = tab.src;
-    urlBar.value = getBloxcraftURL(tab.src);
+    updateTabAndUrl(tab);
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     const activeTabElem = document.getElementById('tab-' + id);
     if (activeTabElem) activeTabElem.classList.add('active');
+  }
+
+  function updateTabAndUrl(tab) {
+    try {
+      const iframeDoc = browserFrame.contentDocument || browserFrame.contentWindow.document;
+
+      
+      const title = iframeDoc.title || tab.label;
+      const tabElem = document.getElementById('tab-' + tab.id);
+      tabElem.querySelector('span').textContent = title;
+
+    
+      const linkIcon = iframeDoc.querySelector("link[rel~='icon']");
+      const img = tabElem.querySelector('img');
+      if (linkIcon) {
+        img.src = linkIcon.href;
+        img.style.display = 'inline-block';
+      } else {
+        img.style.display = 'none';
+      }
+
+    
+      const path = new URL(browserFrame.contentWindow.location.href, window.location.origin).pathname;
+      urlBar.value = 'bloxcraft:/' + (path === '/assets/home/newtab/index.html' ? 'newtab' : path.replace(/^\/|\/$/g, '') || 'home');
+
+    } catch(err) {
+     
+      const tabElem = document.getElementById('tab-' + tab.id);
+      tabElem.querySelector('img').style.display = 'none';
+      tabElem.querySelector('span').textContent = tab.label;
+      urlBar.value = getBloxcraftURL(tab.src);
+    }
   }
 
   function closeTab(id) {
@@ -157,7 +257,7 @@
   function getBloxcraftURL(src) {
     for (const [key, val] of Object.entries(defaultPages)) {
       if (val === src) {
-        return 'bloxcraft://' + (key === '/assets/home/newtab/index.html' ? 'newtab' : key.replace('/', '') || 'home');
+        return 'bloxcraft:/' + (key === '/assets/home/newtab/index.html' ? 'newtab' : key.replace('/', '') || 'home');
       }
     }
     return src;
@@ -172,33 +272,27 @@
     if (tab) browserFrame.src = tab.src;
   });
 
-  // Intercept clicks inside iframe
-  browserFrame.addEventListener('load', () => {
-    try {
-      const iframeDoc = browserFrame.contentDocument || browserFrame.contentWindow.document;
-      iframeDoc.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', (e) => {
-          const href = link.getAttribute('href');
-          if (!href) return;
-          if (href.startsWith('https://') || href.startsWith('http://')) {
-            window.open(href, '_blank');
-            e.preventDefault();
-          } else {
-            // Navigate inside iframe
-            browserFrame.src = href;
-            urlBar.value = getBloxcraftURL(href);
-            e.preventDefault();
-          }
-        });
-      });
-    } catch(err) {
-      // Cross-origin, ignore
-    }
+  fullscreenBtn.addEventListener('click', () => {
+    browserFrame.classList.toggle('iframe-fullscreen');
+    controls.style.display = browserFrame.classList.contains('iframe-fullscreen') ? 'none' : 'flex';
+    tabsContainer.style.display = browserFrame.classList.contains('iframe-fullscreen') ? 'none' : 'flex';
   });
 
-  // Initialize first tab
-  createTab('/assets/home/newtab/index.html', 'New Tab');
 
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+  if (isMobile) {
+    tabsContainer.style.flexWrap = 'wrap';
+    urlBar.style.fontSize = '16px';
+  }
+
+
+  browserFrame.addEventListener('load', () => {
+    const tab = tabs.find(t => t.id === currentTabId);
+    if (tab) updateTabAndUrl(tab);
+  });
+
+
+  createTab('/assets/home/newtab/index.html', 'New Tab');
 </script>
 </body>
 </html>
