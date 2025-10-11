@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap');
 
 * { box-sizing: border-box; }
-
 body {
     margin: 0;
     font-family: 'Comfortaa', cursive;
@@ -14,7 +13,7 @@ body {
     padding: 20px;
 }
 
-.main-wrapper {
+.main-container {
     display: flex;
     width: 100%;
     max-width: 1200px;
@@ -22,45 +21,41 @@ body {
     gap: 12px;
 }
 
-.chats-container {
-    width: 200px;
+.chat-list-container {
+    width: 250px;
     background: #00008B;
-    border-radius: 12px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     padding: 10px;
     color: #fff;
-}
-
-.chat-bar {
-    font-weight: 700;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.chats-container ul {
-    list-style: none;
-    padding: 0;
-    flex: 1;
     overflow-y: auto;
 }
 
-.chats-container ul li {
+.chat-list-header {
+    font-weight: 700;
     margin-bottom: 8px;
-    cursor: pointer;
+    text-align: center;
 }
 
-#newChatBtn {
-    padding: 8px;
-    border-radius: 8px;
-    border: none;
+#chatList {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#chatList button {
     background: #5555FF;
     color: #fff;
-    font-weight: 700;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
     cursor: pointer;
+    text-align: left;
 }
 
-#newChatBtn:hover {
+#chatList button:hover {
     background: #00008B;
 }
 
@@ -68,10 +63,10 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    border: 1px solid #ddd;
-    background: #4fdf50;
     border-radius: 12px;
     overflow: hidden;
+    background: #4fdf50;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .ai-bar {
@@ -80,10 +75,9 @@ body {
     font-weight: 700;
     font-size: 1.2rem;
     text-align: center;
-    letter-spacing: 1px;
-    border-bottom: 1px solid #eee;
     color: #fff;
     text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .chat-container {
@@ -99,13 +93,8 @@ body {
 .chat-container::-webkit-scrollbar {
     width: 8px;
 }
-.chat-container::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 4px;
-}
-.chat-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
+.chat-container::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+.chat-container::-webkit-scrollbar-track { background: #f1f1f1; }
 
 .message {
     max-width: 75%;
@@ -115,19 +104,11 @@ body {
     word-break: break-word;
     font-size: 1rem;
     white-space: pre-wrap;
+    box-shadow: none;
 }
 
-.user {
-    background: #5555FF;
-    align-self: flex-end;
-    color: #fff;
-}
-
-.bot {
-    background: #eef1f5;
-    align-self: flex-start;
-    color: #333;
-}
+.user { background: #5555FF; align-self: flex-end; color: #fff; }
+.bot { background: #eef1f5; align-self: flex-start; color: #333; }
 
 .bot h1, .bot h2, .bot h3 { color: #00008B; margin: 6px 0; }
 .bot strong { color: #008B8B; }
@@ -147,9 +128,8 @@ pre {
     box-shadow: none;
     position: relative;
     margin-top: 8px;
+    font-family: 'Roboto Mono', monospace;
 }
-
-code { color: #333; font-family: inherit; }
 
 .copy-btn {
     position: absolute;
@@ -162,12 +142,9 @@ code { color: #333; font-family: inherit; }
     padding: 4px 8px;
     border-radius: 4px;
     cursor: pointer;
+    transition: all 0.2s;
 }
-
-.copy-btn:hover {
-    border-color: #5555FF;
-    color: #5555FF;
-}
+.copy-btn:hover { border-color: #5555FF; color: #5555FF; }
 
 .input-container {
     display: flex;
@@ -204,10 +181,20 @@ button {
     color: #fff;
     font-weight: 700;
     cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
 }
 
 button:hover {
     background: #00008B;
     border-color: #00008B;
+    color: #fff;
+}
+
+.app-footer {
+    background: #00008B;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.8rem;
     color: #fff;
 }
