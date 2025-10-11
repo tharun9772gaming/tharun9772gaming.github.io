@@ -18,26 +18,17 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-<div class="main-container">
-    <div class="chat-list-container">
-        <div class="chat-list-header">Chats</div>
-        <div id="chatList"></div>
-        <button id="newChatBtn">+ New Chat</button>
+<div class="app-container">
+    <div class="ai-bar" id="chatTitle">Bloxy AI!</div>
+    <div class="chat-container" id="chat"></div>
+    <div class="input-container">
+        <textarea id="userInput" placeholder="Ask Bloxy AI" rows="1" spellcheck="false" autocomplete="off"></textarea>
+        <button id="sendBtn">Send</button>
     </div>
-    <div class="app-container">
-        <div class="ai-bar" id="chatTitle">Bloxy AI</div>
-        <div class="chat-container" id="chat"></div>
-        <div class="input-container">
-            <textarea id="userInput" placeholder="Ask Bloxy AI something..." rows="1" spellcheck="false" autocomplete="off"></textarea>
-            <button id="sendBtn">Send</button>
-        </div>
-        <div class="app-footer">
-            <p>Clear Cookies For  This Website If You Want To Reset Chat History!</p>
-            <p>Copyright (c) 2025 Bloxcraft Studios</p>p>
-        </div>
-    </div>
+    <div class="app-footer">Copyright (c) 2025 Bloxcraft Studios</div>
 </div>
 <script src="/bloxy-ai/bloxy-ai.js"></script>
 </body>
 </html>
+
 
