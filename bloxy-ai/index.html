@@ -1,4 +1,33 @@
-<title>Bloxy AI</title>
-<link rel="icon" type="image/png" href="/assets-bloxy-ai.png">
-<p>This Site Has Moved To:</p>
-<a href="https://bloxy-ai.pages.dev">https://bloxy-ai.pages.dev</a>
+<!-- Copyright (c) 2025 Bloxcraft Studios -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloxy AI</title>
+    <meta name="description" content="An AI Built For Everybody To Use!">
+    <link rel="shortcut icon" type="image/png" href="/assets_bloxy_ai.png">
+    <link rel="stylesheet" href="bloxy-ai.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="chats-container">
+            <div class="chat-bar">Chats</div>
+            <ul id="chatNames"></ul>
+            <button id="newChatBtn">New Chat</button>
+        </div>
+
+        <div class="app-container">
+            <div class="ai-bar">Bloxy AI | Bloxy The Bot</div>
+            <div class="chat-container" id="chat"></div>
+            <div class="input-container">
+                <textarea id="userInput" placeholder="Ask Bloxy AI something..." rows="1" spellcheck="false" autocomplete="off"></textarea>
+                <button id="sendBtn">Ask</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="bloxy-ai.js"></script>
+</body>
+</html>
