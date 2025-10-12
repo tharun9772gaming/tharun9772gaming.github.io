@@ -14,6 +14,8 @@ const SYSTEM_PROMPT = "Your Name Is: Bloxy AI. You're Created By: Bloxcraft Stud
 
 let chatHistory = [];
 const MAX_TURNS = 6;
+const MAX_CHARS = 1200;
+const ERROR_TEXT = "ERROR: Try Again In 1 Minute Or More (Up To 48 Hours)";
 
 userInput.addEventListener("keydown", e => {
   if (e.key === "Enter" && !e.shiftKey) {
@@ -48,15 +50,40 @@ function appendMessage(content, sender) {
   chat.scrollTop = chat.scrollHeight;
 }
 
+function truncateText(s, n) {
+  if (!s) return s;
+  if (s.length <= n) return s;
+  return s.slice(0, n - 3) + "...";
+}
+
 function buildPayload() {
   const recent = chatHistory.slice(-MAX_TURNS * 2);
-  const contents = [
-    { role: "system", parts: [{ text: SYSTEM_PROMPT }] },
-    ...recent.map(m => ({
-      role: m.role === "user" ? "user" : "assistant",
-      parts: [{ text: m.text }]
-    }))
-  ];
+  const contents = [];
+
+
+  let fullHistory = [...recent];
+  if (fullHistory.length === 0) {
+    return {
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: truncateText(SYSTEM_PROMPT, MAX_CHARS) }]
+        }
+      ],
+      generationConfig: { temperature: 0.7, maxOutputTokens: 700 }
+    };
+  }
+
+  fullHistory[0] = {
+    role: "user",
+    text: SYSTEM_PROMPT + "\n\n" + fullHistory[0].text
+  };
+
+  for (const m of fullHistory) {
+    const role = m.role === "user" ? "user" : "model";
+    contents.push({ role, parts: [{ text: truncateText(m.text, MAX_CHARS) }] });
+  }
+
   return {
     contents,
     generationConfig: { temperature: 0.7, maxOutputTokens: 700 }
@@ -74,11 +101,12 @@ async function fetchWithFallback(urls, body) {
       });
       lastResponse = res;
       if (res.ok) return res;
+
       let text;
-      try { text = await res.text(); } catch { text = "<no body>"; }
-      console.warn(`Endpoint ${url} returned ${res.status}:`, text);
+      try { text = await res.text(); } catch (e) { text = "<no body>"; }
+      console.warn(`[bloxy-ai] endpoint ${url} returned ${res.status}`, { status: res.status, body: text });
     } catch (err) {
-      console.warn(`Network error on ${url}:`, err);
+      console.warn(`[bloxy-ai] network error on ${url}`, err);
     }
   }
   return lastResponse;
@@ -97,8 +125,15 @@ async function sendMessage() {
   try {
     const res = await fetchWithFallback([API_URL, API_URL2, API_URL3], payload);
 
-    if (!res || !res.ok) {
-      appendMessage("ERROR: Try Again In 1 Minute Or More (Up To 48 Hours)", "bot");
+    if (!res) {
+      appendMessage(ERROR_TEXT, "bot");
+      return;
+    }
+
+    if (!res.ok) {
+      const bodyText = await res.text();
+      console.warn("[bloxy-ai] non-ok final response:", res.status, bodyText);
+      appendMessage(ERROR_TEXT, "bot");
       return;
     }
 
@@ -106,13 +141,21 @@ async function sendMessage() {
     const reply =
       data.candidates?.[0]?.content?.parts?.[0]?.text ??
       data.output?.[0]?.content?.[0]?.text ??
-      "ERROR: Try Again In 1 Minute Or More (Up To 48 Hours)";
+      null;
+
+    if (!reply) {
+      console.warn("[bloxy-ai] unexpected response shape:", data);
+      appendMessage(ERROR_TEXT, "bot");
+      return;
+    }
 
     appendMessage(reply, "bot");
     chatHistory.push({ role: "bot", text: reply });
+
   } catch (err) {
-    console.error(err);
-    appendMessage("ERROR: Try Again In 1 Minute Or More (Up To 48 Hours)", "bot");
+    console.error("[bloxy-ai] sendMessage error:", err);
+    appendMessage(ERROR_TEXT, "bot");
   }
 }
+
 
