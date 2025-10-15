@@ -1,8 +1,7 @@
 <html lang="en">
 <head>
   <base href="https://cdn.jsdelivr.net/gh/gn-math/assets@main/311/">
-  <!--v0.4-->
-  <title>SANDTRIS</title>
+  <title>Bloxcraft UBG - SANDTRIS</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
   <script src="sketch.js"></script>
@@ -13,36 +12,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-  <!-- Header Title -->
+
    <div id="sandtrislogo">
   	<h1 >SANDTRIS</h1>
 	</div>
   
   <div id="main2">
-    <!-- Ads - Left Column -->
-    <div class="adsbox">
-      ads!
-      <div class="ad">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9200311124038960" crossorigin="anonymous"></script>
-        <!-- top sandtris ad -->
-        <ins class="adsbygoogle" style="display:inline-block;width:200px;height:310px" data-ad-client="ca-pub-9200311124038960" data-ad-slot="4677385647"></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
-      <div class="ad">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9200311124038960" crossorigin="anonymous"></script>
-        <!-- bottom sandtris ad -->
-        <ins class="adsbygoogle" style="display:inline-block;width:200px;height:310px" data-ad-client="ca-pub-9200311124038960" data-ad-slot="1316725130"></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
-    </div>
 
-    <!-- Game Canvas - Middle Column -->
+
     <div id="cnv">
-      <!-- Various Dialog Pages -->
+     
       <dialog id="aboutpage" class="page" close>
         <div class="box">
           <div class="logo is-animation">
@@ -200,7 +179,7 @@
 	  
     </div>
 
-    <!-- Leaderboard - Right Column -->
+
     <div class="adsbox">
       Weekly Leaderboard
       <div id="leaderboard-list"></div>
@@ -211,7 +190,7 @@
 
   <script>
     function scaleDiv() {
-		//
+		
       var container = document.getElementById('cnv');
       var baseWidth = parseFloat(getComputedStyle(document.documentElement)
 	  	.getPropertyValue('--base-width'));
@@ -232,4 +211,5 @@
     window.onresize = scaleDiv;
   </script>
 </body>
+
 </html>
