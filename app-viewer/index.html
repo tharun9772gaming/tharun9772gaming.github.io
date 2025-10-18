@@ -208,6 +208,7 @@
 
   <iframe id="viewerFrame"></iframe>
 
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const gameUrl = params.get("view");
@@ -219,27 +220,32 @@
     if (gameUrl && gameUrl.startsWith("/")) {
       viewerFrame.src = gameUrl;
 
-      viewerFrame.addEventListener("load", () => {
-        try {
-       
-          const iframeDoc = viewerFrame.contentDocument || viewerFrame.contentWindow.document;
-          const iframeTitle = iframeDoc.querySelector("title")?.innerText || "App";
-          viewerTitle.textContent = iframeTitle;
-        } catch {
-          viewerTitle.textContent = gameUrl;
-        }
-      });
+     
+      if (gameUrl === "/apps/dominum-browser") {
+        viewerTitle.textContent = "Bloxcraft UBG - Dominum Browser";
+      } else {
+        viewerFrame.addEventListener("load", () => {
+          try {
+          
+            const iframeDoc = viewerFrame.contentDocument || viewerFrame.contentWindow.document;
+            const iframeTitle = iframeDoc.querySelector("title")?.innerText || "Untitled App";
+            viewerTitle.textContent = iframeTitle;
+          } catch {
+            viewerTitle.textContent = gameUrl;
+          }
+        });
+      }
     } else {
       viewerTitle.textContent = "No app loaded";
     }
 
     closeViewer.addEventListener("click", () => {
-    
+     
       window.top.location.href = "/games";
     });
 
     openNewTab.addEventListener("click", () => {
-  
+     
       if (gameUrl) {
         window.open(gameUrl, "_blank");
       }
