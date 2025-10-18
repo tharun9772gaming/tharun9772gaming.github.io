@@ -221,9 +221,7 @@
       viewerFrame.src = gameUrl;
 
      
-      if (gameUrl === "/apps/dominum-browser") {
-        viewerTitle.textContent = "Bloxcraft UBG - Dominum Browser";
-      } else {
+       else {
         viewerFrame.addEventListener("load", () => {
           try {
           
@@ -250,6 +248,10 @@
         window.open(gameUrl, "_blank");
       }
     });
+
+          if (gameUrl === "/apps/dominum-browser") {
+        viewerTitle.textContent = "Bloxcraft UBG - Dominum Browser";
+      }
   </script>
 </body>
 </html>
