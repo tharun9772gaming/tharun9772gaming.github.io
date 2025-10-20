@@ -1,4 +1,4 @@
- h1, h2, h3, h4, h5, h6, p, span, div,input,a, button {
+h1, h2, h3, h4, h5, h6, p, span, div,input,a, button {
     position: relative;
     z-index: 1;
   }
@@ -13,4 +13,6 @@
     z-index: 0;
     pointer-events: none; 
     filter: brightness(0.5); 
+    background: transparent;
   }
+
