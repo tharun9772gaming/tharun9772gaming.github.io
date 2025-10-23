@@ -27,7 +27,6 @@
     overflow:hidden;
   }
 
- 
   #desktop {
     position:absolute; inset:0;
     background-image: url('https://cdn.jsdelivr.net/gh/tharun9772/game-assets@main/bloxy-os/background.png');
@@ -35,7 +34,6 @@
     filter: saturate(1.05) contrast(1.02);
   }
 
-  
   #topbar {
     position:fixed; top:0; left:0; right:0; height:38px;
     display:flex; align-items:center; justify-content:space-between; padding:0 12px;
@@ -44,13 +42,11 @@
   }
   .chip { background:rgba(255,255,255,0.03); padding:6px 8px; border-radius:10px; font-size:13px; display:flex; gap:8px; align-items:center; }
 
- 
   .desktop-icons { position:absolute; top:80px; left:40px; display:flex; flex-wrap:wrap; gap:18px; max-width:calc(100% - 80px); z-index:100; }
   .desktop-icon { width:80px; text-align:center; color:var(--text); cursor:pointer; user-select:none; }
   .desktop-icon img{ width:64px; height:64px; border-radius:12px; display:block; margin:0 auto 6px; box-shadow:0 8px 20px rgba(0,0,0,0.35); }
   .desktop-icon span{ display:block; font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
- 
   #dock {
     position:fixed; bottom:20px; left:50%; transform:translateX(-50%); padding:12px 18px; background:var(--dock-bg);
     border-radius:18px; display:flex; gap:14px; align-items:flex-end; z-index:1500; box-shadow: var(--shadow); backdrop-filter: blur(12px);
@@ -63,12 +59,10 @@
   .dock-underline { position:absolute; left:8px; right:8px; bottom:-8px; height:3px; border-radius:4px; background:linear-gradient(90deg,#7c3aed,#4f46e5); transform-origin:center; opacity:0; transition:opacity .18s; }
   .dock-item.minimized .dock-underline { opacity:1; }
 
- 
   .launch-icon-grid {
     width:44px; height:44px; display:grid; grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(2,1fr); gap:4px; padding:6px; border-radius:8px; background:rgba(255,255,255,0.03);
   }
   .launch-icon-grid div{ background:rgba(255,255,255,0.04); border-radius:3px; }
-
 
   #launcherModal {
     position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(0.95); width:760px; max-width:calc(100% - 40px); max-height:72vh;
@@ -80,7 +74,6 @@
   #launcherHeader { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; }
   #launcherHeader h3{ margin:0; font-weight:600; color:var(--text); }
   #launcherHeader .small-muted{ color:var(--muted); font-size:13px; }
-
 
   .launcher-grid-wrap { overflow:auto; max-height:60vh; padding-right:6px; }
   .launcher-grid {
@@ -96,16 +89,13 @@
   .app-card .app-actions{ display:flex; gap:8px; margin-top:auto; }
   .btn { padding:6px 8px; border-radius:8px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.04); cursor:pointer; font-size:13px; color:var(--text); }
 
- 
   #addAppForm { display:flex; gap:8px; align-items:center; margin-left:8px; }
   #addAppForm input { padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background: transparent; color:var(--text); outline:none; font-size:13px; width:160px; }
   #addAppForm input::placeholder { color: rgba(234,240,255,0.35); }
 
-
   .small-muted { font-size:12px; color:var(--muted); }
   .hint { font-size:12px; color:var(--muted); position:fixed; right:18px; bottom:18px; background:rgba(0,0,0,0.35); padding:8px 10px; border-radius:10px; z-index:2000; }
 
-  
   .app-window { position:absolute; width:720px; height:480px; background: rgba(255,255,255,0.06); border-radius:12px; box-shadow: 0 18px 60px rgba(2,6,23,0.7); overflow:hidden; display:flex; flex-direction:column; backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.06); z-index:500; min-width:300px; min-height:160px; }
   .title-bar { height:38px; display:flex; align-items:center; gap:10px; padding:6px 10px; cursor:grab; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); }
   .title-left { display:flex; gap:8px; align-items:center; width:70%; }
@@ -133,7 +123,6 @@
 
 <div id="desktop" onclick="focusClearAll()"></div>
 
-
 <div id="topbar">
   <div style="display:flex;gap:8px;align-items:center;">
     <div class="chip" style="font-weight:600; font-size:13px;">BloxyOS</div>
@@ -149,12 +138,9 @@
   </div>
 </div>
 
-
 <div class="desktop-icons" id="desktopIcons"></div>
 
-  
 <div id="dock"></div>
-
 
 <div id="launcherModal" role="dialog" aria-modal="true">
   <div id="launcherHeader">
@@ -173,14 +159,11 @@
   </div>
 
   <div class="launcher-grid-wrap">
-    <div class="launcher-grid" id="launcherGrid">
-   
-    </div>
+    <div class="launcher-grid" id="launcherGrid"></div>
   </div>
-
 </div>
 
-<div class="hint">Click The 4-Square App To See All Apps</div>
+<div class="hint">Click The App Menu Icon To See All Apps</div>
 
 <script>
 
@@ -208,14 +191,14 @@ const DEFAULT_APPS = [
 
   { id: 'elite-gamez', name: 'Elite Gamez', icon: 'https://cdn.jsdelivr.net/gh/elite-gamez/fac@main/logoo.png', url: '/apps/elite-gamez/' },
   { id: 'test-iframe', name: 'Test Iframe', icon: '/assets_handcurser.png', url: '/iframe-sites/iframe-test-list/' },
-  { id: 'annoucements', name: 'Annoucements', icon: '/bloxraft.png', url: 'https://padlet.com/embed/nhocearj1z6ibdyy' },
+  { id: 'annoucements', name: 'Annoucements', icon: '/bloxcraft.png', url: 'https://padlet.com/embed/nhocearj1z6ibdyy' },
   { id: 'tos', name: 'Terms Of Service', icon: '/bloxcraft_transparent.png', url: '/terms' },
   { id: 'privacy-policy', name: 'Privcy Policy', icon: '/bloxcraft_transparent.png', url: '/privacy-policy' }
 ];
 
+
 let STORAGE = getCookieJson('bloxy_state') || { pinned: [], windows: {}, customApps: [] };
 function saveState(){ setCookieJson('bloxy_state', STORAGE); }
-
 
 const dock = document.getElementById('dock');
 const desktopIcons = document.getElementById('desktopIcons');
@@ -223,25 +206,32 @@ const launcherModal = document.getElementById('launcherModal');
 const launcherGrid = document.getElementById('launcherGrid');
 
 function getAllApps(){
- 
   return [...DEFAULT_APPS, ... (STORAGE.customApps || [])];
 }
 
+
+const DEFAULT_FIRST_4 = DEFAULT_APPS.slice(0,4);
+
+
 function renderDock(){
   dock.innerHTML = '';
-  const apps = DEFAULT_APPS.slice(0,4); 
-  const all = getAllApps();
 
   
-  const launchItem = document.createElement('div'); launchItem.className='dock-item';
+  const launchItem = document.createElement('div'); launchItem.className='dock-item launch-item';
   launchItem.title = 'Launcher';
-  const gridIcon = document.createElement('div'); gridIcon.className = 'launch-icon-grid';
-  gridIcon.innerHTML = '<div></div><div></div><div></div><div></div>';
-  launchItem.appendChild(gridIcon);
+  const launchImg = document.createElement('img');
+  launchImg.src = 'https://cdn.jsdelivr.net/gh/tharun9772/game-assets@main/bloxy-os/app-menu.png';
+  launchImg.alt = 'App Menu';
+  launchImg.style.width = '44px';
+  launchImg.style.height = '44px';
+  launchImg.style.borderRadius = '8px';
+  launchItem.appendChild(launchImg);
   launchItem.onclick = (e)=>{ e.stopPropagation(); toggleLauncher(true); };
   dock.appendChild(launchItem);
 
- 
+  const all = getAllApps();
+
+
   for(const appId of STORAGE.pinned){
     const app = all.find(a=>a.id===appId);
     if(!app) continue;
@@ -250,21 +240,13 @@ function renderDock(){
   }
 
  
-  for(const app of DEFAULT_APPS){
-  
+  for(const app of DEFAULT_FIRST_4){
     if(STORAGE.pinned.includes(app.id)) continue;
     const item = createDockItemForApp(app);
     dock.appendChild(item);
   }
-
-  
-  for(const c of (STORAGE.customApps || [])){
-    if(STORAGE.pinned.includes(c.id)) continue;
-    if(DEFAULT_APPS.find(a=>a.id===c.id)) continue;
-    const item = createDockItemForApp(c);
-    dock.appendChild(item);
-  }
 }
+
 
 function createDockItemForApp(app){
   const item = document.createElement('div'); item.className='dock-item'; item.dataset.app = app.id;
@@ -274,22 +256,24 @@ function createDockItemForApp(app){
   const pin = document.createElement('div'); pin.className='pin-btn'; pin.innerHTML='📌'; pin.title = 'Pin/Unpin to desktop';
   pin.onclick = (e)=>{ e.stopPropagation(); togglePin(app.id); };
   item.appendChild(pin);
-  
+
   const underline = document.createElement('div'); underline.className='dock-underline'; item.appendChild(underline);
-  
+
   item.onclick = ()=> {
     const ws = STORAGE.windows[app.id];
     if(ws && ws.minimized){ createOrRestoreWindow(app, ws); ws.minimized=false; saveState(); refreshDockUnderlineStatus(); return; }
     if(document.getElementById('win-'+app.id)) { focusWindowById(app.id); return; }
     openApp(app);
   };
+
   item.oncontextmenu = (e)=> {
     e.preventDefault();
-
     const menu = document.createElement('div');
     menu.style.position='fixed'; menu.style.left=e.clientX+'px'; menu.style.top=e.clientY+'px';
     menu.style.background='rgba(0,0,0,0.8)'; menu.style.padding='8px'; menu.style.borderRadius='8px'; menu.style.zIndex=9999;
-    menu.innerHTML = `<div style="padding:6px 12px;cursor:pointer">Open</div><div style="padding:6px 12px;cursor:pointer">${STORAGE.pinned.includes(app.id)?'Unpin':'Pin'}</div><div style="padding:6px 12px;cursor:pointer">Open in new tab</div>`;
+    menu.innerHTML = `<div style="padding:6px 12px;cursor:pointer">Open</div>
+                      <div style="padding:6px 12px;cursor:pointer">${STORAGE.pinned.includes(app.id)?'Unpin':'Pin'}</div>
+                      <div style="padding:6px 12px;cursor:pointer">Open in new tab</div>`;
     document.body.appendChild(menu);
     const rm = ()=>menu.remove();
     menu.children[0].onclick = ()=>{ openApp(app); rm(); };
@@ -297,7 +281,7 @@ function createDockItemForApp(app){
     menu.children[2].onclick = ()=>{ window.open(app.url,'_blank'); rm(); };
     document.addEventListener('click', rm, { once:true });
   };
-  // minimized status
+
   if(STORAGE.windows[app.id] && STORAGE.windows[app.id].minimized) item.classList.add('minimized');
   return item;
 }
@@ -305,6 +289,7 @@ function createDockItemForApp(app){
 function defaultIconFor(name){
   return 'https://cdn.jsdelivr.net/gh/tharun9772/game-assets@main/bloxy-os/565547.png';
 }
+
 
 function renderDesktopIcons(){
   desktopIcons.innerHTML = '';
@@ -340,8 +325,9 @@ function toggleLauncher(show){
   if(show) openLauncher(); else closeLauncher();
 }
 
+
 document.addEventListener('click', (e)=>{
-  const inside = e.target.closest('#launcherModal') || e.target.closest('.launch-icon-grid');
+  const inside = e.target.closest('#launcherModal') || e.target.closest('.launch-item') || e.target.closest('.launch-icon-grid') || e.target.closest('.launch-item img');
   if(!inside) closeLauncher();
 });
 
@@ -349,7 +335,7 @@ document.addEventListener('click', (e)=>{
 function buildLauncherGrid(){
   launcherGrid.innerHTML = '';
   const apps = getAllApps();
- 
+
   apps.sort((a,b)=> (a.name||'').localeCompare(b.name||''));
   for(const app of apps){
     const card = document.createElement('div'); card.className='app-card';
@@ -357,7 +343,8 @@ function buildLauncherGrid(){
     const name = document.createElement('div'); name.className='app-name'; name.textContent = app.name;
     const actions = document.createElement('div'); actions.className='app-actions';
     const launchBtn = document.createElement('button'); launchBtn.className='btn'; launchBtn.textContent='Open';
-    launchBtn.onclick = ()=>{ openApp(app); };
+   
+    launchBtn.onclick = ()=>{ openApp(app); closeLauncher(); };
     const pinBtn = document.createElement('button'); pinBtn.className='btn'; pinBtn.textContent = STORAGE.pinned.includes(app.id)?'Unpin':'Pin';
     pinBtn.onclick = ()=>{ togglePin(app.id); pinBtn.textContent = STORAGE.pinned.includes(app.id)?'Unpin':'Pin'; renderDesktopIcons(); renderDock(); };
     actions.appendChild(launchBtn); actions.appendChild(pinBtn);
@@ -392,7 +379,7 @@ function addCustomApp(){
 
 let zCounter = 1000;
 function openApp(app){
- 
+  
   const defaultState = {
     id: app.id,
     name: app.name,
@@ -402,9 +389,9 @@ function openApp(app){
     width: 720, height: 480,
     minimized: false, fullscreen: false
   };
-  STORAGE.windows[app.id] = defaultState;
+  STORAGE.windows[app.id] = STORAGE.windows[app.id] || defaultState;
   saveState();
-  createWindowFromState(app, defaultState);
+  createWindowFromState(app, STORAGE.windows[app.id]);
   renderDock();
 }
 
@@ -421,21 +408,19 @@ function createOrRestoreWindow(app, wstate){
 }
 
 function createWindowFromState(app, wstate){
-
   if(document.getElementById('win-'+app.id)) return;
   const w = document.createElement('div'); w.className='app-window'; w.id='win-'+app.id;
   w.style.left = (wstate.left||100)+'px'; w.style.top=(wstate.top||80)+'px'; w.style.width=(wstate.width||720)+'px'; w.style.height=(wstate.height||480)+'px'; w.style.zIndex = ++zCounter;
 
-
   const titleBar = document.createElement('div'); titleBar.className='title-bar';
-  const left = document.createElement('div'); left.className='title-left'; left.innerHTML = `<div style="width:14px;height:14px;border-radius:50%;background:url(${app.icon||defaultIconFor(app.name)}) center/cover"></div><div class="win-title">${app.name}</div>`;
+  const left = document.createElement('div'); left.className='title-left';
+  left.innerHTML = `<div style="width:14px;height:14px;border-radius:50%;background:url(${app.icon||defaultIconFor(app.name)}) center/cover"></div><div class="win-title">${app.name}</div>`;
   const right = document.createElement('div'); right.className='title-right';
   const btnMin = document.createElement('div'); btnMin.className='control-btn btn-min';
   const btnMax = document.createElement('div'); btnMax.className='control-btn btn-max';
   const btnClose = document.createElement('div'); btnClose.className='control-btn btn-close';
   right.appendChild(btnMin); right.appendChild(btnMax); right.appendChild(btnClose);
   titleBar.appendChild(left); titleBar.appendChild(right);
-
 
   const frame = document.createElement('div'); frame.className='app-frame';
   const iframe = document.createElement('iframe'); iframe.src = app.url;
@@ -455,13 +440,12 @@ function createWindowFromState(app, wstate){
   makeResizable(w, resizer);
 
   btnMin.onclick = (e)=>{ e.stopPropagation(); minimizeWindow(app.id); };
-  btnClose.onclick = (e)=>{ e.stopPropagation(); minimizeWindow(app.id); }; 
+  btnClose.onclick = (e)=>{ e.stopPropagation(); minimizeWindow(app.id); };
   btnMax.onclick = (e)=>{ e.stopPropagation(); toggleFullscreen(w, app.id); };
 
   w.addEventListener('mouseup', ()=> saveWindowStateFromDOM(app.id, w));
   w.addEventListener('mouseleave', ()=> saveWindowStateFromDOM(app.id, w));
 }
-
 
 function makeDraggable(winEl, handle){
   let isDown=false, startX=0, startY=0, origLeft=0, origTop=0;
@@ -493,7 +477,6 @@ function makeResizable(winEl, handle){
   window.addEventListener('mouseup', ()=>{ if(!isRes) return; isRes=false; document.body.style.userSelect=''; const appId = winEl.id.replace('win-',''); saveWindowStateFromDOM(appId, winEl); });
 }
 
-
 function saveWindowStateFromDOM(appId, winEl){
   STORAGE.windows[appId] = STORAGE.windows[appId] || {};
   STORAGE.windows[appId].left = parseInt(winEl.style.left || winEl.offsetLeft);
@@ -503,7 +486,6 @@ function saveWindowStateFromDOM(appId, winEl){
   saveState(); refreshDockUnderlineStatus();
 }
 
-
 function minimizeWindow(appId){
   const winEl = document.getElementById('win-'+appId);
   if(winEl) winEl.style.display='none';
@@ -511,7 +493,6 @@ function minimizeWindow(appId){
   STORAGE.windows[appId].minimized = true;
   saveState(); refreshDockUnderlineStatus();
 }
-
 
 function toggleFullscreen(winEl, appId){
   const state = STORAGE.windows[appId] || {};
@@ -524,14 +505,11 @@ function requestFullscreenMode(winEl, appId, enable){
   saveState();
 }
 
-
 function focusWindow(el){ document.querySelectorAll('.app-window').forEach(e=>e.style.boxShadow='0 18px 60px rgba(2,6,23,0.7)'); el.style.boxShadow='0 28px 90px rgba(2,6,23,0.85)'; el.style.zIndex = ++zCounter; }
 function focusWindowById(appId){ const el = document.getElementById('win-'+appId); if(el){ el.style.display='flex'; focusWindow(el); STORAGE.windows[appId].minimized=false; saveState(); refreshDockUnderlineStatus(); } }
 function focusClearAll(){ document.querySelectorAll('.app-window').forEach(e=>e.style.boxShadow='0 18px 60px rgba(2,6,23,0.7)'); }
 
-
 function refreshDockUnderlineStatus(){ for(const el of dock.querySelectorAll('.dock-item')){ const id = el.dataset.app; if(id && STORAGE.windows[id] && STORAGE.windows[id].minimized) el.classList.add('minimized'); else el.classList.remove('minimized'); } }
-
 
 function renderSavedWindows(){
   for(const [appId, wstate] of Object.entries(STORAGE.windows || {})){
@@ -599,3 +577,4 @@ setInterval(()=>{ saveState(); refreshDockUnderlineStatus(); }, 3000);
 
 </body>
 </html>
+
