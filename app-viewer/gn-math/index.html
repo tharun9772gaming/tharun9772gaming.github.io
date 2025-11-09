@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bloxcraft UBG - Viewer</title>
+  <title>Bloxcraft UBG - Games</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
   <link rel="stylesheet" href="/app-viewer/app-viewer-default.css">
@@ -37,13 +37,11 @@
   const closeViewer = document.getElementById("closeViewer");
   const openNewTab = document.getElementById("openNewTab");
 
- 
   function show404() {
     viewerFrame.srcdoc = `<style>body{background:black;color:white;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px}</style>404 Blocked Or Not Found`;
-    viewerTitle.textContent = "404";
+    viewerTitle.textContent = "Error";
   }
 
- 
   if (!id || isNaN(id) || Number(id) < 0) {
     show404();
     return;
@@ -63,15 +61,15 @@
 
     const fileUrl = `https://cdn.jsdelivr.net/gh/gn-math/html@master/${id}.html`;
 
-    
     fetch(fileUrl)
       .then(r => {
         if (!r.ok) throw new Error();
-        viewerFrame.src = fileUrl;
+        return r.text();
+      })
+      .then(html => {
+        viewerFrame.srcdoc = html;
       })
       .catch(() => show404());
-
-    viewerFrame.addEventListener("error", show404);
 
     openNewTab.addEventListener("click", () => window.open(fileUrl, "_blank"));
 
@@ -84,3 +82,5 @@
 </script>
 </body>
 </html>
+
+
