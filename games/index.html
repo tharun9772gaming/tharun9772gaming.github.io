@@ -597,7 +597,7 @@ function closeIframe() {
 
         const playLink = document.createElement('a');
         playLink.classList.add('play-btn');
-        playLink.href = `/app-viewer/?view=/apps/gn-math?id=${id}`;
+        playLink.href = `/app-viewer/gn-math/?gn-id=${id}`;
         playLink.textContent = 'Play';
 
         card.appendChild(img);
@@ -607,7 +607,7 @@ function closeIframe() {
         container.appendChild(card);
       });
     } catch (error) {
-      console.error('Error loading or parsing zones.json:', error);
+      console.error('Error loading or parsing zones.json. Try at home incase its blocked! If your at home, please contact us.:', error);
     }
   }
 
