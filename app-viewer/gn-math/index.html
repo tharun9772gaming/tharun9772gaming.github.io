@@ -37,7 +37,7 @@
 
   function show404() {
     viewerFrame.srcdoc = `<style>body{background:black;color:white;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px}</style>404 Blocked Or Not Found`;
-    viewerTitle.textContent = "Error";
+    viewerTitle.textContent = " ";
   }
 
   if (!id || isNaN(id) || Number(id) < 0) {
@@ -54,7 +54,7 @@
       return;
     }
 
-    const title = game.name || "Unknown Game";
+    const title = game.name || " ";
     viewerTitle.textContent = title;
 
     const fileUrl = `https://cdn.jsdelivr.net/gh/gn-math/html@master/${id}.html`;
