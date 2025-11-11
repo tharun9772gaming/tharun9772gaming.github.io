@@ -1,4 +1,3 @@
-<!-- Copyright (c) Bloxcraft Studios 2025 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,14 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" type="image/png" href="/bloxcraft.png">
   <link rel="stylesheet" href="/app-viewer/app-viewer-default.css">
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0KXN0103E"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-W0KXN0103E');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0KXN0103E"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-W0KXN0103E');
+  </script>
 </head>
 <body>
   <div id="viewerBar">
@@ -71,7 +69,25 @@
       })
       .catch(() => show404());
 
-    openNewTab.addEventListener("click", () => window.open(fileUrl, "_blank"));
+ 
+    openNewTab.addEventListener("click", async () => {
+      try {
+        const res = await fetch(fileUrl);
+        if (!res.ok) throw new Error();
+
+        const html = await res.text();
+        const newTab = window.open("about:blank", "_blank");
+        if (!newTab) {
+          alert("Popup blocked! Enable popups to open game.");
+          return;
+        }
+        newTab.document.open();
+        newTab.document.write(html);
+        newTab.document.close();
+      } catch (err) {
+        alert("Failed to open in new tab");
+      }
+    });
 
   } catch {
     show404();
@@ -79,8 +95,11 @@
 
   closeViewer.addEventListener("click", () => window.top.location.href = "/games");
 })();
+
+
 </script>
 </body>
 </html>
+
 
 
