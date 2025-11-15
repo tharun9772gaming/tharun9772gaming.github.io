@@ -2,22 +2,18 @@
   "hosting": {
     "public": ".", 
     "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
+      "firebase.json",      
+      "**/.*",               
+      "**/node_modules/**"  
     ],
+    
+    
+    
     "rewrites": [
-      {
-        "source": "/api/proxy/**",
-        "function": "proxyHandler"
-      },
       {
         "source": "**",
         "destination": "/index.html"
       }
     ]
-  },
-  "functions": {
-    "source": "functions" 
   }
 }
