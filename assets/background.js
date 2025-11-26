@@ -1,6 +1,6 @@
   const secretwords = ["fakeuser", "notexter", "frwendsec"]
   const wordlist =  ["fekeusa", "nttss", "okay"]
-  const w0ord = ["bloxcraft-is-the-goat", "bloxcraft-ubg-is-ubg", "golden-wiggle-wiggle", "ubgisunblocked];
+  const w0ord = ["bloxcraft-is-the-goat", "bloxcraft-ubg-is-ubg", "golden-wiggle-wiggle", "ubgisunblocked"];
   const word = ["Some", "BetaSigma", "School"]
   
   
@@ -8,7 +8,7 @@
   const popupOverlay = document.getElementById("popupOverlay");
   const closePopup = document.getElementById("closePopup");
   const submitCode = document.getElementById("submitCode");
-  const localstoragekey = "code-378297"
+  const localstoragekey = "code-37829767"
   const secretInput = document.getElementById("secretInput");
   const message = document.getElementById("message");
 
