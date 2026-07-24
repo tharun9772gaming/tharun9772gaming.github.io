@@ -173,6 +173,7 @@
       font-weight: 600 !important;
       border: 1px solid rgba(255, 255, 255, 0.06) !important;
       transition: all 0.12s ease !important;
+      cursor: pointer !important;
     }
 
     .gboard-key.wide { flex: 1.5 !important; background: #221a38 !important; }
@@ -315,6 +316,25 @@
   let isShift = false;
   let isNumbers = false;
 
+  function triggerKeyAction(key) {
+    if (key === 'Shift') {
+      isShift = !isShift;
+    } else if (key === '123') {
+      isNumbers = true;
+      kbdRow = 0;
+      kbdCol = 0;
+    } else if (key === 'ABC') {
+      isNumbers = false;
+      kbdRow = 0;
+      kbdCol = 0;
+    } else {
+      let char = key;
+      if (isShift && char.length === 1) char = char.toUpperCase();
+      broadcast('TYPE', { key: char });
+    }
+    renderKeyboard();
+  }
+
   function renderKeyboard() {
     if (!keyboardContainer) return;
     keyboardContainer.innerHTML = '';
@@ -334,6 +354,15 @@
         if (rIdx === kbdRow && cIdx === kbdCol) keyEl.classList.add('active');
 
         keyEl.textContent = displayKey;
+
+        keyEl.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          kbdRow = rIdx;
+          kbdCol = cIdx;
+          triggerKeyAction(key);
+        });
+
         rowEl.appendChild(keyEl);
       });
       keyboardContainer.appendChild(rowEl);
@@ -378,47 +407,80 @@
     if (!active || (active.tagName !== 'INPUT' && active.tagName !== 'TEXTAREA' && !active.isContentEditable)) {
       if (lastActiveInput && targetDoc.contains(lastActiveInput)) {
         active = lastActiveInput;
-        active.focus();
+        try { active.focus(); } catch (e) {}
       } else {
-        active = targetDoc.querySelector('input:focus, textarea:focus, [contenteditable]:focus');
+        active = targetDoc.querySelector('input:focus, textarea:focus, [contenteditable]:focus') || targetDoc.querySelector('input, textarea, [contenteditable]');
       }
     }
 
     if (!active) return;
 
     if (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA') {
-      const start = active.selectionStart ?? active.value.length;
-      const end = active.selectionEnd ?? active.value.length;
-      let val = active.value;
+      let start = 0, end = 0;
+      let supportsSelection = true;
+
+      try {
+        start = active.selectionStart ?? active.value.length;
+        end = active.selectionEnd ?? active.value.length;
+      } catch (e) {
+        supportsSelection = false;
+        start = (active.value || '').length;
+        end = (active.value || '').length;
+      }
+
+      let val = active.value || '';
 
       if (key === '⌫') {
-        if (start === end && start > 0) {
-          val = val.slice(0, start - 1) + val.slice(end);
-          setNativeValue(active, val);
-          active.setSelectionRange(start - 1, start - 1);
-        } else if (start !== end) {
+        if (supportsSelection && start !== end) {
           val = val.slice(0, start) + val.slice(end);
           setNativeValue(active, val);
-          active.setSelectionRange(start, start);
+          try { active.setSelectionRange(start, start); } catch (e) {}
+        } else if (val.length > 0) {
+          const pos = supportsSelection ? Math.max(0, start - 1) : val.length - 1;
+          val = val.slice(0, pos) + val.slice(supportsSelection ? start : val.length);
+          setNativeValue(active, val);
+          if (supportsSelection) {
+            try { active.setSelectionRange(pos, pos); } catch (e) {}
+          }
         }
+        active.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', code: 'Backspace', keyCode: 8, bubbles: true }));
+        active.dispatchEvent(new KeyboardEvent('keyup', { key: 'Backspace', code: 'Backspace', keyCode: 8, bubbles: true }));
       } else if (key === 'Space') {
-        val = val.slice(0, start) + ' ' + val.slice(end);
-        setNativeValue(active, val);
-        active.setSelectionRange(start + 1, start + 1);
+        if (supportsSelection) {
+          val = val.slice(0, start) + ' ' + val.slice(end);
+          setNativeValue(active, val);
+          try { active.setSelectionRange(start + 1, start + 1); } catch (e) {}
+        } else {
+          val += ' ';
+          setNativeValue(active, val);
+        }
+        active.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', code: 'Space', keyCode: 32, bubbles: true }));
+        active.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', code: 'Space', keyCode: 32, bubbles: true }));
       } else if (key === '↵') {
         active.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13, code: 'Enter', bubbles: true }));
         active.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', keyCode: 13, code: 'Enter', bubbles: true }));
         active.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', keyCode: 13, code: 'Enter', bubbles: true }));
+        const form = active.closest('form');
+        if (form && typeof form.requestSubmit === 'function') {
+          try { form.requestSubmit(); } catch (e) {}
+        }
       } else if (key.length === 1) {
-        val = val.slice(0, start) + key + val.slice(end);
-        setNativeValue(active, val);
-        active.setSelectionRange(start + 1, start + 1);
+        if (supportsSelection) {
+          val = val.slice(0, start) + key + val.slice(end);
+          setNativeValue(active, val);
+          try { active.setSelectionRange(start + 1, start + 1); } catch (e) {}
+        } else {
+          val += key;
+          setNativeValue(active, val);
+        }
+        active.dispatchEvent(new KeyboardEvent('keydown', { key: key, code: 'Key' + key.toUpperCase(), bubbles: true }));
+        active.dispatchEvent(new KeyboardEvent('keyup', { key: key, code: 'Key' + key.toUpperCase(), bubbles: true }));
       }
 
       active.dispatchEvent(new Event('input', { bubbles: true }));
       active.dispatchEvent(new Event('change', { bubbles: true }));
     } else if (active.isContentEditable) {
-      active.focus();
+      try { active.focus(); } catch (e) {}
       if (key === '⌫') {
         targetDoc.execCommand('delete', false, null);
       } else if (key === 'Space') {
@@ -485,47 +547,80 @@
         if (!active || (active.tagName !== 'INPUT' && active.tagName !== 'TEXTAREA' && !active.isContentEditable)) {
           if (localLastActive && targetDoc.contains(localLastActive)) {
             active = localLastActive;
-            active.focus();
+            try { active.focus(); } catch (e) {}
           } else {
-            active = targetDoc.querySelector('input:focus, textarea:focus, [contenteditable]:focus');
+            active = targetDoc.querySelector('input:focus, textarea:focus, [contenteditable]:focus') || targetDoc.querySelector('input, textarea, [contenteditable]');
           }
         }
 
         if (!active) return;
 
         if (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA') {
-          const start = active.selectionStart ?? active.value.length;
-          const end = active.selectionEnd ?? active.value.length;
-          let val = active.value;
+          let start = 0, end = 0;
+          let supportsSelection = true;
+
+          try {
+            start = active.selectionStart ?? active.value.length;
+            end = active.selectionEnd ?? active.value.length;
+          } catch (e) {
+            supportsSelection = false;
+            start = (active.value || '').length;
+            end = (active.value || '').length;
+          }
+
+          let val = active.value || '';
 
           if (key === '⌫') {
-            if (start === end && start > 0) {
-              val = val.slice(0, start - 1) + val.slice(end);
-              setNativeValue(active, val);
-              active.setSelectionRange(start - 1, start - 1);
-            } else if (start !== end) {
+            if (supportsSelection && start !== end) {
               val = val.slice(0, start) + val.slice(end);
               setNativeValue(active, val);
-              active.setSelectionRange(start, start);
+              try { active.setSelectionRange(start, start); } catch (e) {}
+            } else if (val.length > 0) {
+              const pos = supportsSelection ? Math.max(0, start - 1) : val.length - 1;
+              val = val.slice(0, pos) + val.slice(supportsSelection ? start : val.length);
+              setNativeValue(active, val);
+              if (supportsSelection) {
+                try { active.setSelectionRange(pos, pos); } catch (e) {}
+              }
             }
+            active.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace', code: 'Backspace', keyCode: 8, bubbles: true }));
+            active.dispatchEvent(new KeyboardEvent('keyup', { key: 'Backspace', code: 'Backspace', keyCode: 8, bubbles: true }));
           } else if (key === 'Space') {
-            val = val.slice(0, start) + ' ' + val.slice(end);
-            setNativeValue(active, val);
-            active.setSelectionRange(start + 1, start + 1);
+            if (supportsSelection) {
+              val = val.slice(0, start) + ' ' + val.slice(end);
+              setNativeValue(active, val);
+              try { active.setSelectionRange(start + 1, start + 1); } catch (e) {}
+            } else {
+              val += ' ';
+              setNativeValue(active, val);
+            }
+            active.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', code: 'Space', keyCode: 32, bubbles: true }));
+            active.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', code: 'Space', keyCode: 32, bubbles: true }));
           } else if (key === '↵') {
             active.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13, code: 'Enter', bubbles: true }));
             active.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', keyCode: 13, code: 'Enter', bubbles: true }));
             active.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', keyCode: 13, code: 'Enter', bubbles: true }));
+            const form = active.closest('form');
+            if (form && typeof form.requestSubmit === 'function') {
+              try { form.requestSubmit(); } catch (e) {}
+            }
           } else if (key.length === 1) {
-            val = val.slice(0, start) + key + val.slice(end);
-            setNativeValue(active, val);
-            active.setSelectionRange(start + 1, start + 1);
+            if (supportsSelection) {
+              val = val.slice(0, start) + key + val.slice(end);
+              setNativeValue(active, val);
+              try { active.setSelectionRange(start + 1, start + 1); } catch (e) {}
+            } else {
+              val += key;
+              setNativeValue(active, val);
+            }
+            active.dispatchEvent(new KeyboardEvent('keydown', { key: key, code: 'Key' + key.toUpperCase(), bubbles: true }));
+            active.dispatchEvent(new KeyboardEvent('keyup', { key: key, code: 'Key' + key.toUpperCase(), bubbles: true }));
           }
 
           active.dispatchEvent(new Event('input', { bubbles: true }));
           active.dispatchEvent(new Event('change', { bubbles: true }));
         } else if (active.isContentEditable) {
-          active.focus();
+          try { active.focus(); } catch (e) {}
           if (key === '⌫') {
             targetDoc.execCommand('delete', false, null);
           } else if (key === 'Space') {
@@ -767,10 +862,13 @@
   }
 
   function handleDpadKeyboard(gp) {
-    const up = isPressed(12, gp);
-    const down = isPressed(13, gp);
-    const left = isPressed(14, gp);
-    const right = isPressed(15, gp);
+    const lx = gp.axes[0] || 0;
+    const ly = gp.axes[1] || 0;
+
+    const up = isPressed(12, gp) || ly < -0.5;
+    const down = isPressed(13, gp) || ly > 0.5;
+    const left = isPressed(14, gp) || lx < -0.5;
+    const right = isPressed(15, gp) || lx > 0.5;
     const currentLayout = isNumbers ? layoutNum : layoutAlpha;
 
     if (justPressed('d_up', up)) { kbdRow = Math.max(0, kbdRow - 1); kbdCol = Math.min(kbdCol, currentLayout[kbdRow].length - 1); }
@@ -781,20 +879,8 @@
     if (up || down || left || right) renderKeyboard();
 
     if (justPressed('k_select', isPressed(0, gp) || isPressed(7, gp))) {
-      let char = currentLayout[kbdRow][kbdCol];
-      if (char === 'Shift') {
-        isShift = !isShift;
-      } else if (char === '123') {
-        isNumbers = true;
-        kbdRow = 0; kbdCol = 0;
-      } else if (char === 'ABC') {
-        isNumbers = false;
-        kbdRow = 0; kbdCol = 0;
-      } else {
-        if (isShift && char.length === 1) char = char.toUpperCase();
-        broadcast('TYPE', { key: char });
-      }
-      renderKeyboard();
+      let key = currentLayout[kbdRow][kbdCol];
+      triggerKeyAction(key);
     }
   }
 
@@ -848,6 +934,20 @@
       if (justPressed('btn_3', isPressed(3, gp))) {
         kbdOpen = !kbdOpen;
         if (keyboardContainer) keyboardContainer.classList.toggle('open', kbdOpen);
+        if (kbdOpen) {
+          let inputToFocus = document.activeElement;
+          if (!inputToFocus || (inputToFocus.tagName !== 'INPUT' && inputToFocus.tagName !== 'TEXTAREA' && !inputToFocus.isContentEditable)) {
+            if (lastActiveInput && document.contains(lastActiveInput)) {
+              inputToFocus = lastActiveInput;
+            } else {
+              inputToFocus = document.querySelector('input, textarea, [contenteditable]');
+            }
+          }
+          if (inputToFocus && typeof inputToFocus.focus === 'function') {
+            try { inputToFocus.focus(); } catch (e) {}
+            lastActiveInput = inputToFocus;
+          }
+        }
       }
 
       if (justPressed('btn_9', isPressed(9, gp))) {
