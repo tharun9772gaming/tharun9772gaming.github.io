@@ -215,7 +215,6 @@
     return closedAny;
   }
 
-  // Handle keyboard ESC key press
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' || e.keyCode === 27) {
       closeMenus();
@@ -841,19 +840,16 @@
 
       updateCursorState();
 
-      // Controls Menu Toggle (B Button)
       if (justPressed('btn_1', isPressed(1, gp))) {
         controlsOpen = !controlsOpen;
         if (controlsModal) controlsModal.classList.toggle('open', controlsOpen);
       }
 
-      // Keyboard Toggle (Y Button)
       if (justPressed('btn_3', isPressed(3, gp))) {
         kbdOpen = !kbdOpen;
         if (keyboardContainer) keyboardContainer.classList.toggle('open', kbdOpen);
       }
 
-      // Menu Button (Button 9): Close open menus first; if none open, send ESC
       if (justPressed('btn_9', isPressed(9, gp))) {
         const closed = closeMenus();
         if (!closed) {
