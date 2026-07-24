@@ -34,7 +34,7 @@
     }
 
     .hand-text {
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.2"><path d="M8 4h8M12 4v16M8 20h8"/></svg>') no-repeat center/contain !important;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1.2"><path d="M8 4h8M12 4v16M8 20h8"/></svg>') no-repeat center/contain !important;
       width: 18px !important;
       height: 22px !important;
       filter: drop-shadow(0px 2px 6px rgba(0,0,0,0.9)) !important;
