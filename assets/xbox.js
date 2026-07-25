@@ -1070,10 +1070,9 @@ if (kbdOpen) {
         }
 
         if (justPressed('btn_6', isPressed(6, gp))) broadcast('RIGHT_CLICK');let scrollAmount = 110;
-     let scrollAmount = 110;
-        if (isPressed(10, gp)) scrollAmount = 250;
-        if (isPressed(11, gp)) scrollAmount = 40;  
 
+        const scrollAmount = isPressed(10, gp) ? 250 : isPressed(11, gp) ? 40 : 110;
+  
         if (isPressed(4, gp)) broadcast('SCROLL', { amount: -scrollAmount });
         if (isPressed(5, gp)) broadcast('SCROLL', { amount: scrollAmount });
 
