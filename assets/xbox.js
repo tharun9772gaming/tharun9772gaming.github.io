@@ -345,6 +345,8 @@
       <div class="xbox-control-row"><span>WASD/Arrow Keys (If Enabled)</span> <span class="xbox-key-tag">D-PAD</span></div>
       <div class="xbox-control-row"><span>Escape/Close Menu</span> <span class="xbox-key-tag">Menu Button</span></div>
       <div class="xbox-control-row"><span>Screenshot</span> <span class="xbox-key-tag">View button</span></div>
+      <div class="xbox-control-row"><span>Scrool Faster/Slower</span> <span class="xbox-key-tag">Joystick Buttons</span></div>
+      <div class="xbox-control-row"><span>Show Xbox Curser</span> <span class="xbox-key-tag">Share Button</span></div>
     `;
 
     dpadModal = document.createElement('div');
@@ -1085,6 +1087,11 @@ if (kbdOpen) {
         }
 
         if (justPressed('btn_8', isPressed(8, gp))) captureScreenshot();
+
+          if (justPressed('btn_share', isPressed(17, gp))) {
+          isCursorVisible = !isCursorVisible;
+          if (cursor) cursor.classList.toggle('visible', isCursorVisible);
+        }
       }
     }
 
