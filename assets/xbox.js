@@ -1069,9 +1069,13 @@ if (kbdOpen) {
           if (clickTimer) { clearInterval(clickTimer); clickTimer = null; }
         }
 
-        if (justPressed('btn_6', isPressed(6, gp))) broadcast('RIGHT_CLICK');
-        if (isPressed(4, gp)) broadcast('SCROLL', { amount: -110 });
-        if (isPressed(5, gp)) broadcast('SCROLL', { amount: 110 });
+        if (justPressed('btn_6', isPressed(6, gp))) broadcast('RIGHT_CLICK');let scrollAmount = 110;
+     let scrollAmount = 110;
+        if (isPressed(10, gp)) scrollAmount = 250;
+        if (isPressed(11, gp)) scrollAmount = 40;  
+
+        if (isPressed(4, gp)) broadcast('SCROLL', { amount: -scrollAmount });
+        if (isPressed(5, gp)) broadcast('SCROLL', { amount: scrollAmount });
 
         if (justPressed('btn_2', isPressed(2, gp))) {
           if (!document.fullscreenElement) {
