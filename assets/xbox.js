@@ -1088,6 +1088,10 @@ if (kbdOpen) {
 
         if (justPressed('btn_8', isPressed(8, gp))) captureScreenshot();
 
+        if (justPressed('btn_xbox', isPressed(16, gp))) {
+          window.top.location.href = '/Xbox Hub/';
+        }
+
           if (justPressed('btn_share', isPressed(17, gp))) {
           isCursorVisible = !isCursorVisible;
           if (cursor) cursor.classList.toggle('visible', isCursorVisible);
