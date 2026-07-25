@@ -206,7 +206,7 @@
 
     .gboard-key.wide { flex: 1.5 !important; background: #221a38 !important; }
     .gboard-key.space { flex: 4 !important; }
-    .gboard-key.active {
+    .gboard-key.active, .gboard-key.xbox-hover {
       background: linear-gradient(135deg, #a855f7, #6b21a8) !important;
       color: #ffffff !important;
       box-shadow: 0 0 18px rgba(168, 85, 247, 0.7) !important;
@@ -366,12 +366,12 @@
       });
     });
 
-    const targetBody = document.body || document.documentElement;
-    targetBody.appendChild(cursor);
+const targetBody = document.body || document.documentElement;
     targetBody.appendChild(keyboardContainer);
     targetBody.appendChild(toastEl);
     targetBody.appendChild(controlsModal);
     targetBody.appendChild(dpadModal);
+    targetBody.appendChild(cursor); 
 
     window.addEventListener('mousemove', () => {
       if (isCursorVisible && cursor) {
@@ -421,7 +421,25 @@
         if (key === 'Space') keyEl.classList.add('space');
         if (rIdx === kbdRow && cIdx === kbdCol) keyEl.classList.add('active');
 
-        keyEl.textContent = displayKey;
+       keyEl.textContent = displayKey;
+
+        keyEl.addEventListener('click', () => {
+          if (key === 'Shift') {
+            isShift = !isShift;
+          } else if (key === '123') {
+            isNumbers = true;
+            kbdRow = 0; kbdCol = 0;
+          } else if (key === 'ABC') {
+            isNumbers = false;
+            kbdRow = 0; kbdCol = 0;
+          } else {
+            let char = key;
+            if (isShift && char.length === 1) char = char.toUpperCase();
+            broadcast('TYPE', { key: char });
+          }
+          renderKeyboard();
+        });
+
         rowEl.appendChild(keyEl);
       });
       keyboardContainer.appendChild(rowEl);
@@ -848,9 +866,14 @@
 
     if (!el) return;
 
-    const dpadBtn = el.closest('.dpad-option-btn');
+ const dpadBtn = el.closest('.dpad-option-btn');
     if (dpadBtn) {
       dpadBtn.classList.add('xbox-hover');
+    }
+
+    const kbdKey = el.closest('.gboard-key');
+    if (kbdKey) {
+      kbdKey.classList.add('xbox-hover');
     }
 
     const isTextElement = el.tagName === 'INPUT' ||
@@ -881,7 +904,9 @@
 
     if (up || down || left || right) renderKeyboard();
 
-    if (justPressed('k_select', isPressed(0, gp) || isPressed(7, gp))) {
+    let isHoveringKey = document.elementFromPoint(posX, posY)?.closest('.gboard-key');
+
+    if (!isHoveringKey && justPressed('k_select', isPressed(0, gp) || isPressed(7, gp))) {
       let char = currentLayout[kbdRow][kbdCol];
       if (char === 'Shift') {
         isShift = !isShift;
@@ -1013,8 +1038,15 @@
         }
       }
 
-      if (kbdOpen) {
+if (kbdOpen) {
         handleDpadKeyboard(gp);
+
+        if (justPressed('k_cursor_click', isPressed(0, gp) || isPressed(7, gp))) {
+          let currentTarget = document.elementFromPoint(posX, posY);
+          if (currentTarget && currentTarget.closest('.gboard-key')) {
+            simulateFastClick(currentTarget.closest('.gboard-key'), posX, posY, 0);
+          }
+        }
       } else {
         if (!dpadModalOpen) {
           handleDpadGameplay(gp);
