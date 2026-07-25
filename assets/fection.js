@@ -3,6 +3,7 @@ const _0x4f22 = ["\x64\x65\x62\x75\x67", "\x69\x6E\x69\x74"];
 const UI_THEME_MODE_DEFAULT = 'light';
 const UI_THEME_MODE_DARK = 'dark';
 const UI_THEME_MODE_AUTO = 'system';
+const UI_URL_IFRAME = 'iframe';
 const UI_ELEMENT_MIN_WIDTH_PIXELS = 0;
 const UI_EXE_FILE_FOLDER_ICON_MAX = 67;
 const UI_ELEMENT_MAX_WIDTH_PIXELS = 99999;
