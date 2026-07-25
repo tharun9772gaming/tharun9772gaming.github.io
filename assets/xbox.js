@@ -40,7 +40,7 @@
       filter: drop-shadow(0px 2px 6px rgba(0,0,0,0.9)) !important;
     }
 
-    #xbox-toast {
+   #xbox-toast {
       position: fixed !important;
       top: -100px !important;
       left: 50% !important;
@@ -52,7 +52,7 @@
       border-radius: 12px !important;
       border: 1px solid rgba(168, 85, 247, 0.35) !important;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(168, 85, 247, 0.25) !important;
-      z-index: 2147483647 !important;
+      z-index: 2147483644 !important;
       font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif !important;
       font-size: 13.5px !important;
       font-weight: 600 !important;
@@ -62,7 +62,6 @@
       align-items: center !important;
       gap: 10px !important;
       letter-spacing: 0.3px !important;
-      text-align: center !important;
     }
     #xbox-toast.show {
       top: 24px !important;
@@ -89,7 +88,7 @@
       border-radius: 16px !important;
       padding: 22px !important;
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(168, 85, 247, 0.2) !important;
-      z-index: 2147483647 !important;
+      z-index: 2147483644 !important;
       font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif !important;
       color: #f3f4f6 !important;
       opacity: 0 !important;
@@ -172,7 +171,7 @@
       border-bottom: none !important;
       padding: 16px !important;
       box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(168, 85, 247, 0.15) !important;
-      z-index: 2147483646 !important;
+      z-index: 2147483643 !important;
       transition: bottom 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
       font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif !important;
       user-select: none !important;
