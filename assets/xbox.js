@@ -153,7 +153,7 @@
       transition: all 0.2s ease !important;
       text-align: center !important;
     }
-    .dpad-option-btn:hover, .dpad-option-btn.active {
+    .dpad-option-btn:hover, .dpad-option-btn.active, .dpad-option-btn.xbox-hover {
       background: linear-gradient(135deg, #a855f7, #6b21a8) !important;
       box-shadow: 0 0 15px rgba(168, 85, 247, 0.4) !important;
       border-color: #e9d5ff !important;
@@ -344,6 +344,8 @@
       <div class="xbox-control-row"><span>Close Menus / ESC</span> <span class="xbox-key-tag">Menu Button</span></div>
       <div class="xbox-control-row"><span>Toggle Controls Menu</span> <span class="xbox-key-tag">B Button</span></div>
       <div class="xbox-control-row"><span>WASD/Arrow Keys (If Enabled)</span> <span class="xbox-key-tag">D-PAD</span></div>
+      <div class="xbox-control-row"><span>Escape/Close Menu</span> <span class="xbox-key-tag">Menu Button</span></div>
+      <div class="xbox-control-row"><span>Screenshot</span> <span class="xbox-key-tag">View button</span></div>
     `;
 
     dpadModal = document.createElement('div');
@@ -359,8 +361,8 @@
 
     const dpadButtons = dpadModal.querySelectorAll('.dpad-option-btn');
     dpadButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        saveDpadMode(e.target.dataset.mode);
+      btn.addEventListener('click', () => {
+        saveDpadMode(btn.dataset.mode);
       });
     });
 
@@ -834,6 +836,8 @@
     if (!cursor) return;
     let el = document.elementFromPoint(posX, posY);
 
+    document.querySelectorAll('.xbox-hover').forEach(node => node.classList.remove('xbox-hover'));
+
     if (el && el.tagName === 'IFRAME') {
       try {
         const rect = el.getBoundingClientRect();
@@ -843,6 +847,11 @@
     }
 
     if (!el) return;
+
+    const dpadBtn = el.closest('.dpad-option-btn');
+    if (dpadBtn) {
+      dpadBtn.classList.add('xbox-hover');
+    }
 
     const isTextElement = el.tagName === 'INPUT' ||
                           el.tagName === 'TEXTAREA' ||
@@ -1011,7 +1020,14 @@
           handleDpadGameplay(gp);
         }
 
-        if (justPressed('btn_0', isPressed(0, gp))) snapToNearestObject();
+        if (justPressed('btn_0', isPressed(0, gp))) {
+          let currentTarget = document.elementFromPoint(posX, posY);
+          if (currentTarget && currentTarget.closest('.dpad-option-btn')) {
+            simulateFastClick(currentTarget.closest('.dpad-option-btn'), posX, posY, 0);
+          } else {
+            snapToNearestObject();
+          }
+        }
 
         if (isPressed(7, gp)) {
           if (!clickTimer) {
