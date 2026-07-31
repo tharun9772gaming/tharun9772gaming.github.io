@@ -39,5 +39,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src="/games/gms.js"></script>
 <script src="/main-injection.js"></script>
 <script src="/assets/xbox.js"></script>
+  <script>
+    function processElements() {
+        document.querySelectorAll('a[href], [data-url], button, input, .card, .cat, .game-card').forEach(el => {
+            if (!el.classList.contains('focusable')) {
+                el.classList.add('focusable');
+            }
+          
+            if ((el.classList.contains('game-card') || el.classList.contains('card')) && !el.hasAttribute('data-controller-click-bound')) {
+                el.setAttribute('data-controller-click-bound', 'true');
+                el.addEventListener('click', (ev) => {
+                    const internalPlayBtn = el.querySelector('.play-btn, a');
+                    if (internalPlayBtn && internalPlayBtn !== el) {
+                        ev.preventDefault();
+                        internalPlayBtn.click();
+                    }
+                });
+            }
+            
+            const href = el.getAttribute('href');
+            if (href && !href.startsWith('/Xbox Hub/inject?=') && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('javascript:')) {
+                const cleanHref = href.startsWith('/') ? href.substring(1) : href;
+                el.setAttribute('href', '/Xbox Hub/inject?=' + cleanHref);
+            }
+
+            const dataUrl = el.getAttribute('data-url');
+            if (dataUrl && !dataUrl.startsWith('/Xbox Hub/inject?=') && !dataUrl.startsWith('http')) {
+                const cleanDataUrl = dataUrl.startsWith('/') ? dataUrl.substring(1) : dataUrl;
+                el.setAttribute('data-url', '/Xbox Hub/inject?=' + cleanDataUrl);
+            }
+        });
+    }
+  </script>
 </body>
 </html>
