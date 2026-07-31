@@ -40,7 +40,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src="/main-injection.js"></script>
 <script src="/assets/xbox.js"></script>
   <script>
-function processElement(el) {
+    function processElement(el) {
     if (!el.classList.contains('focusable')) {
         el.classList.add('focusable');
     }
@@ -71,29 +71,46 @@ function processElement(el) {
 function initElementObserver() {
     const selector = 'a[href], [data-url], button, input, .card, .cat, .game-card';
 
-    document.querySelectorAll(selector).forEach(processElement);
+    const startObserving = () => {
+        document.querySelectorAll(selector).forEach(processElement);
 
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            mutation.addedNodes.forEach((node) => {
-                if (node.nodeType !== Node.ELEMENT_NODE) return;
-              
-                if (node.matches(selector)) {
-                    processElement(node);
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes') {
+                    if (mutation.target.matches(selector)) {
+                        processElement(mutation.target);
+                    }
+                    return;
                 }
-                node.querySelectorAll(selector).forEach(processElement);
+
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType !== Node.ELEMENT_NODE) return;
+                      
+                        if (node.matches(selector)) {
+                            processElement(node);
+                        }
+                        node.querySelectorAll(selector).forEach(processElement);
+                    });
+                }
             });
         });
-    });
 
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['href', 'data-url']
+        });
+    };
+    if (document.body) {
+        startObserving();
+    } else {
+        document.addEventListener('DOMContentLoaded', startObserving);
+    }
 }
 
 initElementObserver();
-
   </script>
 </body>
 </html>
