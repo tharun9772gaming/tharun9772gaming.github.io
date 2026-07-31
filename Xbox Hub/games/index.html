@@ -39,17 +39,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src="/games/gms.js"></script>
 <script src="/main-injection.js"></script>
 <script>
-  (function() {
-    function rewriteLinks() {
-        document.querySelectorAll('a[href], [data-url]').forEach(el => {
-            const href = el.getAttribute('href');
-            const dataUrl = el.getAttribute('data-url');
+(function() {
+    
+    function processElements() {
+        document.querySelectorAll('a[href], [data-url], button, input, .card, .cat, .game-card').forEach(el => {
+            if (!el.classList.contains('focusable')) {
+                el.classList.add('focusable');
+            }
             
+            if ((el.classList.contains('game-card') || el.classList.contains('card')) && !el.hasAttribute('data-controller-click-bound')) {
+                el.setAttribute('data-controller-click-bound', 'true');
+                el.addEventListener('click', (ev) => {
+                    const internalPlayBtn = el.querySelector('.play-btn, a');
+                    if (internalPlayBtn && internalPlayBtn !== el) {
+                        ev.preventDefault();
+                        internalPlayBtn.click();
+                    }
+                });
+            }
+            
+            const href = el.getAttribute('href');
             if (href && !href.startsWith('/Xbox Hub/inject?=') && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('javascript:')) {
                 const cleanHref = href.startsWith('/') ? href.substring(1) : href;
                 el.setAttribute('href', '/Xbox Hub/inject?=' + cleanHref);
             }
-            
+
+            const dataUrl = el.getAttribute('data-url');
             if (dataUrl && !dataUrl.startsWith('/Xbox Hub/inject?=') && !dataUrl.startsWith('http')) {
                 const cleanDataUrl = dataUrl.startsWith('/') ? dataUrl.substring(1) : dataUrl;
                 el.setAttribute('data-url', '/Xbox Hub/inject?=' + cleanDataUrl);
@@ -57,14 +72,138 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         });
     }
 
-    const observer = new MutationObserver(() => {
-        rewriteLinks();
+    let currentFocusIndex = 0;
+    function getFocusables() {
+        return Array.from(document.querySelectorAll('.focusable')).filter(el => {
+            const rect = el.getBoundingClientRect();
+            return rect.width > 0 && rect.height > 0 && window.getComputedStyle(el).display !== 'none' && window.getComputedStyle(el).visibility !== 'hidden';
+        });
+    }
+
+    function updateFocus(index) {
+        const focusables = getFocusables();
+        if (focusables.length === 0) return;
+        
+        if (index < 0) index = focusables.length - 1;
+        if (index >= focusables.length) index = 0;
+        
+        currentFocusIndex = index;
+        focusables.forEach((el, idx) => {
+            if (idx === currentFocusIndex) {
+                el.classList.add('focused');
+                if (typeof el.focus === 'function') el.focus();
+                el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            } else {
+                el.classList.remove('focused');
+            }
+        });
+    }
+
+    window.addEventListener('keydown', (e) => {
+        const focusables = getFocusables();
+        if (focusables.length === 0) return;
+
+        let activeEl = document.activeElement;
+        let currentIndex = focusables.indexOf(activeEl);
+        if (currentIndex === -1) currentIndex = currentFocusIndex;
+
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) {
+            e.preventDefault();
+            if (e.key === 'ArrowRight' || e.key === 'Tab') {
+                currentIndex++;
+            } else if (e.key === 'ArrowLeft' || (e.key === 'Tab' && e.shiftKey)) {
+                currentIndex--;
+            } else if (e.key === 'ArrowDown') {
+                currentIndex += Math.min(4, focusables.length - currentIndex);
+            } else if (e.key === 'ArrowUp') {
+                currentIndex -= Math.min(4, currentIndex);
+            }
+            updateFocus(currentIndex);
+        } else if (e.key === 'Enter' || e.key === ' ') {
+            if (activeEl && focusables.includes(activeEl)) {
+                if (activeEl.tagName === 'INPUT') return;
+                e.preventDefault();
+                activeEl.click();
+            }
+        }
     });
 
-    window.addEventListener('DOMContentLoaded', () => {
-        rewriteLinks();
-        observer.observe(document.body, { childList: true, subtree: true });
+    let lastGamepadState = {};
+    function pollGamepads() {
+        const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+        for (let gp of gamepads) {
+            if (!gp) continue;
+            
+            const axisX = gp.axes[0] || 0;
+            const axisY = gp.axes[1] || 0;
+            
+            const dpadUp = gp.buttons[12] && gp.buttons[12].pressed;
+            const dpadDown = gp.buttons[13] && gp.buttons[13].pressed;
+            const dpadLeft = gp.buttons[14] && gp.buttons[14].pressed;
+            const dpadRight = gp.buttons[15] && gp.buttons[15].pressed;
+            const aButtonPressed = gp.buttons[0] && gp.buttons[0].pressed;
+            
+            const gpId = gp.index;
+            if (!lastGamepadState[gpId]) {
+                lastGamepadState[gpId] = { a: false, up: false, down: false, left: false, right: false, stickX: 0, stickY: 0 };
+            }
+
+            let focusables = getFocusables();
+            let activeEl = document.activeElement;
+            let idx = focusables.indexOf(activeEl);
+            if (idx === -1) idx = currentFocusIndex;
+
+            const deadzone = 0.5;
+            if (axisX > deadzone && lastGamepadState[gpId].stickX <= deadzone) {
+                updateFocus(idx + 1);
+            } else if (axisX < -deadzone && lastGamepadState[gpId].stickX >= -deadzone) {
+                updateFocus(idx - 1);
+            }
+
+            if (axisY > deadzone && lastGamepadState[gpId].stickY <= deadzone) {
+                updateFocus(Math.min(focusables.length - 1, idx + 4));
+            } else if (axisY < -deadzone && lastGamepadState[gpId].stickY >= -deadzone) {
+                updateFocus(Math.max(0, idx - 4));
+            }
+
+            if (dpadRight && !lastGamepadState[gpId].right) updateFocus(idx + 1);
+            if (dpadLeft && !lastGamepadState[gpId].left) updateFocus(idx - 1);
+            if (dpadDown && !lastGamepadState[gpId].down) updateFocus(Math.min(focusables.length - 1, idx + 4));
+            if (dpadUp && !lastGamepadState[gpId].up) updateFocus(Math.max(0, idx - 4));
+
+            if (aButtonPressed && !lastGamepadState[gpId].a) {
+                if (activeEl && focusables.includes(activeEl) && activeEl.tagName !== 'INPUT') {
+                    activeEl.click();
+                }
+            }
+
+            lastGamepadState[gpId].a = aButtonPressed;
+            lastGamepadState[gpId].up = dpadUp;
+            lastGamepadState[gpId].down = dpadDown;
+            lastGamepadState[gpId].left = dpadLeft;
+            lastGamepadState[gpId].right = dpadRight;
+            lastGamepadState[gpId].stickX = axisX;
+            lastGamepadState[gpId].stickY = axisY;
+        }
+        requestAnimationFrame(pollGamepads);
+    }
+
+    const observer = new MutationObserver(() => {
+        processElements();
     });
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    function init() {
+        processElements();
+        observer.observe(document.body, { childList: true, subtree: true });
+        setTimeout(() => updateFocus(0), 500);
+        requestAnimationFrame(pollGamepads);
+    }
 })();
 </script>
 </body>
