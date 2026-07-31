@@ -15,29 +15,27 @@
             }
         }
 
-        function getRequestedUrl() {
-            let search = window.location.search;
-            if (!search) return null;
+function getRequestedUrl() {
+    const rawSearch = window.location.search;
+    if (!rawSearch) return null;
 
-            search = search.substring(1);
+    const eqIndex = rawSearch.indexOf('=');
+    let targetUrl = '';
 
-            if (search.startsWith('=')) {
-                search = search.substring(1);
-            }
+    if (eqIndex !== -1) {
+        targetUrl = rawSearch.substring(eqIndex + 1);
+    } else {
+        targetUrl = rawSearch.substring(1);
+    }
 
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('url')) {
-                search = urlParams.get('url');
-            }
+    targetUrl = decodeURIComponent(targetUrl).trim();
 
-            search = decodeURIComponent(search).trim();
+    if (/^(\.|\/|[a-zA-Z0-9_\-\/\?=\&])+$/.test(targetUrl)) {
+        return targetUrl;
+    }
 
-            if (/^(\.|\/|[a-zA-Z0-9_\-\/])+$/.test(search)) {
-                return search;
-            }
-
-            return null;
-        }
+    return null;
+}
 
         function monitorIframeTitle() {
             const iframe = document.getElementById('app-iframe');
