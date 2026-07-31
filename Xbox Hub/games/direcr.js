@@ -454,7 +454,7 @@ const startupContent = `
       </div>
     `;
 
-    const uiContent = startupContent + "\n\n" + appContent;
+const uiContent = startupContent + "\n\n" + appContent;
 
     const self = document.currentScript;
     if (self) {
@@ -535,7 +535,7 @@ const startupContent = `
                 activeEl.click();
             }
         }
-        })();
+    });
 
     let lastGamepadState = {};
     function pollGamepads() {
@@ -592,7 +592,6 @@ const startupContent = `
         setTimeout(() => updateFocus(0), 500);
         requestAnimationFrame(pollGamepads);
     });
-})();
 
 console.log("<--Bloxcraft UBG--->");
     console.log("The one game site with 8000+ Games!");
