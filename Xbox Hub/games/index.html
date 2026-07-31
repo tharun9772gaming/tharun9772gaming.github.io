@@ -40,36 +40,60 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src="/main-injection.js"></script>
 <script src="/assets/xbox.js"></script>
   <script>
-    function processElements() {
-        document.querySelectorAll('a[href], [data-url], button, input, .card, .cat, .game-card').forEach(el => {
-            if (!el.classList.contains('focusable')) {
-                el.classList.add('focusable');
-            }
-          
-            if ((el.classList.contains('game-card') || el.classList.contains('card')) && !el.hasAttribute('data-controller-click-bound')) {
-                el.setAttribute('data-controller-click-bound', 'true');
-                el.addEventListener('click', (ev) => {
-                    const internalPlayBtn = el.querySelector('.play-btn, a');
-                    if (internalPlayBtn && internalPlayBtn !== el) {
-                        ev.preventDefault();
-                        internalPlayBtn.click();
-                    }
-                });
-            }
-            
-            const href = el.getAttribute('href');
-            if (href && !href.startsWith('/Xbox Hub/inject?=') && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('javascript:')) {
-                const cleanHref = href.startsWith('/') ? href.substring(1) : href;
-                el.setAttribute('href', '/Xbox Hub/inject?=' + cleanHref);
-            }
-
-            const dataUrl = el.getAttribute('data-url');
-            if (dataUrl && !dataUrl.startsWith('/Xbox Hub/inject?=') && !dataUrl.startsWith('http')) {
-                const cleanDataUrl = dataUrl.startsWith('/') ? dataUrl.substring(1) : dataUrl;
-                el.setAttribute('data-url', '/Xbox Hub/inject?=' + cleanDataUrl);
+function processElement(el) {
+    if (!el.classList.contains('focusable')) {
+        el.classList.add('focusable');
+    }
+    if ((el.classList.contains('game-card') || el.classList.contains('card')) && !el.hasAttribute('data-controller-click-bound')) {
+        el.setAttribute('data-controller-click-bound', 'true');
+        el.addEventListener('click', (ev) => {
+            const internalPlayBtn = el.querySelector('.play-btn, a');
+            if (internalPlayBtn && internalPlayBtn !== el) {
+                ev.preventDefault();
+                internalPlayBtn.click();
             }
         });
     }
+    
+    const href = el.getAttribute('href');
+    if (href && !href.startsWith('/Xbox Hub/inject?=') && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('javascript:')) {
+        const cleanHref = href.startsWith('/') ? href.substring(1) : href;
+        el.setAttribute('href', '/Xbox Hub/inject?=' + cleanHref);
+    }
+
+    const dataUrl = el.getAttribute('data-url');
+    if (dataUrl && !dataUrl.startsWith('/Xbox Hub/inject?=') && !dataUrl.startsWith('http')) {
+        const cleanDataUrl = dataUrl.startsWith('/') ? dataUrl.substring(1) : dataUrl;
+        el.setAttribute('data-url', '/Xbox Hub/inject?=' + cleanDataUrl);
+    }
+}
+
+function initElementObserver() {
+    const selector = 'a[href], [data-url], button, input, .card, .cat, .game-card';
+
+    document.querySelectorAll(selector).forEach(processElement);
+
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType !== Node.ELEMENT_NODE) return;
+              
+                if (node.matches(selector)) {
+                    processElement(node);
+                }
+                node.querySelectorAll(selector).forEach(processElement);
+            });
+        });
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+initElementObserver();
+
   </script>
 </body>
 </html>
