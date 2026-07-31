@@ -90,20 +90,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
 
         let href = el.getAttribute('href');
-        if (href && !href.startsWith('/Xbox Hub/inject?=') && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('javascript:')) {
+        if (href && !href.startsWith('/Xbox Hub/inject?=/') && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('javascript:')) {
             ev.preventDefault();
             ev.stopPropagation();
             const cleanHref = href.startsWith('/') ? href.substring(1) : href;
-            window.location.href = '/Xbox Hub/inject?=' + cleanHref;
+            window.location.href = '/Xbox Hub/inject?=/' + cleanHref;
             return;
         }
 
         let dataUrl = el.getAttribute('data-url');
-        if (dataUrl && !dataUrl.startsWith('/Xbox Hub/inject?=') && !dataUrl.startsWith('http')) {
+        if (dataUrl && !dataUrl.startsWith('/Xbox Hub/inject?=/') && !dataUrl.startsWith('http')) {
             ev.preventDefault();
             ev.stopPropagation();
             const cleanDataUrl = dataUrl.startsWith('/') ? dataUrl.substring(1) : dataUrl;
-            window.location.href = '/Xbox Hub/inject?=' + cleanDataUrl;
+            window.location.href = '/Xbox Hub/inject?=/' + cleanDataUrl;
             return;
         }
     }, true);
@@ -113,9 +113,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             return this.getAttribute('href');
         },
         set: function(val) {
-            if (val && !val.startsWith('/Xbox Hub/inject?=') && !val.startsWith('http') && !val.startsWith('#') && !val.startsWith('javascript:')) {
+            if (val && !val.startsWith('/Xbox Hub/inject?=/') && !val.startsWith('http') && !val.startsWith('#') && !val.startsWith('javascript:')) {
                 const cleanHref = val.startsWith('/') ? val.substring(1) : val;
-                this.setAttribute('href', '/Xbox Hub/inject?=' + cleanHref);
+                this.setAttribute('href', '/Xbox Hub/inject?=/' + cleanHref);
             } else {
                 this.setAttribute('href', val);
             }
