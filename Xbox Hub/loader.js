@@ -18,7 +18,7 @@ window.loadGames = function() {
                 parsedGames.forEach(game => {
                     const card = document.createElement('div');
                     card.className = 'card focusable';
-                    card.dataset.url = game.url;
+                    card.dataset.url = "/Xbox Hub/inject?=" + game.url;
                     
                     card.innerHTML = `
                         <img src="${game.img}" alt="${game.name}" onerror="this.src='https://via.placeholder.com/150/2a2a2a/FFFFFF?text=Image+Missing'">
