@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/gh/tharun9772/game-assets@main/flash-em.js" data-swf-file-src="https://raw.githack.com/bloxys-playables/ruffle-files/main/${encodedName}.html" data-fname="Bloxcraft UBG | Ruffle Player">
+    <script src="https://cdn.jsdelivr.net/gh/tharun9772/game-assets@main/flash-em.js" data-swf-file-src="https://raw.githack.com/bloxys-playables/ruffle-files/main/${encodedName}.swf" data-fname="Bloxcraft UBG | Ruffle Player">
     </script>
 </body>
 </html>`;
