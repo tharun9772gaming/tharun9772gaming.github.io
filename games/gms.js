@@ -629,17 +629,11 @@ async function loadBloxyPL() {
     if (!str) return "";
     let cleaned = str
       .replace(/\/\/.*$/gm, '')
-      .replace(/\/\*[\s\S]*?\*\//g, '') 
+      .replace(/\/\*[\s\S]*?\*\//g, '')
       .replace(/[\u201C\u201D]/g, '"')
       .replace(/[\u2018\u2019]/g, "'")
       .replace(/,\s*([\]}])/g, '$1')
       .replace(/["']\s*["']/g, '"')
-      .replace(/[\u0000-\u001F]/g, (c) => {
-        if (c === '\n') return '\\n';
-        if (c === '\r') return '\\r';
-        if (c === '\t') return '\\t';
-        return '';
-      })
       .trim();
 
     if (cleaned.startsWith('[') && !cleaned.endsWith(']')) {
@@ -655,7 +649,7 @@ async function loadBloxyPL() {
 
   function sanitizeUrlComponent(str) {
     if (!str) return '';
-    return String(str).replace(/["'\s].*$/, '').trim();
+    return String(str).replace(/["']/g, '').trim();
   }
 
   async function fetchAndParseJson(url) {
@@ -702,13 +696,13 @@ async function loadBloxyPL() {
       return list.map(g => {
         if (!g || !g.name) return null;
         
-        const cleanUrlName = sanitizeUrlComponent(g.name);
-        if (!cleanUrlName) return null;
+        const cleanName = sanitizeUrlComponent(g.name);
+        if (!cleanName) return null;
 
         return {
-          name: g.name,
+          name: cleanName,
           img: g.img || defaultImg,
-          url: `/app-viewer/bloxy-plays/#${hashType}?name=` + encodeURIComponent(cleanUrlName)
+          url: `/app-viewer/bloxy-plays/#${hashType}?name=` + encodeURIComponent(cleanName)
         };
       }).filter(Boolean);
     };
