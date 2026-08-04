@@ -625,46 +625,117 @@ async function loadShuttleProxy() {
 }
 
 async function loadBloxyPL() {
+  function sanitizeRawJsonString(str) {
+    if (!str) return "";
+    let cleaned = str
+      .replace(/\/\/.*$/gm, '')
+      .replace(/\/\*[\s\S]*?\*\//g, '') 
+      .replace(/[\u201C\u201D]/g, '"')
+      .replace(/[\u2018\u2019]/g, "'")
+      .replace(/,\s*([\]}])/g, '$1')
+      .replace(/["']\s*["']/g, '"')
+      .replace(/[\u0000-\u001F]/g, (c) => {
+        if (c === '\n') return '\\n';
+        if (c === '\r') return '\\r';
+        if (c === '\t') return '\\t';
+        return '';
+      })
+      .trim();
+
+    if (cleaned.startsWith('[') && !cleaned.endsWith(']')) {
+      const lastObj = cleaned.lastIndexOf('}');
+      if (lastObj !== -1) {
+        cleaned = cleaned.substring(0, lastObj + 1) + ']';
+      } else {
+        cleaned += ']';
+      }
+    }
+    return cleaned;
+  }
+
+  function sanitizeUrlComponent(str) {
+    if (!str) return '';
+    return String(str).replace(/["'\s].*$/, '').trim();
+  }
+
+  async function fetchAndParseJson(url) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) return [];
+
+      const rawText = await res.text();
+      const sanitizedText = sanitizeRawJsonString(rawText);
+
+      try {
+        const parsed = JSON.parse(sanitizedText);
+        return typeof safeArray === "function" ? safeArray(parsed) : (Array.isArray(parsed) ? parsed : []);
+      } catch (parseError) {
+        const objectMatches = sanitizedText.match(/\{[\s\S]*?\}/g);
+        if (objectMatches) {
+          const recovered = [];
+          for (const rawObj of objectMatches) {
+            try {
+              recovered.push(JSON.parse(rawObj));
+            } catch (e) {
+              const nameMatch = rawObj.match(/"name"\s*:\s*"([^"]+)"/i);
+              if (nameMatch) recovered.push({ name: nameMatch[1] });
+            }
+          }
+          return recovered;
+        }
+        return [];
+      }
+    } catch (e) {
+      return [];
+    }
+  }
+
   try {
-    const [resHtml, resEmu, resSwf] = await Promise.all([
-      fetch("https://cdn.jsdelivr.net/gh/bloxys-playables/html-files@main/cdn-data/g.json"),
-      fetch("https://cdn.jsdelivr.net/gh/bloxys-playables/emulator-files@main/cdn-data/g.json"),
-      fetch("https://cdn.jsdelivr.net/gh/bloxys-playables/ruffle-files@main/cdn-data/g.json")
+    const [htmlData, emuData, swfData] = await Promise.all([
+      fetchAndParseJson("https://cdn.jsdelivr.net/gh/bloxys-playables/html-files@main/cdn-data/g.json"),
+      fetchAndParseJson("https://cdn.jsdelivr.net/gh/bloxys-playables/emulator-files@main/cdn-data/g.json"),
+      fetchAndParseJson("https://cdn.jsdelivr.net/gh/bloxys-playables/ruffle-files@main/cdn-data/g.json")
     ]);
 
-    const htmlData = resHtml.ok ? safeArray(await resHtml.json()) : [];
-    const emuData = resEmu.ok ? safeArray(await resEmu.json()) : [];
-    const swfData = resSwf.ok ? safeArray(await resSwf.json()) : [];
+    const processCategory = (data, defaultImg, hashType) => {
+      const list = typeof safeArray === "function" ? safeArray(data) : (Array.isArray(data) ? data : []);
+      return list.map(g => {
+        if (!g || !g.name) return null;
+        
+        const cleanUrlName = sanitizeUrlComponent(g.name);
+        if (!cleanUrlName) return null;
 
-    const htmlGames = htmlData.map(g => {
-      if (!g || !g.name) return null;
-      return {
-        name: g.name,
-        img: "https://cdn.jsdelivr.net/gh/bloxys-playables/html-files@main/cdn-data/html.png",
-        url: "/app-viewer/bloxy-plays/#html?name=" + encodeURIComponent(g.name)
-      };
-    }).filter(Boolean);
+        return {
+          name: g.name,
+          img: g.img || defaultImg,
+          url: `/app-viewer/bloxy-plays/#${hashType}?name=` + encodeURIComponent(cleanUrlName)
+        };
+      }).filter(Boolean);
+    };
 
-    const emuGames = emuData.map(g => {
-      if (!g || !g.name) return null;
-      return {
-        name: g.name,
-        img: "https://cdn.jsdelivr.net/gh/bloxys-playables/emulator-files@main/cdn-data/emu.png",
-        url: "/app-viewer/bloxy-plays/#emu?name=" + encodeURIComponent(g.name)
-      };
-    }).filter(Boolean);
+    const htmlGames = processCategory(
+      htmlData,
+      "https://cdn.jsdelivr.net/gh/bloxys-playables/html-files@main/cdn-data/html.png",
+      "html"
+    );
 
-    const swfGames = swfData.map(g => {
-      if (!g || !g.name) return null;
-      return {
-        name: g.name,
-        img: "https://cdn.jsdelivr.net/gh/bloxys-playables/ruffle-files@main/cdn-data/swf.png",
-        url: "/app-viewer/bloxy-plays/#swf?name=" + encodeURIComponent(g.name)
-      };
-    }).filter(Boolean);
+    const emuGames = processCategory(
+      emuData,
+      "https://cdn.jsdelivr.net/gh/bloxys-playables/emulator-files@main/cdn-data/emu.png",
+      "emu"
+    );
 
-    DATA.bloxypl = dedupeGames([...htmlGames, ...emuGames, ...swfGames]);
-  } catch (e) {}
+    const swfGames = processCategory(
+      swfData,
+      "https://cdn.jsdelivr.net/gh/bloxys-playables/ruffle-files@main/cdn-data/swf.png",
+      "swf"
+    );
+
+    const allGames = [...htmlGames, ...emuGames, ...swfGames];
+    DATA.bloxypl = typeof dedupeGames === "function" ? dedupeGames(allGames) : allGames;
+  } catch (e) {
+    console.error("Error loading BloxyPL:", e);
+  }
 }
 
 const LOADER_MAP = {
