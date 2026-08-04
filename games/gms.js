@@ -47,7 +47,8 @@ const DATA = {
   kruated: [], 
   pizzalite: [],
   maz: [],
-  shuttleproxy: []
+  shuttleproxy: [],
+  bloxypl: []
 };
 
 const FEATURED = JSON.parse(JSON.stringify(DATA));
@@ -623,6 +624,49 @@ async function loadShuttleProxy() {
   } catch (e) {}
 }
 
+async function loadBloxyPL() {
+  try {
+    const [resHtml, resEmu, resSwf] = await Promise.all([
+      fetch("https://cdn.jsdelivr.net/gh/bloxys-playables/html-files@main/cdn-data/g.json"),
+      fetch("https://cdn.jsdelivr.net/gh/bloxys-playables/emulator-files@main/cdn-data/g.json"),
+      fetch("https://cdn.jsdelivr.net/gh/bloxys-playables/ruffle-files@main/cdn-data/g.json")
+    ]);
+
+    const htmlData = resHtml.ok ? safeArray(await resHtml.json()) : [];
+    const emuData = resEmu.ok ? safeArray(await resEmu.json()) : [];
+    const swfData = resSwf.ok ? safeArray(await resSwf.json()) : [];
+
+    const htmlGames = htmlData.map(g => {
+      if (!g || !g.name) return null;
+      return {
+        name: g.name,
+        img: "https://cdn.jsdelivr.net/gh/bloxys-playables/html-files@main/cdn-data/html.png",
+        url: "/app-viewer/bloxy-plays/#html?name=" + encodeURIComponent(g.name)
+      };
+    }).filter(Boolean);
+
+    const emuGames = emuData.map(g => {
+      if (!g || !g.name) return null;
+      return {
+        name: g.name,
+        img: "https://cdn.jsdelivr.net/gh/bloxys-playables/emulator-files@main/cdn-data/emu.png",
+        url: "/app-viewer/bloxy-plays/#emu?name=" + encodeURIComponent(g.name)
+      };
+    }).filter(Boolean);
+
+    const swfGames = swfData.map(g => {
+      if (!g || !g.name) return null;
+      return {
+        name: g.name,
+        img: "https://cdn.jsdelivr.net/gh/bloxys-playables/ruffle-files@main/cdn-data/swf.png",
+        url: "/app-viewer/bloxy-plays/#swf?name=" + encodeURIComponent(g.name)
+      };
+    }).filter(Boolean);
+
+    DATA.bloxypl = dedupeGames([...htmlGames, ...emuGames, ...swfGames]);
+  } catch (e) {}
+}
+
 const LOADER_MAP = {
   blox: loadBlox, 
   gn: loadGN, 
@@ -652,7 +696,8 @@ const LOADER_MAP = {
   kruated: loadKruated, 
   pizzalite: loadPizzalite,
   maz: loadMaz,
-  shuttleproxy: loadShuttleProxy
+  shuttleproxy: loadShuttleProxy,
+  bloxypl: loadBloxyPL
 };
 
 const CATEGORY_KEYS = Object.keys(DATA);
@@ -964,7 +1009,8 @@ function buildDynamicCategoryLayouts() {
     { id: "kruated", name: "Kruated Phear" }, 
     { id: "pizzalite", name: "Petezah Lite" },
     { id: "maz", name: "The Marz Library" },
-    { id: "shuttleproxy", name: "Shuttle Math" }
+    { id: "shuttleproxy", name: "Shuttle Math" },
+    { id: "bloxypl", name: "Bloxy's Playables" }
   ];
 
   libraryKeys.forEach(lib => {
