@@ -62,7 +62,7 @@ async function loadEvents(){
  
   if(
     !data ||
-    data === "There Are No Events" ||
+    data === "There Are No Events!" ||
     (
       Array.isArray(data) &&
       data.length === 0
