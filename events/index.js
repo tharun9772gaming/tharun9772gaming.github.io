@@ -95,6 +95,15 @@ function renderEvents(){
 
     card.className = "event";
 
+function renderEvents(){
+
+  eventsDiv.innerHTML = "";
+
+  EVENTS.forEach((event, index) => {
+
+    const card = document.createElement("div");
+    card.className = "event";
+
     card.innerHTML = `
       <img
         class="banner"
@@ -114,29 +123,16 @@ function renderEvents(){
 
     card.onclick = () => {
 
-      if(event.type === "URL"){
-
-        const iframe =
-        document.createElement("iframe");
-
-        iframe.src = event.url;
-
-        document.body.appendChild(
-          iframe
-        );
-
+      if (event.type === "URL") {
+        window.open(event.url, "_blank", "noopener,noreferrer");
       }
 
-      if(event.type === "TOPURL"){
-        top.location.href =
-        event.url;
+      if (event.type === "TOPURL") {
+        top.location.href = event.url;
       }
 
-      if(event.type === "URLPOPUP"){
-        window.open(
-          event.url,
-          "_blank"
-        );
+      if (event.type === "URLPOPUP") {
+        window.open(event.url, "_blank");
       }
 
     };
