@@ -1092,7 +1092,8 @@ function buildDynamicCategoryLayouts() {
     { id: "pizzalite", name: "Petezah Lite" },
     { id: "maz", name: "The Marz Library" },
     { id: "shuttleproxy", name: "Shuttle Math" },
-    { id: "bloxypl", name: "Bloxy's Playables" }
+    { id: "bloxypl", name: "Bloxy's Playables" },
+    { id: "daknux", name: "Daknux" }
   ];
 
   libraryKeys.forEach(lib => {
