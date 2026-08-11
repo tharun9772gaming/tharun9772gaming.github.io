@@ -48,7 +48,8 @@ const DATA = {
   pizzalite: [],
   maz: [],
   shuttleproxy: [],
-  bloxypl: []
+  bloxypl: [],
+  daknux: []
 };
 
 const FEATURED = JSON.parse(JSON.stringify(DATA));
@@ -732,6 +733,21 @@ async function loadBloxyPL() {
   }
 }
 
+async function loadDaknux() {
+  try {
+    const r = await fetch("https://cdn.jsdelivr.net/gh/daknux/assets/zones.json");
+    if (!r.ok) return;
+    const d = await r.json();
+    DATA.gn = dedupeGames(safeArray(d)
+      .filter(g => g.id !== -1 && g.name && !g.name.startsWith("[!]"))
+      .map(g => ({
+        name: g.name,
+        img: "https://cdn.jsdelivr.net/gh/daknux/covers@main/" + (g.cover || "").replace("{COVER_URL}", ""),
+        url: "/app-viewer/daknux/?g-id=" + g.id
+      })));
+  } catch (e) {}
+}
+
 const LOADER_MAP = {
   blox: loadBlox, 
   gn: loadGN, 
@@ -762,7 +778,8 @@ const LOADER_MAP = {
   pizzalite: loadPizzalite,
   maz: loadMaz,
   shuttleproxy: loadShuttleProxy,
-  bloxypl: loadBloxyPL
+  bloxypl: loadBloxyPL,
+  daknux: loadDaknux
 };
 
 const CATEGORY_KEYS = Object.keys(DATA);
