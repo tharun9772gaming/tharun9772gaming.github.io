@@ -738,7 +738,7 @@ async function loadDaknux() {
     const r = await fetch("https://cdn.jsdelivr.net/gh/daknux/assets/zones.json");
     if (!r.ok) return;
     const d = await r.json();
-    DATA.gn = dedupeGames(safeArray(d)
+    DATA.daknux = dedupeGames(safeArray(d)
       .filter(g => g.id !== -1 && g.name && !g.name.startsWith("[!]"))
       .map(g => ({
         name: g.name,
