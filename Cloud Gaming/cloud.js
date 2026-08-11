@@ -28,7 +28,7 @@ function normalize(g) {
   };
 }
 
-async function loadBlox() {
+async function loadApps() {
   if (DATA.blox.length) return;
   try {
     const r = await fetch("/Cloud Gaming/games.json");
@@ -75,7 +75,7 @@ document.querySelectorAll(".cat").forEach(btn => {
       CURRENT = Object.values(DATA).flat().map(normalize).filter(Boolean);
     } else {
       const loaderMap = {
-        blox: loadApps,
+        apps: loadApps,
         nowgg: loadNowGG
       };
       if (loaderMap[cat]) await loaderMap[cat]();
