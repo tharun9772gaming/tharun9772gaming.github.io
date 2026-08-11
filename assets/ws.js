@@ -10,7 +10,11 @@
         "wss://pgis-wisp-4.onrender.com/",
         "wss://wisp.mercurywork.shop/",
         "wss://bare-server.fly.dev/wisp/",
-        "wss://homework--spmspy0800.replit.app/wisp/"
+        "wss://homework--spmspy0800.replit.app/wisp/",
+        "wss://onyxv1.ai.studio/wisp/",
+        "wss://reverse.myapl.org/wisp/",
+        "wss://inkmath.adijaya.id/wisp/"
+        
     ];
 
 
