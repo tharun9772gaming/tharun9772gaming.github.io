@@ -2,6 +2,7 @@
 
     const status = document.getElementById("wispsttc");
 
+    // Please do not update thie with too many wisp servers, not as good thing for chromebooks to check all of them at once
 
     const primaryServers = [
         "wss://pgis-wisp.onrender.com/",
