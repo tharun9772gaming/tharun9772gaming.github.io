@@ -1,0 +1,27 @@
+[
+  {
+    "name": "GeForce NOW",
+    "img": "https://winf-dictionary.dk-ubg.workers.dev/cdn/proxy/image/https://www.google.com/s2/favicons?domain=play.geforcenow.com&sz=128",
+    "url": "/sail/embed#https://play.geforcenow.com"
+  },
+  {
+    "name": "Xbox Cloud Gaming",
+    "img": "https://winf-dictionary.dk-ubg.workers.dev/cdn/proxy/image/https://www.google.com/s2/favicons?domain=xbox.com&sz=128",
+    "url": "/sail/embed#https://www.xbox.com/play"
+  },
+  {
+    "name": "Amazon Luna",
+    "img": "https://winf-dictionary.dk-ubg.workers.dev/cdn/proxy/image/https://www.google.com/s2/favicons?domain=luna.amazon.com&sz=128",
+    "url": "/sail/embed#https://luna.amazon.com"
+  },
+  {
+    "name": "Boosteroid",
+    "img": "https://winf-dictionary.dk-ubg.workers.dev/cdn/proxy/image/https://www.google.com/s2/favicons?domain=boosteroid.com&sz=128",
+    "url": "/sail/embed#https://cloud.boosteroid.com"
+  },
+  {
+    "name": "Blacknut",
+    "img": "https://winf-dictionary.dk-ubg.workers.dev/cdn/proxy/image/https://www.google.com/s2/favicons?domain=blacknut.com&sz=128",
+    "url": "/sail/embed#https://www.blacknut.com"
+  }
+]
