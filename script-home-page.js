@@ -213,7 +213,7 @@ function renderExtraOverlay(){
     { value: "false", label: "False" }
   ];
 
-  const currentCursorValue = localStorage.getItem("cstcurser") === "1" ? "true" : "false";
+  const currentCursorValue = localStorage.getItem("cstcurser") === "1" ? "false" : "true";
 
   cursorOptions.forEach(opt => {
     const o = document.createElement("option");
