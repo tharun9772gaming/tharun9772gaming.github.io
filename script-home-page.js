@@ -209,8 +209,8 @@ function renderExtraOverlay(){
   cursorSelect.style = "padding: 6px; background: #27272a; border: 1px solid #3f3f46; border-radius: 4px; color: #fff; font-size: 13px; cursor: pointer;";
 
   const cursorOptions = [
-    { value: "false", label: "False (Default)" },
-    { value: "true", label: "True" }
+    { value: "true", label: "True (Default)" },
+    { value: "false", label: "False" }
   ];
 
   const currentCursorValue = localStorage.getItem("cstcurser") === "1" ? "true" : "false";
@@ -224,7 +224,7 @@ function renderExtraOverlay(){
   });
 
   cursorSelect.onchange = () => {
-    if (cursorSelect.value === "true") {
+    if (cursorSelect.value === "false") {
       localStorage.setItem("cstcurser", "1");
     } else {
       localStorage.removeItem("cstcurser");;
