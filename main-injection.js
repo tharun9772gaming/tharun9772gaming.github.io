@@ -9,21 +9,21 @@ if (localStorage.getItem('cstcurser') !== '1') {
             styleTag.type = 'text/css';
             styleTag.innerHTML = `
                 @media (min-width: 769px) {
-                    .hide-cursor *, 
-                    .hide-cursor *:hover,
-                    .hide-cursor button,
-                    .hide-cursor input[type="submit"],
-                    .hide-cursor input[type="button"],
-                    .hide-cursor a:hover,
-                    .hide-cursor a:link,
-                    .hide-cursor a:visited,
-                    .hide-cursor select,
-                    .hide-cursor input[type="range"],
-                    .hide-cursor input[type="date"],
-                    .hide-cursor input[type="color"],
-                    .hide-cursor ::-webkit-resizer,
-                    .hide-cursor video,
-                    .hide-cursor canvas {
+                    .hide-cursorr *, 
+                    .hide-cursorr *:hover,
+                    .hide-cursorr button,
+                    .hide-cursorr input[type="submit"],
+                    .hide-cursorr input[type="button"],
+                    .hide-cursorr a:hover,
+                    .hide-cursorr a:link,
+                    .hide-cursorr a:visited,
+                    .hide-cursorr select,
+                    .hide-cursorr input[type="range"],
+                    .hide-cursorr input[type="date"],
+                    .hide-cursorr input[type="color"],
+                    .hide-cursorr ::-webkit-resizer,
+                    .hide-cursorr video,
+                    .hide-cursorr canvas {
                         cursor: none !important;
                     }
 
@@ -31,7 +31,7 @@ if (localStorage.getItem('cstcurser') !== '1') {
                         cursor: none !important;
                     }
 
-                    .custom-cursor {
+                    .custom-cursorr {
                         width: 39px;
                         height: 39px;
                         pointer-events: none;
@@ -46,7 +46,7 @@ if (localStorage.getItem('cstcurser') !== '1') {
                         transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
                     }
 
-                    .custom-cursor.active {
+                    .custom-cursorr.active {
                         transform: scale(1.3);
                     }
                 }
@@ -54,8 +54,8 @@ if (localStorage.getItem('cstcurser') !== '1') {
             document.head.appendChild(styleTag);
 
             const cursor = document.createElement('div');
-            cursor.id = 'stable-custom-cursor';
-            cursor.className = 'custom-cursor';
+            cursor.id = 'stable-custom-cursorr';
+            cursor.className = 'custom-cursorr';
             document.body.appendChild(cursor);
 
             let mouseX = -100;
