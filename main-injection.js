@@ -58,7 +58,7 @@ if (localStorage.getItem('cstcurser') !== '1') {
             cursorr.className = 'custom-cursorr';
             document.body.appendChild(cursorr);
 
-    setInterval(() => {
+const ensureCursorOnTop = () => {
     let activeCursor = document.getElementById('stable-custom-cursorr');
 
     if (!activeCursor) {
@@ -66,10 +66,17 @@ if (localStorage.getItem('cstcurser') !== '1') {
         activeCursor = cursorr;
     }
 
+    if (activeCursor.style.display === 'none' && isDesktop) {
+        activeCursor.style.display = 'block';
+    }
+    
     if (document.body.lastElementChild !== activeCursor) {
         document.body.appendChild(activeCursor);
     }
-}, 1000);
+};
+document.addEventListener('click', ensureCursorOnTop, true);
+document.addEventListener('contextmenu', ensureCursorOnTop, true);
+document.addEventListener('mousedown', ensureCursorOnTop, true);
             
             let mouseX = -100;
             let mouseY = -100;
