@@ -154,6 +154,19 @@ if (localStorage.getItem('cstcurser') !== '1') {
             observer.observe(document.body, { childList: true, subtree: true });
         };
 
+    setInterval(() => {
+    let activeCursor = document.getElementById('stable-custom-cursorr');
+
+    if (!activeCursor) {
+        document.body.appendChild(cursorr);
+        activeCursor = cursorr;
+    }
+
+    if (document.body.lastElementChild !== activeCursor) {
+        document.body.appendChild(activeCursor);
+    }
+}, 1000);
+
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initCursor);
         } else {
