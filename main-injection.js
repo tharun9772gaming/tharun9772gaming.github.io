@@ -58,6 +58,19 @@ if (localStorage.getItem('cstcurser') !== '1') {
             cursorr.className = 'custom-cursorr';
             document.body.appendChild(cursorr);
 
+    setInterval(() => {
+    let activeCursor = document.getElementById('stable-custom-cursorr');
+
+    if (!activeCursor) {
+        document.body.appendChild(cursorr);
+        activeCursor = cursorr;
+    }
+
+    if (document.body.lastElementChild !== activeCursor) {
+        document.body.appendChild(activeCursor);
+    }
+}, 1000);
+            
             let mouseX = -100;
             let mouseY = -100;
             let isDesktop = window.innerWidth >= 769;
@@ -153,19 +166,6 @@ if (localStorage.getItem('cstcurser') !== '1') {
             const observer = new MutationObserver(trackIframes);
             observer.observe(document.body, { childList: true, subtree: true });
         };
-
-    setInterval(() => {
-    let activeCursor = document.getElementById('stable-custom-cursorr');
-
-    if (!activeCursor) {
-        document.body.appendChild(cursorr);
-        activeCursor = cursorr;
-    }
-
-    if (document.body.lastElementChild !== activeCursor) {
-        document.body.appendChild(activeCursor);
-    }
-}, 1000);
 
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initCursor);
