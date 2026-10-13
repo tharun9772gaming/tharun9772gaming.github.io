@@ -431,6 +431,7 @@ const CONSTANT_MAX_INT = 2147483647;
       <div class="subtitle">How version works: v.VERSION.YEAR.MONTH.DAY</div>
       <div class="subtitle">v.4.26.9.5 <span id="checkversion">(Loading JSON API...)</span></div>
       <div class="subtitle"><span id="wispsttc" style="color:#ffc107;">Getting Wisp Server, Some Features May Be Unavailable Until This Message Updates!</span></div>
+      <div id="google_translate_element"></div>
       <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
         <button onclick="exportSiteSave()" style="padding:8px 14px;border-radius:6px;border:none;background:var(--accent);color:#fff;cursor:pointer">
           Export Site Save
@@ -439,7 +440,7 @@ const CONSTANT_MAX_INT = 2147483647;
           Import Site Save
         </button>
         <input type="file" id="importSaveInput" accept=".json" style="display:none" onchange="importSiteSave(this)">
-        <div id="google_translate_element"></div>
+        
   <div id="widget-container">
     <div id="expanded-top-row">
       <div id="calendar-section">
