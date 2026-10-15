@@ -7,8 +7,35 @@ const viewerFrame = document.getElementById("viewerFrame");
 const viewerTitle = document.getElementById("viewerTitle");
 const openNewTab = document.getElementById("openNewTab");
 
-function show404(){
+function show404() {
+  viewerFrame.src = "about:blank";
   viewerFrame.srcdoc = "<h1 style='color:white;background:black;height:100vh;display:flex;align-items:center;justify-content:center;margin:0;font-family:sans-serif;'>404 - Game Not Found</h1>";
+}
+
+function buildSrcdoc(url, html) {
+  try {
+    const parsed = new URL(url);
+    const base = parsed.origin + parsed.pathname.replace(/[^/]*$/, "");
+    return `<base href="${base}">${html}`;
+  } catch (err) {
+    return html;
+  }
+}
+
+function loadIntoViewer(url) {
+  return fetch(url, { credentials: "omit" })
+    .then(r => {
+      if (!r.ok) throw new Error("Failed to fetch page: " + r.status);
+      return r.text();
+    })
+    .then(html => {
+      const srcdoc = buildSrcdoc(url, html);
+
+      viewerFrame.src = "about:blank";
+      viewerFrame.srcdoc = srcdoc;
+
+      return srcdoc;
+    });
 }
 
 if (!view) {
@@ -25,12 +52,28 @@ if (!view) {
       const fullUrl = game.url;
       viewerTitle.textContent = game.name;
 
-      viewerFrame.src = fullUrl;
+      loadIntoViewer(fullUrl)
+        .then(srcdoc => {
+          openNewTab.onclick = () => {
+            const popup = window.open("about:blank", "_blank", "noopener,noreferrer");
 
-      openNewTab.onclick = () => {
-        window.open(fullUrl, "_blank", "noopener,noreferrer");
-      };
+            if (!popup) {
+              window.open(fullUrl, "_blank", "noopener,noreferrer");
+              return;
+            }
 
+            popup.document.open();
+            popup.document.write(srcdoc);
+            popup.document.close();
+          };
+        })
+        .catch(err => {
+          console.error(err);
+          viewerFrame.src = fullUrl;
+          openNewTab.onclick = () => {
+            window.open(fullUrl, "_blank", "noopener,noreferrer");
+          };
+        });
     })
     .catch(err => {
       console.error(err);
