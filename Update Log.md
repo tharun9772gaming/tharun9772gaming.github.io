@@ -7,5 +7,5 @@ October 14, 2026:
 <br>
 <br>
 October 15, 2026: 
-**Fixed redirect to google.com when zooming in and on mobile/tablet Or a different browser other then Chrome** <br>
-**Fixed YouTube Playables Not Loading The Game**
+**• Fixed redirect to google.com when zooming in and on mobile/tablet Or a browser other then Chrome** <br>
+**• Fixed YouTube Playables Not Loading The Game**
